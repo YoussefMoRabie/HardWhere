@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
+import { Link } from 'react-router-dom';
 const Navbar = () => {
   const top100Films = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -23,61 +24,70 @@ const Navbar = () => {
     <div className="header">
       <div className="logo">
         <span class="material-symbols-outlined">memory</span>
-        <span className='name'>HardWhere</span></div>
-      <Stack spacing={2} sx={{ width: 800, border: 'none', }}   >
+        <span className="name">HardWhere</span>
+      </div>
+      <Stack spacing={2} sx={{ width: 800, border: "none" }}>
         <Autocomplete
           freeSolo
           id="free-solo-2-demo"
           disableClearable
           fullWidth={true}
-          sx={{ backgroundColor: 'white', borderRadius: 3 }}
+          sx={{ backgroundColor: "white", borderRadius: 3 }}
           options={top100Films.map((option) => option.title)}
           renderInput={(params) => (
             <TextField
               {...params}
-              
               margin="none"
-              placeholder='How can we help you...'
-              disableListWrap='false'
+              placeholder="How can we help you..."
+              disableListWrap="false"
               size="small"
               sx={{
                 "& .MuiOutlinedInput-root": {
                   "& > fieldset": {
-                    border: "none"
-                  }
-                }
+                    border: "none",
+                  },
+                },
               }}
               InputProps={{
                 ...params.InputProps,
-                type: 'search',
-
+                type: "search",
               }}
             />
           )}
         />
       </Stack>
       <div className="buttons">
-        <Stack direction="row" spacing={2} sx={{display: "block"}}>
-          <Button variant="contained" sx={{
-            fontWeight: 'bold', borderRadius: 50, backgroundColor: 'transparent', color: "#251c57",
-            "&:hover": { backgroundColor: 'transparent', color: "#251c57" }
-          }}>Sign In <span class="material-symbols-outlined">
-              person
-            </span></Button>
-        </Stack>
+        <Link to="/login" className='loginLink'>
+          <Stack direction="row" spacing={2} sx={{ display: "block" }}>
+            <Button
+              variant="contained"
+              sx={{
+                fontWeight: "bold",
+                borderRadius: 50,
+                backgroundColor: "transparent",
+                color: "#251c57",
+                "&:hover": { backgroundColor: "transparent", color: "#251c57" },
+              }}
+            >
+              Sign In <span class="material-symbols-outlined">person</span>
+            </Button>
+          </Stack>
+        </Link>
         <Stack direction="row" spacing={2}>
-          <Button variant="contained" sx={{
-            fontWeight: 'bold',
-            borderRadius: 50, backgroundColor: 'transparent', color: "#251c57",
-            "&:hover": { backgroundColor: 'transparent', color: "#251c57" }
-          }}>Cart <span class="material-symbols-outlined">
-              shopping_cart
-            </span> </Button>
+          <Button
+            variant="contained"
+            sx={{
+              fontWeight: "bold",
+              borderRadius: 50,
+              backgroundColor: "transparent",
+              color: "#251c57",
+              "&:hover": { backgroundColor: "transparent", color: "#251c57" },
+            }}
+          >
+            Cart <span class="material-symbols-outlined">shopping_cart</span>{" "}
+          </Button>
         </Stack>
       </div>
-
-
-
     </div>
   );
 }
