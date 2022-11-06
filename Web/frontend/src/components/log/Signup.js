@@ -34,11 +34,11 @@ const Signup = () => {
           <input type="checkbox" name="checkbox" className="checkbox" />
           <label htmlFor="checkbox">
             I accept all the
-            <Link to="/Signup" className="link">
-              Terms
+            <Link to="/Signup" className="link">{" "}
+              Terms{" "}
             </Link>
-            and
-            <Link to="/Signup" className="link">
+            and{" "}
+            <Link to="/Signup" className="link">{" "}
               Privacy Policy.
             </Link>
           </label>
