@@ -1,25 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Cookie&display=swap");
 .layout {
   background: linear-gradient(0.25turn, #3f87a6, #a8ffc3, #fafe97);
   width: 100%;
   height: calc(100vh - 101px);
   position: relative;
 }
-.login {
-  width: 300px;
-  background-color: #efef18c2;
-  margin: auto;
-  padding: 20px;
+.log-box {
+     width: 400px;
+    background-color: #efef18c2;
+    margin: auto;
+    padding: 20px;
   border-radius: 16px;
-  position: relative;
-  top: 80px;
-  box-shadow: 0 0 6px 3px #edff66;
-  text-align: center;
-  color: #998733;
+    position: relative;
+    top: 50px;
+    box-shadow: 0 0 6px 3px #edff66;
+    text-align: center;
+    color: #998733;
 }
 h3 {
   font-weight: 800;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   font-size: 30px;
+}
+h3 + p {
+  margin-bottom: 20px;
+  color: darkcyan;
 }
 input {
   background-color: transparent;
@@ -43,13 +48,14 @@ label p {
 .social p {
   margin: 11px;
   font-size: 22px;
+  font-family: "Cookie", cursive;
 }
 .forget {
   margin: 30px;
 }
-a {
+.link {
   text-decoration: none;
-  color: #998733;
+  color: rgb(0 158 234);
   font-weight: 800;
 }
 input[type="submit"] {
@@ -61,4 +67,11 @@ input[type="submit"] {
 }
 input:hover {
   box-shadow: 0 0 10px 1px #edff66;
+}
+input[type="checkbox"]{
+    width: auto;
+    margin-right: 10px;
+}
+input[type="checkbox"] + label{ 
+    font-size: 13px;
 }

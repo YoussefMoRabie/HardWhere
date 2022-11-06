@@ -2,10 +2,11 @@ import "./Log.css";
 import { BsFacebook } from "react-icons/bs";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { SiGmail } from "react-icons/si";
+import { Link } from "react-router-dom";
 const Login = () => {
   return (
     <div className="layout">
-      <div className="login">
+      <div className="log-box ">
         <h3>Sign in</h3>
         <form action="">
           <label htmlFor="Uname">
@@ -35,12 +36,18 @@ const Login = () => {
               />
             </div>
             <div className="forget">
-              <a href="/"> Forget Your Password?</a>
+              <Link to="/" className="link">
+                Forget Your Password?
+              </Link>
             </div>
           </p>
           <input type="submit" value="SIGN IN" />
           <p>
-            Need Account?<a href="/"> SIGN UP</a>
+            Need Account?{" "}
+            <Link to="/Signup" className="link">
+              {" "}
+              SIGN UP
+            </Link>
           </p>
         </form>
       </div>
