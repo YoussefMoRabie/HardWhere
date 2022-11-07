@@ -1,21 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Cookie&display=swap");
 .layout {
-  background: linear-gradient(0.25turn, #3f87a6, #a8ffc3, #fafe97);
+  background: linear-gradient(0.77turn, #1c5755, #1565c0, #eef290);
   width: 100%;
   height: calc(100vh - 101px);
   position: relative;
 }
 .log-box {
-     width: 400px;
-    background-color: #efef18c2;
-    margin: auto;
-    padding: 20px;
+  width: 400px;
+  background-color: #efef18c2;
+  margin: auto;
+  padding: 20px;
   border-radius: 16px;
-    position: relative;
-    top: 50px;
-    box-shadow: 0 0 6px 3px #edff66;
-    text-align: center;
-    color: #998733;
+  position: relative;
+  top: 50px;
+  box-shadow: 0 0 6px 3px #edff66;
+  text-align: center;
+  color: #998733;
 }
 h3 {
   font-weight: 800;
@@ -55,7 +55,7 @@ label p {
 }
 .link {
   text-decoration: none;
-  color: rgb(0 158 234);
+  color:rgb(45 128 168);
   font-weight: 800;
 }
 input[type="submit"] {
@@ -68,10 +68,10 @@ input[type="submit"] {
 input:hover {
   box-shadow: 0 0 10px 1px #edff66;
 }
-input[type="checkbox"]{
-    width: auto;
-    margin-right: 10px;
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
 }
-input[type="checkbox"] + label{ 
-    font-size: 13px;
+input[type="checkbox"] + label {
+  font-size: 13px;
 }

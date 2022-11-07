@@ -1,5 +1,7 @@
 import "./Log.css";
 import { Link } from "react-router-dom";
+
+
 const Signup = () => {
   return (
     <div className="layout">
@@ -47,6 +49,6 @@ const Signup = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Signup;
