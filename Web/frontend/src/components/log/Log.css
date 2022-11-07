@@ -6,14 +6,14 @@
   position: relative;
 }
 .log-box {
-  width: 400px;
-  background-color: #efef18c2;
+  width: 450px;
+  background-color: #251c57;
   margin: auto;
   padding: 20px;
   border-radius: 16px;
   position: relative;
-  top: 50px;
-  box-shadow: 0 0 6px 3px #edff66;
+  top: 30px;
+  box-shadow: 0 0 6px 3px rgb(167 167 16);
   text-align: center;
   color: #998733;
 }
@@ -24,7 +24,7 @@ h3 {
 }
 h3 + p {
   margin-bottom: 20px;
-  color: darkcyan;
+  color: #10e4e4;
 }
 input {
   background-color: transparent;
@@ -40,7 +40,6 @@ label p {
   text-align: initial;
   font-weight: 700;
   margin-left: 5px;
-  margin-bottom: -6px;
 }
 .social {
   margin: 20px;
@@ -55,14 +54,14 @@ label p {
 }
 .link {
   text-decoration: none;
-  color:rgb(45 128 168);
+  color: rgb(45 128 168);
   font-weight: 800;
 }
 input[type="submit"] {
-  background-color: #edff66;
+  background-color: rgb(45 128 168);
   font-size: 15px;
   font-weight: 900;
-  color: #35cc0d;
+  color: #eef290;
   cursor: pointer;
 }
 input:hover {

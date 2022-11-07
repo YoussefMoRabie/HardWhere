@@ -8,8 +8,8 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Grid } from '@mui/material';
-import { makeStyles, styled } from '@mui/styles';
 import { ThemeProvider, createTheme, } from '@mui/material/styles'
+import { Link } from 'react-router-dom';
 
 const theme = createTheme({
   typography: {
@@ -56,70 +56,80 @@ const Navbar = () => {
     <ThemeProvider theme={theme}>
       <Grid>
         <div className="header">
-          <Grid container spacing={2} justifyContent={'space-between'} >
-            <Grid item sm={'auto'}><Stack alignItems='center' direction={'row'}>
-              <MemoryOutlinedIcon fontSize='large' sx={{ color: '#251c57' }} />
-              <span className='name'>HardWhere</span>
-            </Stack></Grid>
-            <Grid item sm={5} >
-              <Stack >
+          <Grid container spacing={2} justifyContent={"space-between"}>
+            <Grid item sm={"auto"}>
+              <Stack alignItems="center" direction={"row"}>
+                <MemoryOutlinedIcon
+                  fontSize="large"
+                  sx={{ color: "#251c57" }}
+                />
+                <span className="name">HardWhere</span>
+              </Stack>
+            </Grid>
+            <Grid item sm={5}>
+              <Stack>
                 <Autocomplete
                   freeSolo
                   id="free-solo-2-demo"
                   disableClearable
                   fullWidth={true}
-                  sx={{ backgroundColor: 'white', borderRadius: 3 }}
+                  sx={{ backgroundColor: "white", borderRadius: 3 }}
                   options={top100Films.map((option) => option.title)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       margin="none"
-                      placeholder='How can we help you...'
-
+                      placeholder="How can we help you..."
                       size="small"
                       sx={{
                         "& .MuiOutlinedInput-root": {
                           "& > fieldset": {
-                            border: "none"
-                          }
-                        }
+                            border: "none",
+                          },
+                        },
                       }}
                       InputProps={{
                         ...params.InputProps,
-                        type: 'search',
-
+                        type: "search",
                       }}
                     />
                   )}
                 />
               </Stack>
             </Grid>
-            <Grid item sm={'auto'} >
+            <Grid item sm={"auto"}>
               <div className="buttons">
                 <ThemeProvider theme={Btntheme}>
+                  <Link to="/Signin" className="loginLink">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      endIcon={<PermIdentityOutlinedIcon fontSize="inherit" />}
+                      sx={{
+                        color: "#251c57",
+                        fontWeight: "bold",
+                        minWidth: 115,
+                        backgroundColor: "transparent",
+                      }}
+                    >
+                      Sign In
+                    </Button>
+                  </Link>
                   <Button
-                    variant='contained'
-                    color='primary'
-                    endIcon={<PermIdentityOutlinedIcon fontSize='inherit' />}
-                    sx={{
-                      color: "#251c57",
-                      fontWeight: "bold",
-                      minWidth: 115,
-                      backgroundColor: 'transparent'
-                    }}>Sign In</Button>
-                  <Button
-                    variant='contained'
-                    color='primary'
+                    variant="contained"
+                    color="primary"
                     endIcon={<ShoppingCartOutlinedIcon />}
                     sx={{
                       color: "#251c57",
                       fontWeight: "bold",
                       minWidth: 90,
-                      backgroundColor: 'transparent',
-                    }}>Cart</Button>
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    Cart
+                  </Button>
                 </ThemeProvider>
               </div>
-
             </Grid>
           </Grid>
         </div>
@@ -127,19 +137,24 @@ const Navbar = () => {
           className="links"
           sx={{ backgroundColor: "#efefef" }}
           container
-          justifyContent={'space-evenly'} >
+          justifyContent={"space-evenly"}
+        >
           <ThemeProvider theme={Btntheme}>
-            <Button
-              color='secondary'
-              href="#text-buttons">Labtops</Button>
-            <Button color='secondary'
-              href="#text-buttons">Mobile Phones</Button>
-            <Button color='secondary'
-              href="#text-buttons">Headphones</Button>
-            <Button color='secondary'
-              href="#text-buttons">Accessories</Button>
-            <Button color='secondary'
-              href="#text-buttons">Offers</Button>
+            <Button color="secondary" href="#text-buttons">
+              Labtops
+            </Button>
+            <Button color="secondary" href="#text-buttons">
+              Mobile Phones
+            </Button>
+            <Button color="secondary" href="#text-buttons">
+              Headphones
+            </Button>
+            <Button color="secondary" href="#text-buttons">
+              Accessories
+            </Button>
+            <Button color="secondary" href="#text-buttons">
+              Offers
+            </Button>
           </ThemeProvider>
         </Grid>
       </Grid>
