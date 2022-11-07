@@ -36,5 +36,19 @@
   font-weight: bold;
   color: #251c57;
 }
+.name {
+  font-weight: 800;
+}
+.css-wn7ry-MuiButtonBase-root-MuiButton-root:hover {
+  box-shadow: "none";
+  background-color: "#1CD6CE";
+  color: "#251c57";
+}
+.loginLink{
+  text-decoration: none;
+}
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 48;
+}
 
 
