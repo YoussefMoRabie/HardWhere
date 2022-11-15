@@ -1,6 +1,7 @@
 import "./Log.css";
 import { Link } from "react-router-dom";
-
+import Button from "@mui/material/Button";
+import { BsBoxArrowInUp } from "react-icons/bs";
 
 const Signup = () => {
   return (
@@ -36,19 +37,28 @@ const Signup = () => {
           <input type="checkbox" name="checkbox" className="checkbox" />
           <label htmlFor="checkbox">
             I accept all the
-            <Link to="/Signup" className="link">{" "}
+            <Link to="/Signup" className="link">
+              {" "}
               Terms{" "}
             </Link>
             and{" "}
-            <Link to="/Signup" className="link">{" "}
+            <Link to="/Signup" className="link">
+              {" "}
               Privacy Policy.
             </Link>
           </label>
-          <input type="submit" value="SIGN UP" />
+          <Button
+            className="btn"
+            type="submit"
+            variant="contained"
+            endIcon={<BsBoxArrowInUp />}
+          >
+            SIGN UP
+          </Button>
         </form>
       </div>
     </div>
   );
-}
+};
 
 export default Signup;

@@ -1,7 +1,10 @@
+import OffersSlider from './OffersSlider/OffersSlider'
 const HomePage = () => {
-    return ( 
-        <h2>Home</h2>
-     );
-}
- 
+  return (
+    <>
+      <OffersSlider />
+    </>
+  );
+};
+
 export default HomePage;

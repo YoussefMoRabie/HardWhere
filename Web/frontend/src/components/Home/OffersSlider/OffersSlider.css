@@ -1,0 +1,44 @@
+.productOffer {
+  padding: 25px;
+  height: 300px;
+}
+.homeOfferSlider{
+  
+
+    border-bottom: 3px solid #a8a8a8;
+    padding-bottom: 15px;
+    box-shadow: 0 0 7px 1px #d6d6d6;
+
+}
+.productOffer .left {
+  float: left;
+}
+.productOffer .left h3 {
+  color: darksalmon;
+}
+.productOffer p {
+  padding: 4px;
+
+  font-weight: 600;
+  color: gray;
+}
+.productOffer p span {
+  font-weight: 900;
+  color: darkcyan;
+  font-style: oblique;
+}
+.productOffer .right {
+  float: right;
+}
+.productOffer .right img {
+  width: 170px;
+  background-color: #bbdfff;
+  color: blanchedalmond;
+}
+button.addCartBtn {
+  margin: 8px 5px;
+  box-shadow: 0 0 5px 1px red;
+}
+.BsCartCheckFill {
+  color: blanchedalmond;
+}

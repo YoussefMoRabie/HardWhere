@@ -3,22 +3,28 @@ import { BsFacebook } from "react-icons/bs";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { SiGmail } from "react-icons/si";
 import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import * as React from "react";
+import { BiLogIn } from "react-icons/bi";
+import { useState } from "react";
+
 const Login = () => {
+  const [userName, setuserName] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <div className="layout">
       <div className="log-box ">
         <h3>Sign in</h3>
-        <form action="">
+        <form noValidate autoComplete="off">
           <label htmlFor="Uname">
-            <p> UserName</p>
+          <p>Username</p>
           </label>
-          <input type="text" name="Uname" placeholder="Enter Username" />
-
+          <input type="text" value={userName} name="Uname" placeholder="Enter Username" onChange={(e)=>{setuserName(e.target.value)}}/>
           <label htmlFor="psw">
             <p>Password</p>
           </label>
-          <input type="password" name="psw" placeholder="Enter Password" />
-
+          <input value={password} type="password" name="psw" placeholder="Enter Password" onChange={(e)=>{setPassword(e.target.value)}}/>
           <p>
             <div className="social">
               <p>OR</p>
@@ -41,7 +47,17 @@ const Login = () => {
               </Link>
             </div>
           </p>
-          <input type="submit" value="SIGN IN" />
+          <Button
+            className="btn"
+            endIcon={<BiLogIn></BiLogIn>}
+            variant="contained"
+            type="submit"
+            onclick={() => {
+              console.log("i am clicked");
+            }}
+          >
+            SIGN IN
+          </Button>
           <p>
             Need Account?{" "}
             <Link to="/Signup" className="link">

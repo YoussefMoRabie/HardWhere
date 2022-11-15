@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
 * {
   font-family: Comfortaa;
-  box-sizing: border-box ;
+  box-sizing: border-box;
   margin: 0;
 }
 .material-symbols-outlined {
@@ -14,7 +14,7 @@
   margin-bottom: 1px;
 }
 .header {
-  gap:15px;
+  gap: 15px;
   padding: 20px;
   background-color: #efef18;
   text-align: center;
@@ -26,7 +26,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap:10px;
+  gap: 10px;
 }
 .name {
   display: block;
@@ -36,6 +36,9 @@
   font-weight: bold;
   color: #251c57;
 }
+.links {
+  box-shadow: 0 0 5px 1px #6e6e6e;
+}
 .name {
   font-weight: 800;
 }
@@ -44,11 +47,9 @@
   background-color: "#1CD6CE";
   color: "#251c57";
 }
-.loginLink{
+.loginLink {
   text-decoration: none;
 }
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 48;
 }
-
-

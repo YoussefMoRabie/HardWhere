@@ -1,6 +1,11 @@
 // import "./";
 import "./components/Navbar/Navbar";
+
 import Navbar from "./components/Navbar/Navbar";
+
+// mini problem with mi/stylesnpm 
+//// "@mui/styles": "^5.10.10",
+
 import Product from "./components/Product/Product";
 import HomePage from "./components/Home/HomePage";
 import Signup from "./components/log/Signup";
