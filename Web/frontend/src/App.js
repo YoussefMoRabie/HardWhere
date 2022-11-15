@@ -11,6 +11,7 @@ import HomePage from "./components/Home/HomePage";
 import Signup from "./components/log/Signup";
 import Login from "./components/log/Login";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer/Footer";
 function App() {
   return (
     <Router>
@@ -22,6 +23,7 @@ function App() {
           <Route path="/Signin" element={<Login></Login>}></Route>
           <Route path="/signup" element={<Signup></Signup>}></Route>
         </Routes>
+        <Footer/>
       </div>
     </Router>
   );
