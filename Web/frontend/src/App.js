@@ -1,11 +1,7 @@
 // import "./";
 import "./components/Navbar/Navbar";
-
 import Navbar from "./components/Navbar/Navbar";
-
-// mini problem with mi/stylesnpm 
-//// "@mui/styles": "^5.10.10",
-
+import Cart from "./components/Cart/Cart";
 import Product from "./components/Product/Product";
 import HomePage from "./components/Home/HomePage";
 import Signup from "./components/log/Signup";
@@ -18,12 +14,13 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
-          <Route path="/" element={<HomePage></HomePage>}></Route>
-          <Route path="/product/:id" element={<Product></Product>}></Route>
-          <Route path="/Signin" element={<Login></Login>}></Route>
-          <Route path="/signup" element={<Signup></Signup>}></Route>
+          <Route path="/" element={<HomePage/>}></Route>
+          <Route path="/product/:id" element={<Product/>}></Route>
+          <Route path="/Cart" element={<Cart/>}></Route>
+          <Route path="/Signin" element={<Login/>}></Route>
+          <Route path="/signup" element={<Signup/>}></Route>
         </Routes>
-        <Footer/>
+        <Footer />
       </div>
     </Router>
   );

@@ -13,61 +13,79 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="layout">
-      <div className="log-box ">
-        <h3>Sign in</h3>
-        <form noValidate autoComplete="off">
-          <label htmlFor="Uname">
-          <p>Username</p>
-          </label>
-          <input type="text" value={userName} name="Uname" placeholder="Enter Username" onChange={(e)=>{setuserName(e.target.value)}}/>
-          <label htmlFor="psw">
-            <p>Password</p>
-          </label>
-          <input value={password} type="password" name="psw" placeholder="Enter Password" onChange={(e)=>{setPassword(e.target.value)}}/>
-          <p>
-            <div className="social">
-              <p>OR</p>
+    <>
+      <div className="Loglayout">
+        <div className="log-box ">
+          <h3>Sign in</h3>
+          <form noValidate autoComplete="off">
+            <label htmlFor="Uname">
+              <p>Username</p>
+            </label>
+            <input
+              type="text"
+              value={userName}
+              name="Uname"
+              placeholder="Enter Username"
+              onChange={(e) => {
+                setuserName(e.target.value);
+              }}
+            />
+            <label htmlFor="psw">
+              <p>Password</p>
+            </label>
+            <input
+              value={password}
+              type="password"
+              name="psw"
+              placeholder="Enter Password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+            <p>
+              <div className="social">
+                <p>OR</p>
 
-              <BsFacebook color="blue" size="2em" style={{ margin: "5px" }} />
-              <AiFillTwitterCircle
-                color="#00acee"
-                size="2em"
-                style={{ margin: "5px" }}
-              />
-              <SiGmail
-                clipPath="#ac4040"
-                size="2em"
-                style={{ margin: "5px" }}
-              />
-            </div>
-            <div className="forget">
-              <Link to="/" className="link">
-                Forget Your Password?
+                <BsFacebook color="blue" size="2em" style={{ margin: "5px" }} />
+                <AiFillTwitterCircle
+                  color="#00acee"
+                  size="2em"
+                  style={{ margin: "5px" }}
+                />
+                <SiGmail
+                  clipPath="#ac4040"
+                  size="2em"
+                  style={{ margin: "5px" }}
+                />
+              </div>
+              <div className="forget">
+                <Link to="/" className="link">
+                  Forget Your Password?
+                </Link>
+              </div>
+            </p>
+            <Button
+              className="btn"
+              endIcon={<BiLogIn></BiLogIn>}
+              variant="contained"
+              type="submit"
+              onclick={() => {
+                console.log("i am clicked");
+              }}
+            >
+              SIGN IN
+            </Button>
+            <p>
+              Need Account?{" "}
+              <Link to="/Signup" className="link">
+                {" "}
+                SIGN UP
               </Link>
-            </div>
-          </p>
-          <Button
-            className="btn"
-            endIcon={<BiLogIn></BiLogIn>}
-            variant="contained"
-            type="submit"
-            onclick={() => {
-              console.log("i am clicked");
-            }}
-          >
-            SIGN IN
-          </Button>
-          <p>
-            Need Account?{" "}
-            <Link to="/Signup" className="link">
-              {" "}
-              SIGN UP
-            </Link>
-          </p>
-        </form>
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

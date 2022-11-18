@@ -106,7 +106,7 @@ const OfferCard  = () => {
                   End Date: <span>{product.endDate}</span>
                 </p>
                 <p>
-                  Old Price: <span>{product.oldPrice}</span>
+                  Old Price: <span className="oldPrice">{product.oldPrice}</span>
                 </p>
                 <p>
                   New Price: <span>{product.newPrice}</span>
