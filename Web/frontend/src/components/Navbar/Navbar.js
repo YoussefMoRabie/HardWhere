@@ -91,13 +91,15 @@ const Navbar = () => {
     <ThemeProvider theme={theme}>
       <div className="header">
         <Grid container spacing={2} justifyContent={"space-between"}>
-          <Grid item>
+         <Grid item>
+          <Link to="/" >
             <Stack alignItems="center" direction={"row"}>
               <MemoryOutlinedIcon fontSize="large" sx={{ color: "#251c57" }} />
               <span className="name">HardWhere</span>
             </Stack>
+            </Link>
           </Grid>
-
+          
           <Grid item sm={5}>
             <Stack>
               <Autocomplete

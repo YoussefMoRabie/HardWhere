@@ -1,0 +1,94 @@
+
+.propage{
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+}
+.product{
+padding: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.productimage img {
+  display: block;
+  object-fit: cover;
+  width: 400px
+  
+}
+.productinfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.productinfo p{
+  padding: 10px;
+  max-width: 450px;
+
+}
+.productinfo .colors{
+  padding: 10px;
+  display: flex;
+  width: fit-content;
+  border-radius: 12px;
+  gap:10px;
+  background-color: #efefef;
+}
+.productinfo .colors div{
+  cursor: pointer;
+  border-radius: 50%;
+  
+}
+.productinfo .colors .selected{
+  border: 3px solid #00d0ff;
+}
+.price{
+  padding: 10px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+.available span{
+  color: rgb(0, 239, 44)
+}
+.notAvailable{
+  color: rgb(227, 31, 31)
+}
+input:hover{
+  box-shadow: none;
+}
+input:hover, button.btn:hover{
+box-shadow: 5px 1px 15px 5px #cececc !important;
+  border:none !important;
+
+}
+
+.form .postComment{
+  padding:17px;
+  box-shadow: 0 0 10px 1px #cececc ;
+  font-size: 1.2rem;
+  border: none !important;
+  color: black;
+  
+}
+.comment-title{
+  display: none !important;
+  content:"Reviews" !important
+}
+.replyBtn{
+  display: none !important;
+}
+.form .postBtn {
+    border: 2px solid #efef18;
+    border-radius: 8px;
+    background-color: #efef18;
+    padding: 5px 10px;
+    color: white;
+    font-weight: bolder;
+    margin-left: 11px;
+    font-size: 16px;
+    height: 57px;
+    cursor: pointer;
+    padding: 2px 20px;
+    color:black;
+}
