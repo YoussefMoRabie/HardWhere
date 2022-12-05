@@ -5,7 +5,7 @@ import { BsBoxArrowInUp } from "react-icons/bs";
 
 const Signup = () => {
   return (
-    <div className="layout">
+    <div className="Loglayout">
       <div className="log-box ">
         <h3>Sign Up</h3>
         <p>Please fill in this form to create an account! </p>
