@@ -63,6 +63,14 @@ dependencies:
 #  sqflite: ^2.0.2
   shared_preferences: ^2.0.15
   flutter_social_button: ^1.1.4
+  dartz: ^0.10.1
+  http: ^0.13.5
+  lottie: ^2.0.0
+  persistent_bottom_nav_bar: ^5.0.2
+  switcher_button: ^0.0.4
+  hexcolor: ^3.0.1
+  curved_navigation_bar: ^1.0.3
+  get_storage: ^2.0.3
 #  path: ^1.8.0
 #  # Qrcode
 #  qr_flutter: ^4.0.0
