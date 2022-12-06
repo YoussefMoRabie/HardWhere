@@ -16,6 +16,9 @@
 .productOffer .left h3 {
   color: darksalmon;
 }
+.productOffer .left .oldPrice{
+  text-decoration: line-through;
+}
 .productOffer p {
   padding: 4px;
 

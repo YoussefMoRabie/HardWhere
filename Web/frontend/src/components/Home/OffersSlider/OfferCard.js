@@ -5,7 +5,11 @@ import React from "react";
 import "./OffersSlider.css";
 import Button from "@mui/material/Button";
 import { BsCartCheckFill } from "react-icons/bs";
+
+
 //DB request latter
+
+
 let OfferData = [
   {
     img: "https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg",
@@ -106,7 +110,7 @@ const OfferCard  = () => {
                   End Date: <span>{product.endDate}</span>
                 </p>
                 <p>
-                  Old Price: <span>{product.oldPrice}</span>
+                  Old Price: <span className="oldPrice">{product.oldPrice}</span>
                 </p>
                 <p>
                   New Price: <span>{product.newPrice}</span>

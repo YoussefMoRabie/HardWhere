@@ -9,7 +9,7 @@ import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Grid, List, ListItem, ListItemText } from '@mui/material';
 import { ThemeProvider, createTheme, } from '@mui/material/styles'
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 
 
@@ -89,20 +89,17 @@ const Navbar = () => {
     { title: 'Pulp Fiction', year: 1994 }];
   return (
     <ThemeProvider theme={theme}>
-
       <div className="header">
         <Grid container spacing={2} justifyContent={"space-between"}>
-
-          <Grid item>
+         <Grid item>
+          <Link to="/" >
             <Stack alignItems="center" direction={"row"}>
-              <MemoryOutlinedIcon
-                fontSize="large"
-                sx={{ color: "#251c57" }}
-              />
+              <MemoryOutlinedIcon fontSize="large" sx={{ color: "#251c57" }} />
               <span className="name">HardWhere</span>
             </Stack>
+            </Link>
           </Grid>
-
+          
           <Grid item sm={5}>
             <Stack>
               <Autocomplete
@@ -110,7 +107,11 @@ const Navbar = () => {
                 id="free-solo-2-demo"
                 disableClearable
                 fullWidth={true}
-                sx={{ backgroundColor: "white", borderRadius: 3, "& input:hover": { boxShadow: "none" } }}
+                sx={{
+                  backgroundColor: "white",
+                  borderRadius: 3,
+                  "& input:hover": { boxShadow: "none" },
+                }}
                 options={top100Films.map((option) => option.title)}
                 renderInput={(params) => (
                   <TextField
@@ -138,7 +139,7 @@ const Navbar = () => {
           <Grid item sm={"auto"}>
             <div className="buttons">
               <ThemeProvider theme={Btntheme}>
-                <Link to="/Signin" className="loginLink">
+                <Link to="/Signin" className="Link">
                   <Button
                     variant="contained"
                     color="primary"
@@ -153,36 +154,41 @@ const Navbar = () => {
                     Sign In
                   </Button>
                 </Link>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  endIcon={<ShoppingCartOutlinedIcon />}
-                  sx={{
-                    color: "#251c57",
-                    fontWeight: "bold",
-                    minWidth: 90,
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  Cart
-                </Button>
+                <Link to="/Cart" className="Link">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<ShoppingCartOutlinedIcon />}
+                    sx={{
+                      color: "#251c57",
+                      fontWeight: "bold",
+                      minWidth: 90,
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    Cart
+                  </Button>
+                </Link>
               </ThemeProvider>
             </div>
           </Grid>
         </Grid>
       </div>
-      <List className={classes.listBtn} sx={{
-        padding: 0,
-      }}>
-        
-        {
-          navLinks.map((navLink) => (<ListItem sx={{borderRadius:10}} className={classes.Btn} button>
-            <ListItemText className={classes.listText} primary={navLink.title} />
-          </ListItem>))
-        }
-        
+      <List
+        className={classes.listBtn}
+        sx={{
+          padding: 0,
+        }}
+      >
+        {navLinks.map((navLink) => (
+          <ListItem sx={{ borderRadius: 10 }} className={classes.Btn} button>
+            <ListItemText
+              className={classes.listText}
+              primary={navLink.title}
+            />
+          </ListItem>
+        ))}
       </List>
-
     </ThemeProvider>
   );
 }
