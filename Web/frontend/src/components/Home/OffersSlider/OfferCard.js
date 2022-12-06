@@ -5,7 +5,11 @@ import React from "react";
 import "./OffersSlider.css";
 import Button from "@mui/material/Button";
 import { BsCartCheckFill } from "react-icons/bs";
+
+
 //DB request latter
+
+
 let OfferData = [
   {
     img: "https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg",

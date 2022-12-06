@@ -1,8 +1,9 @@
 const express =require("express");
 const app=express();
+require("dotenv").config();
 
 
-const port= process.env.PORT || 1444;
+const port= process.env.PORT||3000;
 
 
 const bodyParser=require('body-parser');
@@ -10,12 +11,13 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 
-require('dotenv').config();
 
 //connect with front
-app.use(express.static('../frontend'));
+// app.use(express.static('../frontend'));
 
 
+allRoutes=require('./routes/Routes');
+app.use('/api/v1',allRoutes);
 
 
 const cors=require('cors');
@@ -33,9 +35,22 @@ res.status(500).json({
 });
 });
 
-app.listen(port,()=>{
-    console.log(`server is listening on port ${port}` );
-})
+
+
+ app.listen(port, console.log(`server is listening on port ${port}`));
+// //connecting database
+// const connectDB = require("./DB/DBConnect");
+
+// const start = async () => {
+//   try {
+//     await connectDB;
+   
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// start();
 
 
 
