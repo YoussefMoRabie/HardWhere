@@ -1,0 +1,29 @@
+.formAdd{
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+  gap:20px;
+}
+.addP{
+  min-width: 150px;
+  padding: 10px;
+  border-radius: 17px;
+  border: none;
+  cursor: pointer;
+  background-color: #efef18;
+  font-weight: bold;
+  box-shadow: 0 0 5px 1px #dadada;
+  align-self: center;
+}
+label{
+  font-size: 0.9rem;
+}
+.colorpicker{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

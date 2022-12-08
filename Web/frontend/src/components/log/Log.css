@@ -27,8 +27,8 @@ h3 + p {
   margin-bottom: 20px;
   color: #10e4e4;
 }
-Button.btn,
-input {
+.formlogin Button.btn,
+.formlogin input {
   background-color: transparent;
   outline: 0;
   border: 1px solid cornsilk;
@@ -68,14 +68,14 @@ Button.btn {
   color: #eef290;
   cursor: pointer;
 }
-input:hover,
-button.btn:hover {
+.formlogin input:hover,
+.formlogin button.btn:hover {
   box-shadow: 0 0 10px 1px #edff66;
 }
-input[type="checkbox"] {
+.formlogin input[type="checkbox"] {
   width: auto;
   margin-right: 10px;
 }
-input[type="checkbox"] + label {
+.formlogin input[type="checkbox"] + label {
   font-size: 13px;
 }

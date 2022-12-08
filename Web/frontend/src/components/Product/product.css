@@ -54,10 +54,10 @@ padding: 50px;
 .notAvailable{
   color: rgb(227, 31, 31)
 }
-input:hover{
+.form input:hover{
   box-shadow: none;
 }
-input:hover, button.btn:hover{
+.form input:hover, button.btn:hover{
 box-shadow: 5px 1px 15px 5px #cececc !important;
   border:none !important;
 

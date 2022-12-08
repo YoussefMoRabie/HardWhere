@@ -9,7 +9,7 @@ const Signup = () => {
       <div className="log-box ">
         <h3>Sign Up</h3>
         <p>Please fill in this form to create an account! </p>
-        <form action="">
+        <form className="formlogin" action="">
           <label htmlFor="fname">
             <p> FirstName</p>
           </label>

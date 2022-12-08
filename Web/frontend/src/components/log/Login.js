@@ -17,7 +17,7 @@ const Login = () => {
       <div className="Loglayout">
         <div className="log-box ">
           <h3>Sign in</h3>
-          <form noValidate autoComplete="off">
+          <form className="formlogin" noValidate autoComplete="off">
             <label htmlFor="Uname">
               <p>Username</p>
             </label>
