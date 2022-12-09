@@ -27,3 +27,11 @@ label{
   align-items: center;
   gap: 10px;
 }
+.UpdateP,.DeleteP{
+  margin: 20px auto;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+flex-direction: column;
+}

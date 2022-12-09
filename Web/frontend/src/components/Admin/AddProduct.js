@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import './Admin.css';
+import './AddProduct.css';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -16,7 +16,7 @@ import { flexbox } from '@mui/system';
 
 
 
-const Admin = () => {
+const AddProduct = () => {
   const Suppliers=["one","two","three","four","five","six","seven","eight","eight"];
   const [URLcolor, setURLcolor] = React.useState('primary'); ;
   const [Idcolor, setIdcolor] = React.useState('primary'); ;
@@ -123,6 +123,7 @@ const Admin = () => {
           id="outlined-multiline-static"
           label="Image Link"
           multiline
+          required={true}
           error={URLcolor=='error'}
           rows={4}
           value={Img}
@@ -160,4 +161,4 @@ const Admin = () => {
   );
 }
 
-export default Admin;
+export default AddProduct;
