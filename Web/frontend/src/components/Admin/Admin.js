@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import validator from 'validator'
 import FilledInput from '@mui/material/FilledInput';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -16,6 +17,9 @@ import { flexbox } from '@mui/system';
 
 
 const Admin = () => {
+  const Suppliers=["one","two","three","four","five","six","seven","eight","eight"];
+  const [URLcolor, setURLcolor] = React.useState('primary'); ;
+  const [Idcolor, setIdcolor] = React.useState('primary'); ;
   const [color, setColor] = React.useState({});
   const [Supplier, setSupplier] = React.useState('');
   const [Img, setImg] = React.useState('');
@@ -24,27 +28,46 @@ const Admin = () => {
   const [count, setCount] = React.useState('');
   const [name, setName] = React.useState('');
 
-  const handleSubmit = () => {
-
-    fetch('https://httpbin.org/post', {
-      method: 'POST',
-      body: Img,
-      // 👇 Set headers manually for single file upload
-      headers: {
-        'content-type': Img.type,
-        'content-length': `${Img.size}`, // 👈 Headers need to be a string
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
+  const handleImgChange = (event) => {
+    if (validator.isURL(event.target.value)) {
+      setURLcolor("primary")
+    } else {
+      setURLcolor("error")
+    }
+    setImg(event.target.value);
   };
-  
-  
+  const handleNameChange = (event) => {
+
+    setName(event.target.value);
+  };
+  const handleIdChange = (event) => {
+    if (validator.isNumeric(event.target.value)) {
+      setIdcolor("primary");
+    }
+    else {
+      setIdcolor("error");
+    }
+    setId(event.target.value);
+  };
+  const handleCountChange = (event) =>
+    event.target.value < 1
+      ? (event.target.value = 1)
+      : setCount(event.target.value)
 
   const handleSupplierChange = (event) => {
     setSupplier(event.target.value);
   };
+  const handlePriceChange = (event) =>
+    event.target.value < 1
+      ? (event.target.value = 1)
+      : setPrice(event.target.value);
+  const handleSubmit = () => {
+
+  };
+
+
+
+
   return (
     <div className="New">
       <form className='formAdd' onSubmit={handleSubmit}>
@@ -53,19 +76,24 @@ const Admin = () => {
           fullWidth={false}
           id="outlined-required"
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={handleNameChange}
           label="Product Name"
-          
+
         />
+        <FormControl>
         <TextField
           required
           fullWidth={false}
           id="outlined-required"
           value={Id}
-          onChange={(event) => setId(event.target.value)}
+          error={Idcolor=="error"}
+          onChange={handleIdChange}
           label="Product ID"
-          
+
         />
+          {Idcolor == "error" && <span style={{ color: 'red', fontSize: 12, padding: 5 }}>*Invalid ID</span>}
+
+        </FormControl>
         <FormControl>
           <InputLabel required={true} id="demo-simple-select-helper-label">Supplier</InputLabel>
           <Select required={true}
@@ -75,12 +103,7 @@ const Admin = () => {
             label="Supplier"
             onChange={handleSupplierChange}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {Suppliers.map(Suplier => (<MenuItem key={Suplier}>{Suplier}</MenuItem>))}
           </Select>
         </FormControl>
 
@@ -89,16 +112,24 @@ const Admin = () => {
           id="outlined-number"
           label="Count"
           type="number"
-          onChange={(event) =>
-            event.target.value < 1
-              ? (event.target.value = 1)
-              : setCount(event.target.value)
-          }
+          onChange={handleCountChange}
           InputLabelProps={{
             shrink: true,
             min: 0,
           }}
         />
+        <FormControl>
+        <TextField
+          id="outlined-multiline-static"
+          label="Image Link"
+          multiline
+          error={URLcolor=='error'}
+          rows={4}
+          value={Img}
+          onChange={handleImgChange}
+        />
+         {URLcolor=="error" && <span style={{color:'red', fontSize:12,padding:5}}>*Invalid URL</span>}
+        </FormControl>
         <FormControl>
           <InputLabel required={true} htmlFor="outlined-adornment-amount">Price</InputLabel>
           <OutlinedInput
@@ -106,32 +137,20 @@ const Admin = () => {
             type="number"
             id="outlined-adornment-amount"
             value={price}
-            onChange={(event) =>
-              event.target.value < 1
-                ? (event.target.value = 1)
-                : setPrice(event.target.value)
-            }
+            onChange={handlePriceChange}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Amount"
           />
+
         </FormControl>
-        <div className='colorpicker'> 
-        <label htmlFor="">Choose Color </label>
+        <div className='colorpicker'>
+          <label htmlFor="">Choose Color </label>
           <input className='colorp' type="color" value={color}
             onChange={(e) => { setColor(e.target.value) }}></input>
         </div>
 
-        <FormControl sx={{display:'flex',gap:"10px",}}>
-          <label>Upload Image </label>
-          <input
-          onChange={(e)=>{
-            setImg(e.target.files[0])
-          }}
-            required={true}
-            type="file"
-            
-          />
-        </FormControl>
+
+
         <button className='addP' type='submit' onSubmit={handleSubmit}> Add Product</button>
       </form>
 
