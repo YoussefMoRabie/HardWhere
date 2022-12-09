@@ -68,6 +68,7 @@ box-shadow: 5px 1px 15px 5px #cececc !important;
   box-shadow: 0 0 10px 1px #cececc ;
   font-size: 1.2rem;
   border: none !important;
+  border-radius: 25px;
   color: black;
   
 }
@@ -79,7 +80,7 @@ box-shadow: 5px 1px 15px 5px #cececc !important;
   display: none !important;
 }
 .form .postBtn {
-    border: 2px solid #efef18;
+    border: none;
     border-radius: 8px;
     background-color: #efef18;
     padding: 5px 10px;
@@ -91,4 +92,11 @@ box-shadow: 5px 1px 15px 5px #cececc !important;
     cursor: pointer;
     padding: 2px 20px;
     color:black;
+}
+.form .postBtn:hover:hover{
+      background-color: #e8e85b;
+        box-shadow: 0 0 10px 1px #cececc ;
+          border: none;
+
+
 }

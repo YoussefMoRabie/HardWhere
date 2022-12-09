@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import { CommentSection } from 'react-comments-section'
 import 'react-comments-section/dist/index.css'
 import DeleteIcon from '@mui/icons-material/Delete';
+import StarIcon from '@mui/icons-material/Star';
 import SendIcon from '@mui/icons-material/Send';
 import Stack from '@mui/material/Stack';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -60,11 +61,25 @@ const Product = () => {
         }
     ]
     const inStock = count ? true : false;
-    const colors = ["black", "red", 'blue', 'yellow']
+    const color = "black"
     const [qty, setQty] = useState(1);
     for (let i = 1; i <= count; i++) {
         qtyarr.push(i);
     }
+    const labels = {
+        0.5: '0.5',
+        1: '1',
+        1.5: '1.5',
+        2: '2',
+        2.5: '2.5',
+        3: '3',
+        3.5: '3.5',
+        4: '4',
+        4.5: '4.5',
+        5: '5',
+    };
+    const supp='Apple';
+    const value = 3.5;
     return (
         <div className="propage">
             <div className="product">
@@ -73,20 +88,30 @@ const Product = () => {
                 </div>
                 <div className="productinfo">
                     <h2 className="proHead">{proName}</h2>
-                    <Stack spacing={1}>
-                        <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
-                    </Stack>
+                    <Box
+                        sx={{
+                            width: 200,
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Rating
+                            name="text-feedback"
+                            value={value}
+                            readOnly
+                            precision={0.5}
+                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                        />
+                        <Box sx={{ color: 'orange', ml: 2 }}>{labels[value]}</Box>
+                    </Box>
+                    <p className="supp">Supplier: <span style={{ fontWeight: 'bold', color: "#ff6666"}}> {supp}</span> </p>
                     <p className="proDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum praesentium, accusantium aperiam fugit autem atque dolorem nulla qui incidunt ut quos accusamus sapiente commodi, a corrupti, expedita architecto tempore reiciendis.</p>
                     {
                         inStock && (
                             <div>
                                 <p className="available"><span> {count} available </span> in stock</p>
                                 <div className="colors">
-                                    {colors.map(color => (<div onClick={(e) => {
-                                        let cols = Array.from(document.getElementsByClassName("color"));
-                                        cols.forEach((col) => { col.classList.remove("selected"); });
-                                        e.target.classList.add("selected");
-                                    }} className={color + " color"} style={{ width: 25, height: 25, backgroundColor: color }} key={color}></div>))}
+                                    <div className={color + " color"} style={{ width: 25, height: 25, backgroundColor: color }}></div>
                                 </div>
                                 <div className="price"> {price}$</div>
                                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">

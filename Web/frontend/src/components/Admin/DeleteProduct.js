@@ -145,7 +145,7 @@ const DeleteProduct = () => {
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Product" />}
     />
-    <button disabled={!selcted} className='addP' type='submit'> Update Product</button>
+    <button disabled={!selcted} className='addP' type='submit'> Delete Product</button>
 
   </div> );
 }
