@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hardwhere/controller/onboarding_controller.dart';
+import 'package:hardwhere/core/services/services.dart';
 import 'package:hardwhere/view/screen/auth/login.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -11,16 +12,17 @@ import '../../data/model/onboarding_model.dart';
 
 class OnBoarding extends StatelessWidget {
   const OnBoarding({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     var boardController = PageController();
     Get.put(OnBoardingControllerImp());
+    MyServices myServices = Get.find();
+
     return Scaffold(
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            color: AppColor.backGroundColor,
+            color: AppColor.lightBackGroundColor,
             image:  const DecorationImage(image: AssetImage('assets/images/OnBoardingBG.png'),
             fit: BoxFit.fitWidth
             )
@@ -57,7 +59,7 @@ class OnBoarding extends StatelessWidget {
                     )
 
                   ),
-                  SizedBox(height: 50,),
+                  const SizedBox(height: 50,),
 
                   GetBuilder<OnBoardingControllerImp>(builder: ( controller) =>Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -66,6 +68,7 @@ class OnBoarding extends StatelessWidget {
                       if(controller.currentPage==2)
                         {
 
+                          myServices.sharedPreferences.setString("onBoarding", "1");
                           controller.toLogin();
                         }
                       else{

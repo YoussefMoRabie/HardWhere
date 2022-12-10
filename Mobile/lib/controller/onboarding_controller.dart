@@ -14,7 +14,7 @@ class OnBoardingControllerImp extends OnBoardingController{
 
   @override
   toLogin() {
-Get.offAll(() => const Login());
+    Get.offAll(() => const Login());
   }
 
 }

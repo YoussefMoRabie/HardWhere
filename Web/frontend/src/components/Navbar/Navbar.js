@@ -181,7 +181,7 @@ const Navbar = () => {
         }}
       >
         {navLinks.map((navLink) => (
-          <ListItem sx={{ borderRadius: 10 }} className={classes.Btn} button>
+          <ListItem key={navLink.title} sx={{ borderRadius: 10 }} className={classes.Btn} button>
             <ListItemText
               className={classes.listText}
               primary={navLink.title}
