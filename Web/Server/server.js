@@ -10,18 +10,29 @@ const bodyParser=require('body-parser');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 
+const cors=require("cors");
+const corsOptions ={
+   origin:'*', 
+   credentials:true,            //access-control-allow-credentials:true
+   optionSuccessStatus:200,
+}
+app.use(cors(corsOptions)) // Use this after the variable declaration
 
 //connect with front
-// app.use(express.static('../frontend'));
+app.use(express.static('../frontend'));
 
 
 allRoutes=require('./routes/Routes');
 app.use('/api/v1',allRoutes);
 
 
-const cors=require('cors');
-app.use(cors());
+
+
 
 
 //error handeler

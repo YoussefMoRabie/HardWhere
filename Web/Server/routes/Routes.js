@@ -13,9 +13,10 @@ const {
 // we will add our needed routes here like this
 //&
 // get our functions from PostControllers 
-router.route("/Cart").get(getCartProducts).delete(deleteProductFromCart);
-router.route("/Cart/decCnt").patch(decProductCount);  
-router.route('/Cart/incCnt').patch(incProductCount)  
+router.route("/Cart").get(getCartProducts);
+router.route("/Cart/:id").delete(deleteProductFromCart);
+router.route("/Cart/decCnt/:id").patch(decProductCount);  
+router.route('/Cart/incCnt/:id').patch(incProductCount);  
 router.route('/').get(test);
 
 module.exports=router;

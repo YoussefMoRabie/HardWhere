@@ -46,6 +46,7 @@ main h1 {
   box-shadow: 0 0 8px 1px salmon;
   border: 4px solid salmon;
   flex-basis: 25%;
+      padding-bottom: 0;
 }
 
 .cartContainer .summary h4 {
