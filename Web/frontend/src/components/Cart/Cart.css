@@ -65,7 +65,14 @@ main h1 {
   color: red;
   cursor: pointer;
 }
-
+#noMoreMessage{
+  position: absolute;
+    right: 150px;
+    color: red;
+    bottom: 20px;
+    font-size: 22px;
+    display: none;
+}
 .cartContainer .BsFillCartDashFill {
   position: absolute;
   bottom: 15px;
