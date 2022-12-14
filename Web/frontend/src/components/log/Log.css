@@ -2,11 +2,11 @@
 .Loglayout {
   background: linear-gradient(0.77turn, #1c5755, #1565c0, #eef290);
   width: 100%;
-  height: calc(100vh - 116.5px);
+  height: 100vh ;
   position: relative;
 }
 .log-box {
-  width: 550px;
+  width: 600px;
   background-color: #251c57;
   margin: auto;
   padding: 12px;
@@ -27,7 +27,7 @@ h3 + p {
   margin-bottom: 20px;
   color: #10e4e4;
 }
-.formlogin Button.btn,
+.formlogin Button.btn2,
 .formlogin input {
   background-color: transparent;
   outline: 0;
@@ -53,6 +53,12 @@ label p {
   font-size: 22px;
   font-family: "Cookie", cursive;
 }
+.messErrorReg{
+  display: none;
+}
+.messErrorReg.active{
+  display: block;
+}
 .forget {
   margin: 30px;
 }
@@ -61,7 +67,7 @@ label p {
   color: rgb(45 128 168);
   font-weight: 800;
 }
-Button.btn {
+Button.btn2 {
   background-color: rgb(45 128 168);
   font-size: 13px;
   font-weight: 900;
@@ -69,8 +75,8 @@ Button.btn {
   cursor: pointer;
 }
 .formlogin input:hover,
-.formlogin button.btn:hover {
-  box-shadow: 0 0 10px 1px #edff66;
+.formlogin button.btn2:hover {
+    box-shadow: 0 0 7px 0px #edff66;
 }
 .formlogin input[type="checkbox"] {
   width: auto;

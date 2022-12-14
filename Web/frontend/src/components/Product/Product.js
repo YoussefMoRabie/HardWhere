@@ -23,6 +23,8 @@ import { Link } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 // const {getDatatoCart}=require('../Cart/Cart')
 const Btntheme = createTheme({
   typography: {
@@ -42,7 +44,7 @@ const Btntheme = createTheme({
 });
 const Product = () => {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const [proName, setName] = useState("product" + id);
   const [price, setPrice] = useState(99.99);
   const [count, setcount] = useState(6);
@@ -51,12 +53,14 @@ const Product = () => {
   const [favorite, setFavorite] = useState(0);
   const [color, setColor] = useState("black");
   const [qty, setQty] = useState(1);
+  const [desc, setDesc] = useState("product helw awi");
 
   const cartData = {
     pid: id,
     cust_ssn: 2, //must be dynamic later
     qty,
   };
+  
   const AddporductToCart = async (req, res) => {
     try {
       fetch(`http://localhost:1444/api/v1/product/addtocart`, {
@@ -66,11 +70,12 @@ const Product = () => {
         },
         body: JSON.stringify(cartData),
       });
+      navigate('/Cart');
     } catch (error) {
-      res.status(404).send({ msg: error });
+      console.log(error);
     }
   };
-  // module.exports={AddporductToCart};
+
   let qtyarr = [];
   const data = [
     {
@@ -83,7 +88,7 @@ const Product = () => {
       replies: [],
     },
   ];
-  const inStock = count ? true : false;
+  const inStock = count > 0 ? true : false;
 
   for (let i = 1; i <= count; i++) {
     qtyarr.push(i);
@@ -114,6 +119,7 @@ const Product = () => {
       setSupplier(productData.su_name);
       setValue(productData.rating);
       setFavorite(productData.favorite);
+      setDesc(productData.desc);
     } catch (error) {
       console.log(error);
     }
@@ -157,12 +163,7 @@ const Product = () => {
               {supplier}
             </span>{" "}
           </p>
-          <p className="proDesc">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
-            praesentium, accusantium aperiam fugit autem atque dolorem nulla qui
-            incidunt ut quos accusamus sapiente commodi, a corrupti, expedita
-            architecto tempore reiciendis.
-          </p>
+          <p className="proDesc">{desc}</p>
           {inStock && (
             <div>
               <p className="available">
@@ -192,7 +193,7 @@ const Product = () => {
                 </Select>
               </FormControl>
               <ThemeProvider theme={Btntheme}>
-                <Link to="/Cart" className="Link">
+                
                   <Button
                     variant="contained"
                     color="primary"
@@ -205,12 +206,13 @@ const Product = () => {
                     }}
                     onClick={() => {
                       AddporductToCart();
+                      // history.push("/Cart");
                     }}
                     endIcon={<AddShoppingCartIcon />}
                   >
                     Add to Cart
                   </Button>
-                </Link>
+                
               </ThemeProvider>
             </div>
           )}
@@ -242,4 +244,4 @@ const Product = () => {
   );
 };
 
-export default Product
+export default Product;

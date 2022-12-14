@@ -8,11 +8,12 @@ import { BsCartCheckFill } from "react-icons/bs";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
+import { Link } from "react-router-dom";
+// const { AddporductToCart } = require("../../Product/Product");
 
 const OfferCard = () => {
   const [OfferData, setOfferData] = useState([
     {
-      
       img: "https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg",
       name: "description",
       start_date: "20/20/2020",
@@ -39,33 +40,14 @@ const OfferCard = () => {
       const data2 = await data.json();
       console.log(data2);
       setOfferData(data2[0]);
+      setcount(data2[0].length);
     } catch (error) {
       console.log(error);
     }
   };
-    useEffect(() => {
-      getOffersData();
-    }, []);
-  
-  const AddporductToCart = async (id,ssn,qty) => {
-    const cartData = {
-      pid: id,
-      cust_ssn: ssn, //must be dynamic later
-      qty: qty,
-    };
-    try {
-      fetch(`http://localhost:1444/api/v1/product/addtocart`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cartData),
-      });
-      console.log('added');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    getOffersData();
+  }, []);
 
   const labels = {
     0.5: "0.5",
@@ -79,11 +61,12 @@ const OfferCard = () => {
     4.5: "4.5",
     5: "5",
   };
+  const [count, setcount] = useState(3);
   const settings = {
     // dots: true,               //add it if you want
     infinite: true,
     speed: 1000,
-    slidesToShow: 2,
+    slidesToShow: count <= 2 ? count : 3,
     slidesToScroll: 1,
     autoplay: true,
   };
@@ -121,7 +104,8 @@ const OfferCard = () => {
                   Start Date: <span>{product.start_date}</span>
                 </p>
                 <p>
-                  End Date: <span>{product.end_date}</span>
+                  End Date:{" "}
+                  <span>{product.end_date.toString().slice(0, 24)}</span>
                 </p>
                 <p>
                   Old Price:{" "}
@@ -130,17 +114,38 @@ const OfferCard = () => {
                 <p>
                   New Price: <span>{`${product.new_price}$`}</span>
                 </p>
-                <Button
-                  className="addCartBtn"
-                  endIcon={<BsCartCheckFill className="BsCartCheckFill" />}
-                  variant="contained"
-                  type="submit"
-                  onclick={() => {
-                    AddporductToCart(product.pid,2,1);
-                  }}
-                >
-                  Add To Cart!
-                </Button>
+                <Link to="/Cart" className="Link">
+                  <Button
+                    className="addCartBtn"
+                    endIcon={<BsCartCheckFill className="BsCartCheckFill" />}
+                    variant="contained"
+                    color="primary"
+                    onClick={()=>{
+                      console.log(2);
+                      try {
+                        fetch(
+                          `http://localhost:1444/api/v1/product/addtocart`,
+                          {
+                            method: "POST",
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                              pid: product.pid,
+                              cust_ssn: 2, //must be dynamic later
+                              qty: 1,
+                            }),
+                          }
+                        );
+                        console.log("added");
+                      } catch (error) {
+                        console.log(error);
+                      }
+                    }}
+                  >
+                    Add To Cart!
+                  </Button>
+                </Link>
               </div>
               <div className="right">
                 <img

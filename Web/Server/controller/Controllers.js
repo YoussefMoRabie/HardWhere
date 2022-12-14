@@ -2,6 +2,7 @@
 // with queries
 const db = require("../DB/DBConnect");
 
+
 //  cust_ssn should be dynamic later
 const getCartProducts = async (req, res) => {
   const sql = `select p.product_name,p.count as totalCnt,cc.qty,p.price,p.pid from product p , customer_cart cc, customer c 
@@ -55,15 +56,15 @@ const deleteProductFromCart = async (req, res) => {
 
 // cust_ssn mudt be dynamic later
 const getProductData = async (req, res) => {
-  const sql = `select pid,product_name,price,color,count, su_name, comment,rating, 1 as favorite
+  const sql = `select pid,product_name,price,color,count, su_name, comment,rating,p.desc, 1 as favorite
 from product p,suppliers s,feedback f,favorites fv,customer c
 where p.su_id=s.suid and f.p_id=p.pid and fv.p_id=p.pid and fv.cust_ssn=c.ssn and f.cust_ssn=c.ssn and c.ssn=2 
 and p.pid=${req.params.id}
 union all
-select pid,product_name,price,color,count, su_name, comment,rating, 0 as favorite
+select pid,product_name,price,color,count, su_name, comment,rating,p.desc, 0 as favorite
 from product p,suppliers s,feedback f,customer c
 where p.su_id=s.suid and f.p_id=p.pid and  f.cust_ssn=c.ssn and c.ssn=2 
-and p.pid not in (select p_id from favorites) and p.pid=${req.params.id}`;
+and p.pid not in (select p_id from favorites) and p.pid=${req.params.id};`;
   try {
     const data = await db.execute(sql);
     res.send(data);
@@ -94,9 +95,43 @@ const addToCart = async (req, res) => {
   }
 };
 const getOffersData=async(req,res)=>{
-  const sql = `select pid,product_name,price,new_price,start_date,p.end_date,p.desc,rating from product p,feedback f where f.p_id =p.pid and has_offer=1;`;
+  const sql = `select pid,product_name,price,new_price,start_date,p.end_date,p.desc,rating,p.count from product p,feedback f where f.p_id =p.pid and has_offer=1;`;
   try {
     const data=await db.execute(sql);
+    res.send(data);
+  } catch (error) {
+    console.log(error.sqlMessage);
+  }
+}
+let usersCnt=7;
+
+const addCustomer=async(req,res)=>{
+const sql1 = `insert into users values(${usersCnt},'${req.body.f_name}','${req.body.l_name}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
+usersCnt+=1;
+try {
+await db.execute(sql1);
+  
+} catch (error) {
+  console.log(error.sqlMessage);
+}
+
+}
+
+const checkOnUser=async(req,res)=>{
+  const sql =
+    `SELECT EXISTS(SELECT 1 FROM users WHERE f_name='${req.query.f_name}' and l_name='${req.query.l_name}' and password='${req.query.password}') as checked;`;
+
+    try {
+      const data=await db.execute(sql);
+      res.send(data);
+    } catch (error) {
+      console.log(error.sqlMessage);
+    }
+  }
+const getUserData=async(req,res)=>{
+  const sql = `SELECT ssn,f_name,l_name,phone,address,email,authority FROM users u;`;
+  try {
+    const data = await db.execute(sql);
     res.send(data);
   } catch (error) {
     console.log(error.sqlMessage);
@@ -110,4 +145,7 @@ module.exports = {
   getProductData,
   addToCart,
   getOffersData,
+  addCustomer,
+  checkOnUser,
+  getUserData,
 };

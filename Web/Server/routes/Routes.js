@@ -8,6 +8,9 @@ const {
   getProductData,
   addToCart,
   getOffersData,
+  addCustomer,
+  checkOnUser,
+  getUserData,
 } = require("../controller/Controllers");
 
 
@@ -22,4 +25,7 @@ router.route("/Cart/incQty/:id").patch(incProductQtyinCart);
 router.route('/product/:id').get(getProductData);
 router.route("/product/addtocart").post(addToCart);
 router.route('/getOffers').get(getOffersData);
+router.route("/signup").post(addCustomer);
+router.route("/checkOnUser").get(checkOnUser);
+router.route("/getUserData").get(getUserData);
 module.exports=router;
