@@ -8,10 +8,13 @@ import { BsCartCheckFill } from "react-icons/bs";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
-import { Link } from "react-router-dom";
-// const { AddporductToCart } = require("../../Product/Product");
-
+import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const OfferCard = () => {
+  //cust_ssn
+  const { state } = useLocation();
+  console.log(state);
+
   const [OfferData, setOfferData] = useState([
     {
       img: "https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg",
@@ -70,6 +73,7 @@ const OfferCard = () => {
     slidesToScroll: 1,
     autoplay: true,
   };
+  const navigate = useNavigate();
   return (
     <>
       <Slider {...settings}>
@@ -87,7 +91,7 @@ const OfferCard = () => {
                 >
                   <Rating
                     name="text-feedback"
-                    value={Number(product.rating)}
+                    value={Number(product.p_value)}
                     readOnly
                     precision={0.5}
                     emptyIcon={
@@ -101,11 +105,12 @@ const OfferCard = () => {
                 <p>{product.desc}</p>
 
                 <p>
-                  Start Date: <span>{product.start_date}</span>
+                  Start Date:{" "}
+                  <span>{product.start_date.toString().slice(0, 10)}</span>
                 </p>
                 <p>
                   End Date:{" "}
-                  <span>{product.end_date.toString().slice(0, 24)}</span>
+                  <span>{product.end_date.toString().slice(0, 10)}</span>
                 </p>
                 <p>
                   Old Price:{" "}
@@ -114,14 +119,15 @@ const OfferCard = () => {
                 <p>
                   New Price: <span>{`${product.new_price}$`}</span>
                 </p>
+                {
+                state&&  
                 <Link to="/Cart" className="Link">
                   <Button
                     className="addCartBtn"
                     endIcon={<BsCartCheckFill className="BsCartCheckFill" />}
                     variant="contained"
                     color="primary"
-                    onClick={()=>{
-                      console.log(2);
+                    onClick={() => {
                       try {
                         fetch(
                           `http://localhost:1444/api/v1/product/addtocart`,
@@ -138,6 +144,7 @@ const OfferCard = () => {
                           }
                         );
                         console.log("added");
+                        navigate("/Cart", { state: state });
                       } catch (error) {
                         console.log(error);
                       }
@@ -146,6 +153,7 @@ const OfferCard = () => {
                     Add To Cart!
                   </Button>
                 </Link>
+        }
               </div>
               <div className="right">
                 <img

@@ -11,6 +11,8 @@ const {
   addCustomer,
   checkOnUser,
   getUserData,
+  addOrder,
+  getShippingCompData,
 } = require("../controller/Controllers");
 
 
@@ -19,7 +21,7 @@ const {
 //&
 // get our functions from PostControllers 
 router.route("/Cart").get(getCartProducts);
-router.route("/Cart/:id").delete(deleteProductFromCart);
+router.route("/Cart/del/:id").delete(deleteProductFromCart);
 router.route("/Cart/decQty/:id").patch(decProductQtyinCart);  
 router.route("/Cart/incQty/:id").patch(incProductQtyinCart);  
 router.route('/product/:id').get(getProductData);
@@ -28,4 +30,6 @@ router.route('/getOffers').get(getOffersData);
 router.route("/signup").post(addCustomer);
 router.route("/checkOnUser").get(checkOnUser);
 router.route("/getUserData").get(getUserData);
+router.route('/addtoOrders').post(addOrder);
+router.route('/shippingCompany_Data').get(getShippingCompData);
 module.exports=router;

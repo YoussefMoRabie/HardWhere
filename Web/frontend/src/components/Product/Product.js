@@ -45,6 +45,9 @@ const Btntheme = createTheme({
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [name, setName2] = useState("");
+
   const [proName, setName] = useState("product" + id);
   const [price, setPrice] = useState(99.99);
   const [count, setcount] = useState(6);
@@ -60,7 +63,7 @@ const Product = () => {
     cust_ssn: 2, //must be dynamic later
     qty,
   };
-  
+
   const AddporductToCart = async (req, res) => {
     try {
       fetch(`http://localhost:1444/api/v1/product/addtocart`, {
@@ -70,7 +73,7 @@ const Product = () => {
         },
         body: JSON.stringify(cartData),
       });
-      navigate('/Cart');
+      navigate("/Cart");
     } catch (error) {
       console.log(error);
     }
@@ -117,7 +120,7 @@ const Product = () => {
       setcount(productData.count);
       setColor(productData.color);
       setSupplier(productData.su_name);
-      setValue(productData.rating);
+      setValue(productData.p_value);
       setFavorite(productData.favorite);
       setDesc(productData.desc);
     } catch (error) {
@@ -193,26 +196,24 @@ const Product = () => {
                 </Select>
               </FormControl>
               <ThemeProvider theme={Btntheme}>
-                
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                      display: "flex",
-                      minWidth: 190,
-                      color: "#251c57",
-                      fontWeight: "bold",
-                      margin: 2,
-                    }}
-                    onClick={() => {
-                      AddporductToCart();
-                      // history.push("/Cart");
-                    }}
-                    endIcon={<AddShoppingCartIcon />}
-                  >
-                    Add to Cart
-                  </Button>
-                
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    display: "flex",
+                    minWidth: 190,
+                    color: "#251c57",
+                    fontWeight: "bold",
+                    margin: 2,
+                  }}
+                  onClick={() => {
+                    AddporductToCart();
+                    // history.push("/Cart");
+                  }}
+                  endIcon={<AddShoppingCartIcon />}
+                >
+                  Add to Cart
+                </Button>
               </ThemeProvider>
             </div>
           )}

@@ -14,10 +14,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(0);
   const navigate = useNavigate();
-  const [userData, setUserData] = useState("");
+  // const [userSsn, setUserSsn] = useState(0);
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(55);
       const data = await fetch(
         `http://localhost:1444/api/v1/checkOnUser?f_name=${
           userName.split(" ")[0]
@@ -44,12 +45,14 @@ const Login = () => {
           }&l_name=${userName.split(" ")[1]}&password=${password}`
         );
         const data2 = await data.json();
-        setUserData(data2[0][0]);
-        
+        // setUserSsn(data2[0][0].ssn);
+        console.log(data2[0][0].ssn);
+        navigate(`/`, {
+          state: { ssn: data2[0][0].ssn },
+        });
       } catch (error) {
         console.log(error);
       }
-      navigate("/");
     }
   };
   return (
@@ -111,6 +114,7 @@ const Login = () => {
                 </Link>
               </div>
             </p>
+
             <Button
               style={{ backgroundColor: "darkslategray" }}
               className="btn2"
@@ -123,6 +127,7 @@ const Login = () => {
             >
               SIGN IN
             </Button>
+
             <p>
               Need Account?{" "}
               <Link to="/Signup" className="link">

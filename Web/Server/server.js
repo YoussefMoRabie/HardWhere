@@ -34,7 +34,6 @@ app.use('/api/v1',allRoutes);
 
 
 
-
 //error handeler
 app.use((err,req,res,next)=>{
 console.log(err.stack);

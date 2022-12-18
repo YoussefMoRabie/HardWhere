@@ -13,12 +13,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
 function App() {
   return (
-
     <div className="App">
-      <Router  path="/" >
+      <Router path="/">
         <Navbar />
         <Routes>
-
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/product/:id" element={<Product />}></Route>
           <Route path="/Cart" element={<Cart />}></Route>
@@ -27,13 +25,10 @@ function App() {
           <Route path="/addproduct" element={<AddProduct />}></Route>
           <Route path="/updateproduct" element={<UpdateProduct />}></Route>
           <Route path="/deleteproduct" element={<Delete />}></Route>
-
         </Routes>
         <Footer />
       </Router>
-      
     </div>
-
   );
 }
 
