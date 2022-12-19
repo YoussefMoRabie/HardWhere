@@ -2,7 +2,7 @@ import "./Log.css";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { BsBoxArrowInUp } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
@@ -13,22 +13,50 @@ const Signup = () => {
   const [email, setEmail] = useState("myehia162@gmail.com");
   const [phone, setPhone] = useState("01555952221");
   const [address, setAddress] = useState("555ggg555");
+  const [userCnt, setUserCnt] = useState(0);
   const navigate = useNavigate();
 
-  const handelSubmit = (e) => {
+  useEffect(() => {
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        firstName,
+        lastName,
+        password,
+        email,
+        phone,
+        address,
+        userCnt,
+      })
+    );
+  }, [userCnt, firstName, password, lastName, email, address, phone]);
+  useEffect(() => {
+    const userData2 = JSON.parse(localStorage.getItem("userData"));
+    if (userData2) {
+      setUserCnt(userData2.userCnt);
+      setAddress(userData2.address);
+      setEmail(userData2.email);
+      setFirstName(userData2.f_name);
+      setLastName(userData2.l_name);
+      setPhone(userData2.phone);
+      setPassword(userData2.password);
+      handelSubmit();
+    }
+  }, []);
+  const handelSubmit = async (e) => {
     e.preventDefault();
     const userdata = {
-      f_name: firstName,
-      l_name: lastName,
+      userCnt,
+       firstName,
+       lastName,
       password,
       phone,
       address,
       email,
     };
-    const pass_pattern =
-      /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    const pass_pattern = /^(?=.*\d)(?=.*[!@$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     const email_pattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    const Name_pattern = /\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+/gm;
+    const Name_pattern = /^[a-z ,.'-]+$/i;
 
     if (firstName === "") {
       alert("Enter your first name");
@@ -52,15 +80,17 @@ const Signup = () => {
     }
     if (!pass_pattern.test(password)) {
       alert(
-        "Your password must be greater than 8 characters including numbers and alphabets(small and capital letters) and special characters"
+        "Your password must be greater than 8 characters including numbers and alphabets(small and capital letters) and special characters('#' is forbidden)"
       );
       return;
     }
+
     if (!email_pattern.test(email)) {
       alert("Please, Enter a valid Email");
       return;
     }
-    if (!(Name_pattern.test(firstName) || Name_pattern.test(lastName))) {
+    console.log(firstName, lastName);
+    if (!Name_pattern.test(firstName) || !Name_pattern.test(lastName)) {
       alert("Please, Enter a valid name");
       return;
     }
@@ -71,15 +101,23 @@ const Signup = () => {
     if (password !== confirmedPassword) {
       alert("the two entered passwords don't match, reconfirm password.");
       return;
+    } else if (password.toString().includes("#")) {
+      alert("# is forbidden in password");
+      return;
     }
+
     try {
-      fetch(`http://localhost:1444/api/v1/signup`, {
+      const res = await fetch(`http://localhost:1444/api/v1/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userdata),
       });
+      if (res.status === 200) {
+        setUserCnt(userCnt + 1);
+        console.log(5);
+      }
       navigate("/Signin");
     } catch (error) {
       console.log(error);
@@ -87,6 +125,7 @@ const Signup = () => {
 
     console.log(userdata);
   };
+
 
   return (
     <div className="Loglayout">
@@ -103,7 +142,7 @@ const Signup = () => {
             <p> FirstName</p>
           </label>
           <input
-            value={firstName}
+            // value={firstName}
             required
             type="text"
             name="Fname"
@@ -116,7 +155,7 @@ const Signup = () => {
             <p> LastName</p>
           </label>
           <input
-            value={lastName}
+            // value={lastName}
             required
             type="text"
             name="Lname"
@@ -129,7 +168,7 @@ const Signup = () => {
             <p> Email</p>
           </label>
           <input
-            value={email}
+            // value={email}
             required
             type="email"
             name="Email"
@@ -143,7 +182,7 @@ const Signup = () => {
           </label>
           <input
             required
-            value={phone}
+            // value={phone}
             type="text"
             name="phone"
             placeholder="Enter Your Phone Number"
@@ -155,7 +194,7 @@ const Signup = () => {
             <p> Address</p>
           </label>
           <input
-            value={address}
+            // value={address}
             required
             type="text"
             name="addr"
@@ -168,7 +207,7 @@ const Signup = () => {
             <p>Password</p>
           </label>
           <input
-            value={password}
+            // value={password}
             required
             type="password"
             name="Psw"
@@ -181,7 +220,7 @@ const Signup = () => {
             <p> Confirm Password</p>
           </label>
           <input
-            value={confirmedPassword}
+            // value={confirmedPassword}
             required
             type="password"
             name="Confirm_P"

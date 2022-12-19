@@ -13,30 +13,11 @@ import { useNavigate } from "react-router-dom";
 const OfferCard = () => {
   //cust_ssn
   const { state } = useLocation();
+  const cust_ssn = state.ssn;
   console.log(state);
 
-  const [OfferData, setOfferData] = useState([
-    {
-      img: "https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg",
-      name: "description",
-      start_date: "20/20/2020",
-      end_date: "20/20/3002",
-      newprice: "20$",
-      desc: "description",
-      oldPrice: "50$",
-      value: 3,
-    },
-    {
-      img: "https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg",
-      name: "phone25154",
-      start_date: "20/20/2020",
-      end_date: "20/20/3002",
-      newprice: "20",
-      oldPrice: "50",
-      desc: "description",
-      value: 3,
-    },
-  ]);
+
+  const [OfferData, setOfferData] = useState([]);
   const getOffersData = async () => {
     try {
       const data = await fetch("http://localhost:1444/api/v1/getOffers");
@@ -119,9 +100,7 @@ const OfferCard = () => {
                 <p>
                   New Price: <span>{`${product.new_price}$`}</span>
                 </p>
-                {
-                state&&  
-                <Link to="/Cart" className="Link">
+                {state && product.count > 0 && (
                   <Button
                     className="addCartBtn"
                     endIcon={<BsCartCheckFill className="BsCartCheckFill" />}
@@ -138,7 +117,7 @@ const OfferCard = () => {
                             },
                             body: JSON.stringify({
                               pid: product.pid,
-                              cust_ssn: 2, //must be dynamic later
+                              cust_ssn: cust_ssn,
                               qty: 1,
                             }),
                           }
@@ -152,8 +131,8 @@ const OfferCard = () => {
                   >
                     Add To Cart!
                   </Button>
-                </Link>
-        }
+                )}
+                {product.count <= 0 && <h3 style={{margin:'16px 0px'}}>SOLD</h3> }
               </div>
               <div className="right">
                 <img

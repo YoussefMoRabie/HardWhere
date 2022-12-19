@@ -26,15 +26,15 @@ const Cart = () => {
   const [productData, setProductData] = useState([]);
 
   useEffect(() => {
+    localStorage.setItem("orderCnt", JSON.stringify(orderCnt));
+  }, [orderCnt]);
+
+  useEffect(() => {
     const getOrderCnt = JSON.parse(localStorage.getItem("orderCnt"));
     if (getOrderCnt) {
       setOrderCnt(Number(getOrderCnt));
     }
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("orderCnt", JSON.stringify(orderCnt));
-  }, [orderCnt]);
 
   const getDatatoCart = async () => {
     try {
@@ -88,7 +88,7 @@ const Cart = () => {
     <main style={{ position: "relative" }}>
       <div className="cartLayout"></div>
       <h1>My Cart</h1>
-
+      {productData.length === 0 && <h1>Empty</h1>}
       <div className="cartContainer">
         <div className="myproducts">
           {productData.map((product, index) => {

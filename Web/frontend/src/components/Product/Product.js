@@ -25,7 +25,8 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// const {getDatatoCart}=require('../Cart/Cart')
+
+
 const Btntheme = createTheme({
   typography: {
     fontFamily: "comfortaa",
@@ -45,9 +46,7 @@ const Btntheme = createTheme({
 const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const [name, setName2] = useState("");
-
+  
   const [proName, setName] = useState("product" + id);
   const [price, setPrice] = useState(99.99);
   const [count, setcount] = useState(6);
@@ -208,7 +207,7 @@ const Product = () => {
                   }}
                   onClick={() => {
                     AddporductToCart();
-                    // history.push("/Cart");
+                    
                   }}
                   endIcon={<AddShoppingCartIcon />}
                 >

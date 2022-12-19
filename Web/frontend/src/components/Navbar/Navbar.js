@@ -12,6 +12,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
 import { useLocation, useSearchParams } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
 
 const useStyles = makeStyles({
   listBtn: {
@@ -99,7 +100,7 @@ const Navbar = () => {
       <div className="header">
         <Grid container spacing={2} justifyContent={"space-between"}>
           <Grid item>
-            <Link to="/">
+            <Link to="/" state={state}>
               <Stack alignItems="center" direction={"row"}>
                 <MemoryOutlinedIcon
                   fontSize="large"
@@ -149,41 +150,55 @@ const Navbar = () => {
           <Grid item sm={"auto"}>
             <div className="buttons">
               <ThemeProvider theme={Btntheme}>
-                <Link to="/Signin" className="Link">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    endIcon={<PermIdentityOutlinedIcon fontSize="inherit" />}
-                    sx={{
-                      color: "#251c57",
-                      fontWeight: "bold",
-                      minWidth: 115,
-                      backgroundColor: "transparent",
-                    }}
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-                
-                {
-                 // if no customer, no Cart 
-                state && (
-                  <Link to="/Cart" className="Link" state={state}>
+                {!state && (
+                  <Link to="/Signin" className="Link">
                     <Button
                       variant="contained"
                       color="primary"
-                      endIcon={<ShoppingCartOutlinedIcon />}
+                      endIcon={<PermIdentityOutlinedIcon fontSize="inherit" />}
                       sx={{
                         color: "#251c57",
                         fontWeight: "bold",
-                        minWidth: 90,
+                        minWidth: 115,
                         backgroundColor: "transparent",
                       }}
                     >
-                      Cart
+                      Sign In
                     </Button>
                   </Link>
                 )}
+                {
+                  // if no customer, no Cart
+                  state && (
+                    <>
+                      <div>
+                        {
+                          <Avatar style={{ display: "inline", padding: "5px",    backgroundColor: 'darkcyan' }}>
+                            {state.f_name[0]}
+                          </Avatar>
+                        }{" "}
+                        <span id="userName">
+                          {state.f_name} {state.l_name}
+                        </span>
+                      </div>
+                      <Link to="/Cart" className="Link" state={state}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          endIcon={<ShoppingCartOutlinedIcon />}
+                          sx={{
+                            color: "#251c57",
+                            fontWeight: "bold",
+                            minWidth: 90,
+                            backgroundColor: "transparent",
+                          }}
+                        >
+                          Cart
+                        </Button>
+                      </Link>
+                    </>
+                  )
+                }
               </ThemeProvider>
             </div>
           </Grid>

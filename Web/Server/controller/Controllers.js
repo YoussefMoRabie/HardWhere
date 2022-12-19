@@ -23,7 +23,7 @@ const decProductQtyinCart = async (req, res) => {
   try {
     await db.execute(sql);
     await db.execute(sql2);
-    res.send('Done dec')
+    res.send("Done dec");
   } catch (error) {
     console.log(error);
   }
@@ -81,7 +81,7 @@ const addToCart = async (req, res) => {
   } catch (error) {
     console.log(error.sqlMessage);
     if (error.code == "ER_DUP_ENTRY") {
-      const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=2;`;
+      const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=${req.body.cust_ssn};`;
       const sql4 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
       try {
         db.execute(sql3);
@@ -101,13 +101,15 @@ const getOffersData = async (req, res) => {
     console.log(error.sqlMessage);
   }
 };
-let usersCnt = 7;
 
 const addCustomer = async (req, res) => {
-  const sql1 = `insert into users values(${usersCnt},'${req.body.f_name}','${req.body.l_name}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
-  usersCnt += 1;
+  const sql1 = `insert into users values(${req.body.userCnt},'${req.body.firstName}','${req.body.lastName}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
+  console.log("userCnt:", req.body.userCnt);
+  const sql2 = `insert into customer(ssn) values(${req.body.userCnt})`;
+  res.send("Done");
   try {
     await db.execute(sql1);
+    await db.execute(sql2);
   } catch (error) {
     console.log(error.sqlMessage);
   }

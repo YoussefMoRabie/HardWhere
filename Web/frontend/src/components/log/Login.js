@@ -19,11 +19,14 @@ const Login = () => {
     e.preventDefault();
     try {
       console.log(55);
+      console.log(userName);
+      console.log(password);
       const data = await fetch(
         `http://localhost:1444/api/v1/checkOnUser?f_name=${
           userName.split(" ")[0]
         }&l_name=${userName.split(" ")[1]}&password=${password}`
       );
+      console.log(data);
       const data2 = await data.json();
       setChecked(data2[0][0].checked);
       console.log(checked);
@@ -45,10 +48,12 @@ const Login = () => {
           }&l_name=${userName.split(" ")[1]}&password=${password}`
         );
         const data2 = await data.json();
-        // setUserSsn(data2[0][0].ssn);
-        console.log(data2[0][0].ssn);
         navigate(`/`, {
-          state: { ssn: data2[0][0].ssn },
+          state: {
+            ssn: data2[0][0].ssn,
+            f_name: data2[0][0].f_name,
+            l_name: data2[0][0].l_name,
+          },
         });
       } catch (error) {
         console.log(error);
