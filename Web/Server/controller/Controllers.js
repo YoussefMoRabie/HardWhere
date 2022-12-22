@@ -55,13 +55,13 @@ const deleteProductFromCart = async (req, res) => {
 
 // cust_ssn mudt be dynamic later
 const getProductData = async (req, res) => {
-  const sql = `select pid,product_name,price,color,count, su_name,p.p_value,p.desc, 1 as favorite
+  const sql = `select pid,has_offer,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 1 as favorite
 from product p,suppliers s,favorites fv,customer c
-where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and c.ssn=2 and p.pid=${req.params.id}
+where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
 union all
-select pid,product_name,price,color,count, su_name,p.p_value,p.desc, 0 as favorite
+select pid,has_offer,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 0 as favorite
 from product p,suppliers s,customer c
-where p.su_id=s.suid  and c.ssn=2 and p.pid=${req.params.id};`;
+where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
   try {
     const data = await db.execute(sql);
@@ -103,20 +103,34 @@ const getOffersData = async (req, res) => {
 };
 
 const addCustomer = async (req, res) => {
-  const sql1 = `insert into users values(${req.body.userCnt},'${req.body.firstName}','${req.body.lastName}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
-  console.log("userCnt:", req.body.userCnt);
-  const sql2 = `insert into customer(ssn) values(${req.body.userCnt})`;
-  res.send("Done");
-  try {
-    await db.execute(sql1);
-    await db.execute(sql2);
-  } catch (error) {
-    console.log(error.sqlMessage);
+  const sql1 = `insert into users (f_name,l_name,phone,address,email,authority,password) values('${req.body.firstName}','${req.body.lastName}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
+  const sql3 = `select ssn from users where email="${req.body.email}" and password ="${req.body.password}"; `;
+  const sql4 = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.body.email}" ) as checked;`;
+  const checkEmail = await db.execute(sql4);
+  const checked = checkEmail[0][0].checked;
+  if (checked === 0) {
+    try {
+      await db.execute(sql1);
+      const data = await db.execute(sql3);
+      const ssn = data[0][0].ssn;
+      console.log("userid", ssn);
+
+      const sql2 = `insert into customer(ssn) values(${ssn})`;
+      await db.execute(sql2);
+
+      res.send("Done");
+      console.log("done");
+    } catch (error) {
+      console.log(error.sqlMessage);
+    }
+  } else {
+    res.json("email_signed_before");
+    console.log("signed before");
   }
 };
 
 const checkOnUser = async (req, res) => {
-  const sql = `SELECT EXISTS(SELECT 1 FROM users WHERE f_name='${req.query.f_name}' and l_name='${req.query.l_name}' and password='${req.query.password}') as checked;`;
+  const sql = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.query.email}" and password='${req.query.password}') as checked;`;
 
   try {
     const data = await db.execute(sql);
@@ -126,7 +140,8 @@ const checkOnUser = async (req, res) => {
   }
 };
 const getUserData = async (req, res) => {
-  const sql = `SELECT ssn,f_name,l_name,phone,address,email,authority FROM users u;`;
+  const sql = `SELECT ssn,f_name,l_name,phone,address,authority FROM users u
+   where email='${req.query.email}' and password='${req.query.password}';`;
   try {
     const data = await db.execute(sql);
     res.send(data);
@@ -136,18 +151,25 @@ const getUserData = async (req, res) => {
 };
 
 const addOrder = async (req, res) => {
-  let sql;
-  if (req.body.scid === -1) {
-    sql = `insert into orders (oid,price,date,cust_ssn)
-   values(${req.body.orderCnt},${req.body.total},'${req.body.date}',${req.body.cust_ssn});`;
-  } else {
-    sql = `insert into orders 
-   values(${req.body.orderCnt},${req.body.total},'${req.body.date}',${req.body.cust_ssn},${req.body.scid});`;
-    console.log(req.body.orderCnt);
-  }
-  console.log("orderCnt:", req.body.orderCnt);
+  const sql = `insert into orders (price,date,cust_ssn,sc_id)
+   values(${req.body.total},'${req.body.date}',${req.body.cust_ssn},${req.body.scid});`;
+  const sql3 = `   select max(oid) as maxOrderId from orders `;
+  const sql4 = `delete from customer_cart where cust_ssn = ${req.body.cust_ssn}`;
   try {
     await db.execute(sql);
+    const cartProducts = req.body.products;
+    console.log(cartProducts);
+
+    const data = await db.execute(sql3);
+    const oid = data[0][0].maxOrderId;
+
+    console.log(oid);
+    for (const product of cartProducts) {
+      const sql2 = `insert into contains values (${oid},${product.pid},${product.qty})`;
+      await db.execute(sql2);
+    }
+
+    await db.execute(sql4);
     res.send("Done");
   } catch (error) {
     console.log(error.sqlMessage);

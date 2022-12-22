@@ -13,7 +13,6 @@ const Signup = () => {
   const [email, setEmail] = useState("myehia162@gmail.com");
   const [phone, setPhone] = useState("01555952221");
   const [address, setAddress] = useState("555ggg555");
-  const [userCnt, setUserCnt] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,29 +25,25 @@ const Signup = () => {
         email,
         phone,
         address,
-        userCnt,
       })
     );
-  }, [userCnt, firstName, password, lastName, email, address, phone]);
+  }, [firstName, password, lastName, email, address, phone]);
   useEffect(() => {
     const userData2 = JSON.parse(localStorage.getItem("userData"));
     if (userData2) {
-      setUserCnt(userData2.userCnt);
       setAddress(userData2.address);
       setEmail(userData2.email);
       setFirstName(userData2.f_name);
       setLastName(userData2.l_name);
       setPhone(userData2.phone);
       setPassword(userData2.password);
-      handelSubmit();
     }
   }, []);
   const handelSubmit = async (e) => {
-    e.preventDefault();
+    if (e !== undefined) e.preventDefault();
     const userdata = {
-      userCnt,
-       firstName,
-       lastName,
+      firstName,
+      lastName,
       password,
       phone,
       address,
@@ -114,18 +109,24 @@ const Signup = () => {
         },
         body: JSON.stringify(userdata),
       });
-      if (res.status === 200) {
-        setUserCnt(userCnt + 1);
-        console.log(5);
+      if ((await res.json()) === "email_signed_before") {
+        document.getElementById("emailSignedBeforeMess").classList.add('active');
+        setTimeout(()=>{
+        document
+          .getElementById("emailSignedBeforeMess")
+          .classList.remove("active");
+
+        },3000)
+        return ;
       }
-      navigate("/Signin");
+      if (res.status === 200) {
+        navigate("/Signin");
+      }
+      console.log(userdata);
     } catch (error) {
       console.log(error);
     }
-
-    console.log(userdata);
   };
-
 
   return (
     <div className="Loglayout">
@@ -177,6 +178,7 @@ const Signup = () => {
               setEmail(e.target.value);
             }}
           />
+          <div  id="emailSignedBeforeMess">this email signed before</div>
           <label htmlFor="phone">
             <p> Phone</p>
           </label>

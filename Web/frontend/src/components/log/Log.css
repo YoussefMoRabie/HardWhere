@@ -2,7 +2,7 @@
 .Loglayout {
   background: linear-gradient(0.77turn, #1c5755, #1565c0, #eef290);
   width: 100%;
-  height: 100vh ;
+  height: 100vh;
   position: relative;
 }
 .log-box {
@@ -53,10 +53,10 @@ label p {
   font-size: 22px;
   font-family: "Cookie", cursive;
 }
-.messErrorReg{
+.messErrorReg {
   display: none;
 }
-.messErrorReg.active{
+.messErrorReg.active {
   display: block;
 }
 .forget {
@@ -76,7 +76,7 @@ Button.btn2 {
 }
 .formlogin input:hover,
 .formlogin button.btn2:hover {
-    box-shadow: 0 0 7px 0px #edff66;
+  box-shadow: 0 0 7px 0px #edff66;
 }
 .formlogin input[type="checkbox"] {
   width: auto;
@@ -84,4 +84,11 @@ Button.btn2 {
 }
 .formlogin input[type="checkbox"] + label {
   font-size: 13px;
+}
+#emailSignedBeforeMess {
+  color: red;
+  display: none;
+}
+#emailSignedBeforeMess.active {
+  display: block;
 }

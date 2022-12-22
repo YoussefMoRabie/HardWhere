@@ -18,23 +18,11 @@ const Cart = () => {
   const { state } = useLocation();
   const customer_ssn = state.ssn;
 
-  const [shippingName, setShippingName] = useState("-1");
+  const [shippingName, setShippingName] = useState("none");
   const [shippingCost, setShippingCost] = useState(0);
   const [shippingTime, setShippingTime] = useState(0);
   const [shippingData, setShippingData] = useState([]);
-  const [orderCnt, setOrderCnt] = useState(0);
-  const [productData, setProductData] = useState([]);
-
-  useEffect(() => {
-    localStorage.setItem("orderCnt", JSON.stringify(orderCnt));
-  }, [orderCnt]);
-
-  useEffect(() => {
-    const getOrderCnt = JSON.parse(localStorage.getItem("orderCnt"));
-    if (getOrderCnt) {
-      setOrderCnt(Number(getOrderCnt));
-    }
-  }, []);
+  const [cartProducts, setcartProducts] = useState([]);
 
   const getDatatoCart = async () => {
     try {
@@ -43,7 +31,7 @@ const Cart = () => {
       );
       const data2 = await data.json();
       console.log(data2);
-      setProductData(data2[0]);
+      setcartProducts(data2[0]);
     } catch (error) {
       console.log(error);
     }
@@ -82,20 +70,74 @@ const Cart = () => {
       console.log(error);
     }
   }
+  const handelBuy = async (e) => {
+    const date = new Date().toISOString().slice(0, 19).replace("T", " ");
+    try {
+      const result = shippingData.find(
+        (item) =>
+          item.sc_name === shippingName &&
+          item.cost === shippingCost &&
+          item.delivery_time === shippingTime
+      );
 
+      if (result === undefined && shippingName === "none") {
+        document.getElementById("messageNeededComp").classList.add("active");
+        setTimeout(() => {
+          document
+            .getElementById("messageNeededComp")
+            .classList.remove("active");
+        }, 3000);
+        return;
+      }
+      if (total === 0) {
+        document.getElementById("messageEmptyCart").classList.add("active");
+        setTimeout(() => {
+          document
+            .getElementById("messageEmptyCart")
+            .classList.remove("active");
+        }, 3000);
+        return;
+      }
+      const res = await fetch(`http://localhost:1444/api/v1/addtoOrders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          total: total + shippingCost,
+          date,
+          cust_ssn: customer_ssn,
+          scid: result.scid,
+          products: cartProducts,
+        }),
+      });
+
+      if (res.status === 200) {
+        document.getElementById("messageOrderSuccess").classList.add("active");
+        setTimeout(() => {
+          document
+            .getElementById("messageOrderSuccess")
+            .classList.remove("active");
+        }, 3000);
+        getDatatoCart();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   let total = 0;
   return (
     <main style={{ position: "relative" }}>
       <div className="cartLayout"></div>
       <h1>My Cart</h1>
-      {productData.length === 0 && <h1>Empty</h1>}
+      {cartProducts.length === 0 && <h1>Empty</h1>}
       <div className="cartContainer">
         <div className="myproducts">
-          {productData.map((product, index) => {
+          {cartProducts.map((product, index) => {
             let totalProductPrice = 0;
-            // const [count,setcount]=useState(0);
+
             totalProductPrice = Number(product.qty) * Number(product.price);
-            // settotal(total + totalProductPrice);
+
             total += totalProductPrice;
 
             return (
@@ -246,61 +288,21 @@ const Cart = () => {
               </FormHelperText>
             </FormControl>
           </div>
+          <div id="messageNeededComp">choose a shipping company</div>
           <div>
             <Button
               variant="contained"
               endIcon={<BsCartCheckFill style={{ color: "#87ff87" }} />}
               style={{ margin: "25px 0 25px 10px" }}
-              onClick={async (e) => {
-                const date = new Date()
-                  .toISOString()
-                  .slice(0, 19)
-                  .replace("T", " ");
-                try {
-                  const result = shippingData.find(
-                    (item) =>
-                      item.sc_name === shippingName &&
-                      item.cost === shippingCost &&
-                      item.delivery_time === shippingTime
-                  );
-
-                  const res = await fetch(
-                    `http://localhost:1444/api/v1/addtoOrders`,
-                    {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        orderCnt,
-                        total: total + shippingCost,
-                        date,
-                        cust_ssn: customer_ssn,
-                        scid: result === undefined ? -1 : result.scid,
-                      }),
-                    }
-                  );
-                  if (res.status === 200) {
-                    setOrderCnt(orderCnt + 1);
-
-                    document
-                      .getElementById("messageOrderSuccess")
-                      .classList.add("active");
-                  }
-                  setTimeout(() => {
-                    document
-                      .getElementById("messageOrderSuccess")
-                      .classList.remove("active");
-                  }, 3000);
-                } catch (error) {
-                  console.log(error);
-                }
-              }}
+              onClick={handelBuy}
             >
               Buy Now
             </Button>
             <div id="messageOrderSuccess">
               Ordered Add Successfully <CheckIcon />
+            </div>
+            <div id="messageEmptyCart" style={{ marginBottom: "30px" }}>
+              CART IS EMPTY!
             </div>
           </div>
         </div>

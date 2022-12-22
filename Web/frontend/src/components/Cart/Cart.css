@@ -55,6 +55,15 @@ main h1 {
 #messageOrderSuccess.active {
   display: block;
 }
+#messageEmptyCart,
+#messageNeededComp {
+  color: red;
+  display: none;
+}
+#messageEmptyCart.active,
+#messageNeededComp.active {
+  display: block;
+}
 .cartContainer .summary h4 {
   font-size: 25px;
   margin-bottom: 25px;

@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 const OfferCard = () => {
   //cust_ssn
   const { state } = useLocation();
-  const cust_ssn = state.ssn;
   console.log(state);
 
 
@@ -117,7 +116,7 @@ const OfferCard = () => {
                             },
                             body: JSON.stringify({
                               pid: product.pid,
-                              cust_ssn: cust_ssn,
+                              cust_ssn: state.ssn,
                               qty: 1,
                             }),
                           }

@@ -23,9 +23,7 @@ import { Link } from "react-router-dom";
 import Rating from "@mui/material/Rating";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Btntheme = createTheme({
   typography: {
@@ -45,8 +43,11 @@ const Btntheme = createTheme({
 });
 const Product = () => {
   const { id } = useParams();
+
   const navigate = useNavigate();
-  
+  const { state } = useLocation();
+
+  const [has_offer, setHasOffer] = useState(0);
   const [proName, setName] = useState("product" + id);
   const [price, setPrice] = useState(99.99);
   const [count, setcount] = useState(6);
@@ -55,13 +56,8 @@ const Product = () => {
   const [favorite, setFavorite] = useState(0);
   const [color, setColor] = useState("black");
   const [qty, setQty] = useState(1);
-  const [desc, setDesc] = useState("product helw awi");
-
-  const cartData = {
-    pid: id,
-    cust_ssn: 2, //must be dynamic later
-    qty,
-  };
+  const [desc, setDesc] = useState("product gamed");
+  const [newPrice, setNewPrice] = useState(0);
 
   const AddporductToCart = async (req, res) => {
     try {
@@ -70,7 +66,11 @@ const Product = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cartData),
+        body: JSON.stringify({
+          pid: id,
+          cust_ssn: state.ssn, //must be dynamic later
+          qty,
+        }),
       });
       navigate("/Cart");
     } catch (error) {
@@ -122,6 +122,8 @@ const Product = () => {
       setValue(productData.p_value);
       setFavorite(productData.favorite);
       setDesc(productData.desc);
+      setHasOffer(productData.has_offer.data[0]);
+      setNewPrice(productData.new_price);
     } catch (error) {
       console.log(error);
     }
@@ -177,43 +179,49 @@ const Product = () => {
                   style={{ width: 25, height: 25, backgroundColor: color }}
                 ></div>
               </div>
-              <div className="price"> {price}$</div>
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small">Qty</InputLabel>
-                <Select
-                  labelId="demo-select-small"
-                  id="demo-select-small"
-                  value={qty}
-                  label="qty"
-                  onChange={(e) => {
-                    setQty(e.target.value);
-                  }}
-                >
-                  {qtyarr.map((num) => (
-                    <MenuItem value={num}>{num}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <ThemeProvider theme={Btntheme}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    display: "flex",
-                    minWidth: 190,
-                    color: "#251c57",
-                    fontWeight: "bold",
-                    margin: 2,
-                  }}
-                  onClick={() => {
-                    AddporductToCart();
-                    
-                  }}
-                  endIcon={<AddShoppingCartIcon />}
-                >
-                  Add to Cart
-                </Button>
-              </ThemeProvider>
+              <div className="price oldPrice"> {price}$</div>
+              {has_offer === 1 &&
+                document.querySelector(".oldPrice").classList.add("offer")}
+              {has_offer === 1 && <div className="price">{newPrice}$</div>}
+              {state && (
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small">Qty</InputLabel>
+                  <Select
+                    labelId="demo-select-small"
+                    id="demo-select-small"
+                    value={qty}
+                    label="qty"
+                    onChange={(e) => {
+                      setQty(e.target.value);
+                    }}
+                  >
+                    {qtyarr.map((num) => (
+                      <MenuItem value={num}>{num}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+              {state && (
+                <ThemeProvider theme={Btntheme}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      display: "flex",
+                      minWidth: 190,
+                      color: "#251c57",
+                      fontWeight: "bold",
+                      margin: 2,
+                    }}
+                    onClick={() => {
+                      AddporductToCart();
+                    }}
+                    endIcon={<AddShoppingCartIcon />}
+                  >
+                    Add to Cart
+                  </Button>
+                </ThemeProvider>
+              )}
             </div>
           )}
           {!inStock && <p className="notAvailable">Out Of Stock</p>}

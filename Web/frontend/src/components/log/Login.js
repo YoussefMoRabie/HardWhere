@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [userName, setuserName] = useState("");
+  const [userEmail, setuserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(0);
   const navigate = useNavigate();
@@ -19,12 +19,9 @@ const Login = () => {
     e.preventDefault();
     try {
       console.log(55);
-      console.log(userName);
       console.log(password);
       const data = await fetch(
-        `http://localhost:1444/api/v1/checkOnUser?f_name=${
-          userName.split(" ")[0]
-        }&l_name=${userName.split(" ")[1]}&password=${password}`
+        `http://localhost:1444/api/v1/checkOnUser?email=${userEmail}&password=${password}`
       );
       console.log(data);
       const data2 = await data.json();
@@ -43,9 +40,7 @@ const Login = () => {
     if (checked === 1) {
       try {
         const data = await fetch(
-          `http://localhost:1444/api/v1/getUserData?f_name=${
-            userName.split(" ")[0]
-          }&l_name=${userName.split(" ")[1]}&password=${password}`
+          `http://localhost:1444/api/v1/getUserData?email=${userEmail}&password=${password}`
         );
         const data2 = await data.json();
         navigate(`/`, {
@@ -53,6 +48,8 @@ const Login = () => {
             ssn: data2[0][0].ssn,
             f_name: data2[0][0].f_name,
             l_name: data2[0][0].l_name,
+            email: userEmail,
+            address: data2[0][0].address,
           },
         });
       } catch (error) {
@@ -71,15 +68,15 @@ const Login = () => {
             onSubmit={handelSubmit}
           >
             <label htmlFor="Uname">
-              <p>Username</p>
+              <p>Email</p>
             </label>
             <input
               type="text"
-              value={userName}
+              value={userEmail}
               name="Uname"
               placeholder="Enter Username"
               onChange={(e) => {
-                setuserName(e.target.value);
+                setuserEmail(e.target.value);
               }}
             />
             <label htmlFor="psw">
