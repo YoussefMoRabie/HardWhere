@@ -4,6 +4,7 @@
   box-sizing: border-box;
   margin: 0;
 }
+@import url("https://fonts.googleapis.com/css2?family=Chewy&display=swap");
 .material-symbols-outlined {
   display: block;
   font-variation-settings: "FILL" 10, "wght" 800, "GRAD" 0, "opsz" 48;
@@ -12,6 +13,12 @@
   font-size: 1.8rem;
   text-align: center;
   margin-bottom: 1px;
+}
+#userName {
+  font-family: "Chewy", cursive;
+  color: #505050;
+  font-size: 20px;
+  margin-right: 10px;
 }
 .header {
   gap: 15px;

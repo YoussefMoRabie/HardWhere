@@ -21,7 +21,7 @@ const Footer = () => {
         <div className="Laptop category">
           <h4>Laptops</h4>
           <ul>
-            {laptopsBrands.map((laptop) => (<li>
+            {laptopsBrands.map((laptop) => (<li key={laptop.title}>
               <Link to={laptop.path}>{laptop.title}</Link>
             </li>))}
           </ul>
@@ -29,7 +29,7 @@ const Footer = () => {
         <div className="Mobile category">
           <h4>Mobile</h4>
           <ul>
-            {mobileBrands.map((mobile) => (<li>
+            {mobileBrands.map((mobile) => (<li key={mobile.title}>
               <Link to={mobile.path}>{mobile.title}</Link>
             </li>))}
           </ul>
@@ -38,7 +38,7 @@ const Footer = () => {
         <div className="Headphone category">
           <h4>Headphones</h4>
           <ul>
-            {headphonesBrands.map((headphones) => (<li>
+            {headphonesBrands.map((headphones) => (<li key={headphones.title}>
               <Link to={headphones.path}>{headphones.title}</Link>
             </li>))}
           </ul>
@@ -47,7 +47,7 @@ const Footer = () => {
         <div className="screens category">
           <h4>Screens</h4>
           <ul>
-            {screenBrands.map((screen) => (<li>
+            {screenBrands.map((screen) => (<li key={screen.title}>
               <Link to={screen.path}>{screen.title}</Link>
             </li>))}
           </ul>
@@ -56,7 +56,7 @@ const Footer = () => {
         <div className="Accessories category">
           <h4>Accessories</h4>
           <ul>
-            {accessoryBrands.map((accessory) => (<li>
+            {accessoryBrands.map((accessory) => (<li key={accessory.title}>
               <Link to={accessory.path}>{accessory.title}</Link>
             </li>))}
           </ul>
