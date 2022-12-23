@@ -46,6 +46,12 @@ class Home extends StatelessWidget {
             )
           ]),
         ),
+        const Text("Categories",
+            style: TextStyle(
+                fontSize: 20,
+                color: AppColor.primaryColor,
+                fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
         SizedBox(
           height: 120,
           child: ListView.separated(
@@ -54,30 +60,7 @@ class Home extends StatelessWidget {
             itemCount: 8,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Container(
-
-                    decoration: BoxDecoration(
-
-                        color: AppColor.primaryColor,
-                        borderRadius: BorderRadius.circular(20)),
-                    //padding: const EdgeInsets.symmetric(horizontal: 0),
-                    height: 90,
-                    width: 90,
-                    child: Image(image:AssetImage('assets/images/lol.png'),),
-                    // SvgPicture.network(
-                    //     "categories_image}",
-                    //     color: AppColor.secColor),
-                  ),
-                  SizedBox(height: 5),
-                  const Text(
-                    "categories_name",
-                    style: TextStyle(
-                        fontSize: 13, color: Colors.black),
-                  )
-                ],
-              );
+              return buildCatItem(controller,index);
             },
           ),
         ),
@@ -133,3 +116,33 @@ class Home extends StatelessWidget {
     );
   }
 }
+
+Widget buildCatItem(controller,index)=>InkWell(
+  onTap: (){
+    controller.goToItems(index);
+  },
+  child: Column(
+    children: [
+      Container(
+
+        decoration: BoxDecoration(
+
+            color: AppColor.primaryColor,
+            borderRadius: BorderRadius.circular(20)),
+        //padding: const EdgeInsets.symmetric(horizontal: 0),
+        height: 90,
+        width: 90,
+        child: const Image(image:AssetImage('assets/images/lol.png'),),
+        // SvgPicture.network(
+        //     "categories_image}",
+        //     color: AppColor.secColor),
+      ),
+      const SizedBox(height: 5),
+      const Text(
+        "categories_name",
+        style: TextStyle(
+            fontSize: 13, color: Colors.black),
+      )
+    ],
+  ),
+);

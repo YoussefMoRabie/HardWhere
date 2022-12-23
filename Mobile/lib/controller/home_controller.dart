@@ -1,8 +1,12 @@
 import 'package:get/get.dart';
 
 import '../core/services/services.dart';
+import '../view/screen/items.dart';
 
-class HomeController extends GetxController {}
+abstract class HomeController extends GetxController {
+  initialData();
+  goToItems(int selectedCat);
+}
 
 class HomeControllerImp extends HomeController {
   MyServices myServices = Get.find();
@@ -10,6 +14,7 @@ class HomeControllerImp extends HomeController {
   String? username;
   String? id;
 
+  @override
   initialData() {
 
     username = myServices.sharedPreferences.getString("username") ;
@@ -20,5 +25,14 @@ class HomeControllerImp extends HomeController {
   void onInit() {
     initialData();
     super.onInit();
+  }
+
+  @override
+  goToItems(selectedCat) {
+    Get.to(const Items() ,arguments: {
+    //"categories": categories,
+    "selectedCat": selectedCat,
+    //"catid": categoryid
+    });
   }
 }
