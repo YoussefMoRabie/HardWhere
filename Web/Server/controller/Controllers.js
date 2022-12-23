@@ -4,7 +4,7 @@ const db = require("../DB/DBConnect");
 
 //  cust_ssn should be dynamic later
 const getCartProducts = async (req, res) => {
-  const sql = `select p.product_name,p.count as totalCnt,cc.qty,p.price,p.pid from product p , customer_cart cc, customer c 
+  const sql = `select p.product_name,p.count as totalCnt,cc.qty,p.price,p.pid,p.img_link from product p , customer_cart cc, customer c 
 where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
 
   try {
@@ -42,7 +42,6 @@ const incProductQtyinCart = async (req, res) => {
   }
 };
 
-// cust_ssn && p_id should be dynamic later
 const deleteProductFromCart = async (req, res) => {
   const sql = `delete from customer_cart where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
   try {
@@ -53,13 +52,12 @@ const deleteProductFromCart = async (req, res) => {
   }
 };
 
-// cust_ssn mudt be dynamic later
 const getProductData = async (req, res) => {
-  const sql = `select pid,has_offer,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 1 as favorite
+  const sql = `select pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 1 as favorite
 from product p,suppliers s,favorites fv,customer c
 where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
 union all
-select pid,has_offer,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 0 as favorite
+select pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 0 as favorite
 from product p,suppliers s,customer c
 where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
@@ -93,7 +91,7 @@ const addToCart = async (req, res) => {
   }
 };
 const getOffersData = async (req, res) => {
-  const sql = ` select pid,product_name,price,new_price,start_date,p.end_date,p.desc,p.p_value,p.count from product p where has_offer=1;`;
+  const sql = ` select pid,product_name,p.img_link,price,new_price,start_date,p.end_date,p.desc,p.p_value,p.count from product p where has_offer=1;`;
   try {
     const data = await db.execute(sql);
     res.send(data);
@@ -118,7 +116,6 @@ const addCustomer = async (req, res) => {
       const sql2 = `insert into customer(ssn) values(${ssn})`;
       await db.execute(sql2);
 
-      res.send("Done");
       console.log("done");
     } catch (error) {
       console.log(error.sqlMessage);

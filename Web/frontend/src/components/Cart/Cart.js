@@ -142,12 +142,9 @@ const Cart = () => {
 
             return (
               <div className="productInCart">
-                <img
-                  src="https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg"
-                  alt=""
-                />
+                <img src={product.img_link} alt={`product ${product.pid}`} />
                 <div className="data">
-                  <h3>{product.product_name}</h3>
+                  <h3 style={{ fontSize: "30px" }}>{product.product_name}</h3>
                   <div className="price">
                     <span>{Number(product.qty) === 0 ? 0 : product.qty}</span> *{" "}
                     <span>{(+product.price).toFixed(2)}</span>

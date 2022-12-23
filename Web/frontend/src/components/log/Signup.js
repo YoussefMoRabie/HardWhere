@@ -109,18 +109,21 @@ const Signup = () => {
         },
         body: JSON.stringify(userdata),
       });
+
       if ((await res.json()) === "email_signed_before") {
-        document.getElementById("emailSignedBeforeMess").classList.add('active');
-        setTimeout(()=>{
         document
           .getElementById("emailSignedBeforeMess")
-          .classList.remove("active");
-
-        },3000)
-        return ;
-      }
-      if (res.status === 200) {
+          .classList.add("active");
+        setTimeout(() => {
+          document
+            .getElementById("emailSignedBeforeMess")
+            .classList.remove("active");
+        }, 3000);
+        console.log(4444);
+        return;
+      } else {
         navigate("/Signin");
+        console.log(555);
       }
       console.log(userdata);
     } catch (error) {
@@ -178,7 +181,7 @@ const Signup = () => {
               setEmail(e.target.value);
             }}
           />
-          <div  id="emailSignedBeforeMess">this email signed before</div>
+          <div id="emailSignedBeforeMess">this email signed before</div>
           <label htmlFor="phone">
             <p> Phone</p>
           </label>

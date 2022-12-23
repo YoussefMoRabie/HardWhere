@@ -58,7 +58,7 @@ const Product = () => {
   const [qty, setQty] = useState(1);
   const [desc, setDesc] = useState("product gamed");
   const [newPrice, setNewPrice] = useState(0);
-
+  const [imgLink, setimgLink] = useState("");
   const AddporductToCart = async (req, res) => {
     try {
       fetch(`http://localhost:1444/api/v1/product/addtocart`, {
@@ -112,6 +112,7 @@ const Product = () => {
     try {
       const data = await fetch(`http://localhost:1444/api/v1/product/${id}`);
       const data2 = await data.json();
+
       console.log(data2[0][0]);
       const productData = data2[0][0];
       setName(productData.product_name);
@@ -124,6 +125,7 @@ const Product = () => {
       setDesc(productData.desc);
       setHasOffer(productData.has_offer.data[0]);
       setNewPrice(productData.new_price);
+      setimgLink(productData.img_link);
     } catch (error) {
       console.log(error);
     }
@@ -136,7 +138,7 @@ const Product = () => {
       <div className="product">
         <div className="productimage">
           <img
-            src="https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg"
+            src={imgLink}
             alt={"product " + id}
           />
         </div>

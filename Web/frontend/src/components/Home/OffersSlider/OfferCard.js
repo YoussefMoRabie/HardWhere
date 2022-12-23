@@ -15,7 +15,6 @@ const OfferCard = () => {
   const { state } = useLocation();
   console.log(state);
 
-
   const [OfferData, setOfferData] = useState([]);
   const getOffersData = async () => {
     try {
@@ -131,13 +130,12 @@ const OfferCard = () => {
                     Add To Cart!
                   </Button>
                 )}
-                {product.count <= 0 && <h3 style={{margin:'16px 0px'}}>SOLD</h3> }
+                {product.count <= 0 && (
+                  <h3 style={{ margin: "16px 0px" }}>SOLD</h3>
+                )}
               </div>
               <div className="right">
-                <img
-                  src="https://www.bestshop.com.py/img/1000x1000/products/13749/13749.jpg"
-                  alt="loading..."
-                />
+                <img src={product.img_link} alt={product + product.pid} />
               </div>
             </div>
           );

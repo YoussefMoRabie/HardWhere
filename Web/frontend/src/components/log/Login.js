@@ -20,9 +20,11 @@ const Login = () => {
     try {
       console.log(55);
       console.log(password);
+      
       const data = await fetch(
         `http://localhost:1444/api/v1/checkOnUser?email=${userEmail}&password=${password}`
       );
+
       console.log(data);
       const data2 = await data.json();
       setChecked(data2[0][0].checked);
