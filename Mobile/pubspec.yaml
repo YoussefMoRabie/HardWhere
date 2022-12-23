@@ -71,6 +71,10 @@ dependencies:
   hexcolor: ^3.0.1
   curved_navigation_bar: ^1.0.3
   get_storage: ^2.0.3
+  animated_flip_counter: ^0.2.5
+  conditional_builder_null_safety: ^0.0.6
+  flutter_cart: ^0.0.8
+  flutter_native_splash: ^2.2.16
 #  path: ^1.8.0
 #  # Qrcode
 #  qr_flutter: ^4.0.0
@@ -144,3 +148,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_native_splash:
+  color: "#FDB846"
+  #background_image: "assets/5.png"
+  image: assets/splash.png
+  android_gravity: fill
