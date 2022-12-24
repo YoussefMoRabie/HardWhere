@@ -21,13 +21,20 @@ where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
 const decProductQtyinCart = async (req, res) => {
   const sql = `update product set count=count+1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty-1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  try {
-    await db.execute(sql);
-    await db.execute(sql2);
-    res.send({ status: true, message: "decremented" });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: false, message: error.sqlMessage });
+  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+    const checked = await db.execute(sql3);
+  
+  if (checked[0][0].has === 1) {
+    try {
+      await db.execute(sql);
+      await db.execute(sql2);
+      res.send({ status: true, message: "decremented" });
+    } catch (error) {
+      console.log(error);
+      res.json({ status: false, message: error.sqlMessage });
+    }
+  } else {
+    res.json({ status: false, message: "this product is't in this cart" });
   }
 };
 
@@ -35,18 +42,26 @@ const decProductQtyinCart = async (req, res) => {
 const incProductQtyinCart = async (req, res) => {
   const sql = `update product set count=count-1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty+1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  try {
-    await db.execute(sql);
-    await db.execute(sql2);
-    res.send({ status: true, message: "incremented" });
-  } catch (error) {
-    console.log(error);
-    res.json({ status: false, message: error.sqlMessage });
+  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+  const checked = await db.execute(sql3);
+  
+  if (checked[0][0].has === 1) {
+    try {
+      await db.execute(sql);
+      await db.execute(sql2);
+      res.send({ status: true, message: "incremented" });
+    } catch (error) {
+      console.log(error);
+      res.json({ status: false, message: error.sqlMessage });
+    }
+  } else {
+    res.json({ status: false, message: "this product is't in this cart" });
   }
 };
 
 const deleteProductFromCart = async (req, res) => {
   const sql = `delete from customer_cart where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
+
   try {
     await db.execute(sql);
     res.send({ status: true, message: "deleted" });
