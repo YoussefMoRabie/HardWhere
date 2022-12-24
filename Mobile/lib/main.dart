@@ -9,6 +9,7 @@ import 'package:hardwhere/view/screen/home.dart';
 import 'package:hardwhere/view/screen/layout.dart';
 import 'package:hardwhere/view/screen/onboarding.dart';
 import 'package:hardwhere/view/screen/product.dart';
+import 'package:hardwhere/view/test.dart';
 
 import 'Binding/initialBinding.dart';
 import 'core/shared/styles/themes.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeService().darkTheme,
 
       themeMode: ThemeService().getThemeMode(),
-      home: startWidget,
+      home: TestView()//startWidget,
     );
   }
 }
