@@ -25,7 +25,7 @@ class TestController extends GetxController {
     if (StatusRequest.success == statusRequest){
 
       // Start backend
-      if (response['status'] == "success") {
+      if (response['status'] == "true") {
 
         data.addAll(response['data']);
 
