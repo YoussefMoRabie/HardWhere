@@ -1,45 +1,38 @@
-import OffersSlider from './OffersSlider/OffersSlider'
-import { useLocation, useSearchParams } from "react-router-dom"
-import CategorySlider from './CategorySlider/CategorySlider';
-import './HomePage.css'
-const labtopCategory={
-  name:"labtop",
-products:null,
-}
-const MobileCategory={
-  name:"Mobile",
-products:null,
-}
-const HeadphonesCategory={
-  name:"Headphones",
-products:null,
-}
-const ScreensCategory={
-  name:"Screens",
-products:null,
-}
-const AccessoriesCategory={
-  name:"Accessories",
-products:null,
-}
-const HomePage = () => {
-  // const  {state}  = useLocation();
-  // console.log(state);
-  // const [searchParams] = useSearchParams();
-  // const ssn = searchParams.get("ssn");
-  // console.log(ssn);
+import OffersSlider from "./OffersSlider/OffersSlider";
+import { useLocation, useSearchParams } from "react-router-dom";
+import CategorySlider from "./CategorySlider/CategorySlider";
+import "./HomePage.css";
 
+import { useState } from "react";
+
+const categories = [
+  {
+    name: "labtops",
+  },
+  {
+    name: "mobiles",
+  },
+  {
+    name: "headphones",
+  },
+  {
+    name: "screens",
+  },
+  {
+    name: "accessories",
+  },
+];
+const HomePage = () => {
   return (
-    <div className='Homesliders'>
+    <div className="Homesliders">
       <OffersSlider />
-      <CategorySlider category={labtopCategory} />
-      <CategorySlider category={MobileCategory} />
-      <CategorySlider category={HeadphonesCategory} />
-      <CategorySlider category={ScreensCategory} />
-      <CategorySlider category={AccessoriesCategory} />
-    
-      </div>
-      );
+      <CategorySlider category={categories[0]} />
+      <CategorySlider category={categories[1]} />
+      <CategorySlider category={categories[2]} />
+      <CategorySlider category={categories[3]} />
+      <CategorySlider category={categories[4]} />
+    </div>
+  );
 };
 
-      export default HomePage;
+export default HomePage;

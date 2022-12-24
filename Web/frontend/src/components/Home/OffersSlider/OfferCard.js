@@ -18,11 +18,11 @@ const OfferCard = () => {
   const [OfferData, setOfferData] = useState([]);
   const getOffersData = async () => {
     try {
-      const data = await fetch("http://localhost:1444/api/v1/getOffers");
-      const data2 = await data.json();
-      console.log(data2);
-      setOfferData(data2[0]);
-      setcount(data2[0].length);
+      const dataRes = await fetch("http://localhost:1444/api/v1/getOffers");
+      const {data} = await dataRes.json();
+      console.log(data);
+      setOfferData(data);
+      setcount(data.length);
     } catch (error) {
       console.log(error);
     }
@@ -55,10 +55,20 @@ const OfferCard = () => {
   const navigate = useNavigate();
   return (
     <>
+      <h2 className="CategoryName">
+        {" "}
+        <span>Offers</span>
+      </h2>
       <Slider {...settings}>
         {OfferData.map((product, index) => {
           return (
-            <div className="productOffer" key={index}>
+            <div
+              className="productOffer"
+              key={index}
+              onClick={(e) => {
+                navigate(`product/${product.pid}`);
+              }}
+            >
               <div className="left">
                 <h3>{product.product_name}</h3>
                 <Box

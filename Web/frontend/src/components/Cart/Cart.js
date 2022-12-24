@@ -26,12 +26,12 @@ const Cart = () => {
 
   const getDatatoCart = async () => {
     try {
-      const data = await fetch(
+      const dataRes = await fetch(
         `http://localhost:1444/api/v1/Cart?ssn=${customer_ssn}`
       );
-      const data2 = await data.json();
-      console.log(data2);
-      setcartProducts(data2[0]);
+      const { data } = await dataRes.json();
+      console.log(data);
+      setcartProducts(data);
     } catch (error) {
       console.log(error);
     }
@@ -43,11 +43,11 @@ const Cart = () => {
 
   const getShippingData = async () => {
     try {
-      const data = await fetch(
+      const dataRes = await fetch(
         "http://localhost:1444/api/v1/shippingCompany_Data"
       );
-      const data2 = await data.json();
-      setShippingData(data2[0]);
+      const { data } = await dataRes.json();
+      setShippingData(data);
     } catch (error) {
       console.log(error);
     }
@@ -111,8 +111,9 @@ const Cart = () => {
           products: cartProducts,
         }),
       });
-
-      if (res.status === 200) {
+      console.log(res);
+      const resRes = await res.json();
+      if (resRes.status === true) {
         document.getElementById("messageOrderSuccess").classList.add("active");
         setTimeout(() => {
           document
