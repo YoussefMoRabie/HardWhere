@@ -72,7 +72,7 @@ const Product = () => {
           qty,
         }),
       });
-      navigate("/Cart");
+      navigate("/Cart", { state: state });
     } catch (error) {
       console.log(error);
     }

@@ -94,7 +94,7 @@ const Navbar = () => {
     }
   }
   const handleCategoryClick=(lin)=>{
-    his(lin.path)
+    his(lin.path, { state: state });
   }
   const top100Films = [
     { title: "The Shawshank Redemption", year: 1994 },
