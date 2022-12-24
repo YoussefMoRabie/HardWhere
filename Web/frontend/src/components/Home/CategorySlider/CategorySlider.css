@@ -4,11 +4,11 @@
   text-transform: uppercase;
   text-align: center;
   color: #c8c20e;
-  
 }
 .CategoryName span{
   border-radius: 5px;
   border-bottom: 2px solid rgb(221, 224, 16);
+  text-transform:capitalize ;
 }
 /* .CategoryMain{
   width: 100%;

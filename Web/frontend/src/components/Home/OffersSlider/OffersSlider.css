@@ -6,6 +6,7 @@
   border-bottom: 3px solid #a8a8a8;
   padding-bottom: 15px;
   box-shadow: 0 0 7px 1px #d6d6d6;
+  margin-top: 30px;
 }
 .productOffer .left {
   float: left;
@@ -30,6 +31,7 @@
 }
 .productOffer .right {
   float: right;
+  cursor: pointer;
 }
 .productOffer .right img {
   width: 170px;
@@ -39,6 +41,8 @@
 button.addCartBtn {
   margin: 8px 5px;
   box-shadow: 0 0 5px 1px red;
+  position: relative;
+  z-index: 5;
 }
 .BsCartCheckFill {
   color: blanchedalmond;

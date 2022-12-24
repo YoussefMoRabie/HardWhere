@@ -11,12 +11,14 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import CheckIcon from "@mui/icons-material/Check";
 
 const Cart = () => {
   const { state } = useLocation();
   const customer_ssn = state.ssn;
+
+  const navigate=useNavigate();
 
   const [shippingName, setShippingName] = useState("none");
   const [shippingCost, setShippingCost] = useState(0);
@@ -26,12 +28,12 @@ const Cart = () => {
 
   const getDatatoCart = async () => {
     try {
-      const data = await fetch(
+      const dataRes = await fetch(
         `http://localhost:1444/api/v1/Cart?ssn=${customer_ssn}`
       );
-      const data2 = await data.json();
-      console.log(data2);
-      setcartProducts(data2[0]);
+      const { data } = await dataRes.json();
+      console.log(data);
+      setcartProducts(data);
     } catch (error) {
       console.log(error);
     }
@@ -43,11 +45,11 @@ const Cart = () => {
 
   const getShippingData = async () => {
     try {
-      const data = await fetch(
+      const dataRes = await fetch(
         "http://localhost:1444/api/v1/shippingCompany_Data"
       );
-      const data2 = await data.json();
-      setShippingData(data2[0]);
+      const { data } = await dataRes.json();
+      setShippingData(data);
     } catch (error) {
       console.log(error);
     }
@@ -111,8 +113,9 @@ const Cart = () => {
           products: cartProducts,
         }),
       });
-
-      if (res.status === 200) {
+      console.log(res);
+      const resRes = await res.json();
+      if (resRes.status === true) {
         document.getElementById("messageOrderSuccess").classList.add("active");
         setTimeout(() => {
           document
@@ -142,7 +145,10 @@ const Cart = () => {
 
             return (
               <div className="productInCart">
-                <img src={product.img_link} alt={`product ${product.pid}`} />
+                <img
+                  src={product.img_link}
+                  alt={`product ${product.pid}`}
+                />
                 <div className="data">
                   <h3 style={{ fontSize: "30px" }}>{product.product_name}</h3>
                   <div className="price">

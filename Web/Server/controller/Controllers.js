@@ -10,9 +10,10 @@ where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
   try {
     const data = await db.execute(sql);
 
-    res.send(data);
+    res.json({ status: true, data: data[0] });
   } catch (error) {
     console.log(error);
+    res.json({ status: false, message: error.sqlMessage });
   }
 };
 
@@ -20,12 +21,20 @@ where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
 const decProductQtyinCart = async (req, res) => {
   const sql = `update product set count=count+1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty-1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  try {
-    await db.execute(sql);
-    await db.execute(sql2);
-    res.send("Done dec");
-  } catch (error) {
-    console.log(error);
+  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+  const checked = await db.execute(sql3);
+
+  if (checked[0][0].has === 1) {
+    try {
+      await db.execute(sql);
+      await db.execute(sql2);
+      res.send({ status: true, message: "decremented" });
+    } catch (error) {
+      console.log(error);
+      res.json({ status: false, message: error.sqlMessage });
+    }
+  } else {
+    res.json({ status: false, message: "this product is't in this cart" });
   }
 };
 
@@ -33,39 +42,50 @@ const decProductQtyinCart = async (req, res) => {
 const incProductQtyinCart = async (req, res) => {
   const sql = `update product set count=count-1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty+1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  try {
-    await db.execute(sql);
-    await db.execute(sql2);
-    res.send("Done inc");
-  } catch (error) {
-    console.log(error);
+  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+  const checked = await db.execute(sql3);
+
+  if (checked[0][0].has === 1) {
+    try {
+      await db.execute(sql);
+      await db.execute(sql2);
+      res.send({ status: true, message: "incremented" });
+    } catch (error) {
+      console.log(error);
+      res.json({ status: false, message: error.sqlMessage });
+    }
+  } else {
+    res.json({ status: false, message: "this product is't in this cart" });
   }
 };
 
 const deleteProductFromCart = async (req, res) => {
   const sql = `delete from customer_cart where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
+
   try {
     await db.execute(sql);
-    res.send("deleted");
+    res.send({ status: true, message: "deleted" });
   } catch (error) {
     console.log(error);
+    res.json({ status: false, message: error.sqlMessage });
   }
 };
 
 const getProductData = async (req, res) => {
-  const sql = `select pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 1 as favorite
+  const sql = `select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 1 as favorite
 from product p,suppliers s,favorites fv,customer c
 where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
 union all
-select pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 0 as favorite
+select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 0 as favorite
 from product p,suppliers s,customer c
 where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
   try {
     const data = await db.execute(sql);
-    res.send(data);
+    res.json({ status: true, data: data[0][0] });
   } catch (error) {
     console.log(error);
+    res.json({ status: false, message: error.sqlMessage });
   }
 };
 
@@ -75,9 +95,10 @@ const addToCart = async (req, res) => {
   try {
     await db.execute(sql);
     await db.execute(sql2);
-    console.log("enserted");
+    res.send({ status: true, message: "product added to cart" });
   } catch (error) {
     console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
     if (error.code == "ER_DUP_ENTRY") {
       const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=${req.body.cust_ssn};`;
       const sql4 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
@@ -86,6 +107,7 @@ const addToCart = async (req, res) => {
         db.execute(sql4);
       } catch (error) {
         console.log(error.sqlMessage);
+        res.json({ status: false, message: error.sqlMessage });
       }
     }
   }
@@ -94,9 +116,10 @@ const getOffersData = async (req, res) => {
   const sql = ` select pid,product_name,p.img_link,price,new_price,start_date,p.end_date,p.desc,p.p_value,p.count from product p where has_offer=1;`;
   try {
     const data = await db.execute(sql);
-    res.send(data);
+    res.json({ status: true, data: data[0] });
   } catch (error) {
     console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
   }
 };
 
@@ -115,38 +138,36 @@ const addCustomer = async (req, res) => {
 
       const sql2 = `insert into customer(ssn) values(${ssn})`;
       await db.execute(sql2);
-
+      res.json({ status: true, message: "Customer added successfully" });
       console.log("done");
     } catch (error) {
       console.log(error.sqlMessage);
+      res.json({ status: false, message: error.sqlMessage });
     }
   } else {
-    res.json("email_signed_before");
+    res.json({ status: false, message: "email_signed_before" });
     console.log("signed before");
   }
 };
 
-const checkOnUser = async (req, res) => {
+const check_GetDataUser = async (req, res) => {
   const sql = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.query.email}" and password='${req.query.password}') as checked;`;
-
-  try {
-    const data = await db.execute(sql);
-    res.send(data);
-  } catch (error) {
-    console.log(error.sqlMessage);
-  }
-};
-const getUserData = async (req, res) => {
-  const sql = `SELECT ssn,f_name,l_name,phone,address,authority FROM users u
+  const sql2 = `SELECT ssn,f_name,l_name,phone,address,authority FROM users u
    where email='${req.query.email}' and password='${req.query.password}';`;
   try {
-    const data = await db.execute(sql);
-    res.send(data);
+    const dataCheck = await db.execute(sql);
+    const checked = dataCheck[0][0].checked;
+    if (checked === 1) {
+      const data = await db.execute(sql2);
+      res.json({ status: true, data: data[0][0] });
+    } else if (checked === 0) {
+      res.json({ status: false, message: "userNotFount" });
+    }
   } catch (error) {
     console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
   }
 };
-
 const addOrder = async (req, res) => {
   const sql = `insert into orders (price,date,cust_ssn,sc_id)
    values(${req.body.total},'${req.body.date}',${req.body.cust_ssn},${req.body.scid});`;
@@ -167,9 +188,10 @@ const addOrder = async (req, res) => {
     }
 
     await db.execute(sql4);
-    res.send("Done");
+    res.send({ status: true, message: "order added" });
   } catch (error) {
     console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
   }
 };
 
@@ -178,9 +200,60 @@ const getShippingCompData = async (req, res) => {
   try {
     const data = await db.execute(sql);
 
-    res.send(data);
+    res.json({ status: true, data: data[0] });
   } catch (error) {
     console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getlabtops = async (req, res) => {
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from labtops l, product p where p.pid=l.pid ;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getscreens = async (req, res) => {
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from screens l, product p where p.pid=l.pid ;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getaccessories = async (req, res) => {
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from accessories l, product p where p.pid=l.pid ;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getmobiles = async (req, res) => {
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from mobiles l, product p where p.pid=l.pid ;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getheadphones = async (req, res) => {
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from headphones l, product p where p.pid=l.pid ;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
   }
 };
 module.exports = {
@@ -192,8 +265,12 @@ module.exports = {
   addToCart,
   getOffersData,
   addCustomer,
-  checkOnUser,
-  getUserData,
+  check_GetDataUser,
   addOrder,
   getShippingCompData,
+  getlabtops,
+  getmobiles,
+  getheadphones,
+  getscreens,
+  getaccessories,
 };

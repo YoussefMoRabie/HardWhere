@@ -66,12 +66,12 @@ const Navbar = () => {
   const classes = useStyles();
   const navLinks = [
     {
-      title: "Labtop",
-      path: "/search/labtop",
+      title: "Labtops",
+      path: "/search/labtops",
     },
     {
-      title: "Mobile",
-      path: "/search/mobile",
+      title: "Mobiles",
+      path: "/search/mobiles",
     },
     {
       title: "Headphones",
@@ -88,13 +88,13 @@ const Navbar = () => {
   ];
   const his=useNavigate();
   const handleKeyDown = (e) => {
-    if (e.key=='Enter')
+    if (e.key==='Enter')
     {
       his('search/'+e.target.value)
     }
   }
   const handleCategoryClick=(lin)=>{
-    his(lin.path)
+    his(lin.path, { state: state });
   }
   const top100Films = [
     { title: "The Shawshank Redemption", year: 1994 },

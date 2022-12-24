@@ -109,8 +109,9 @@ const Signup = () => {
         },
         body: JSON.stringify(userdata),
       });
-
-      if ((await res.json()) === "email_signed_before") {
+      const res5 = await res.json();
+      console.log(res5);
+      if (res5.status === false) {
         document
           .getElementById("emailSignedBeforeMess")
           .classList.add("active");
