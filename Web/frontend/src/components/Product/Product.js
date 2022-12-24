@@ -110,11 +110,12 @@ const Product = () => {
 
   const fetchData = async () => {
     try {
-      const data = await fetch(`http://localhost:1444/api/v1/product/${id}`);
-      const data2 = await data.json();
+      const dataRes = await fetch(`http://localhost:1444/api/v1/product/${id}`);
+      console.log(dataRes);
+      const {data} = await dataRes.json();
 
-      console.log(data2[0][0]);
-      const productData = data2[0][0];
+      console.log(data);
+      const productData = data;
       setName(productData.product_name);
       setPrice(productData.price);
       setcount(productData.count);

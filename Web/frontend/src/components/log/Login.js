@@ -20,43 +20,32 @@ const Login = () => {
     try {
       console.log(55);
       console.log(password);
-      
-      const data = await fetch(
-        `http://localhost:1444/api/v1/checkOnUser?email=${userEmail}&password=${password}`
+
+      const dataRes = await fetch(
+        `http://localhost:1444/api/v1/check_GetDataUser?email=${userEmail}&password=${password}`
       );
 
-      console.log(data);
-      const data2 = await data.json();
-      setChecked(data2[0][0].checked);
-      console.log(checked);
-    } catch (error) {
-      console.log(error);
-    }
-
-    if (checked === 0) {
-      document.querySelector(".messErrorReg").classList.add("active");
-      setTimeout(() => {
-        document.querySelector(".messErrorReg").classList.remove("active");
-      }, 3000);
-    }
-    if (checked === 1) {
-      try {
-        const data = await fetch(
-          `http://localhost:1444/api/v1/getUserData?email=${userEmail}&password=${password}`
-        );
-        const data2 = await data.json();
+      
+      const { data,status } = await dataRes.json();
+      console.log(data,status);
+      if (status === true) {
         navigate(`/`, {
           state: {
-            ssn: data2[0][0].ssn,
-            f_name: data2[0][0].f_name,
-            l_name: data2[0][0].l_name,
+            ssn: data.ssn,
+            f_name: data.f_name,
+            l_name: data.l_name,
             email: userEmail,
-            address: data2[0][0].address,
+            address: data.address,
           },
         });
-      } catch (error) {
-        console.log(error);
+      } else {
+        document.querySelector(".messErrorReg").classList.add("active");
+        setTimeout(() => {
+          document.querySelector(".messErrorReg").classList.remove("active");
+        }, 3000);
       }
+    } catch (error) {
+      console.log(error);
     }
   };
   return (

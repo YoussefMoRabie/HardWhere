@@ -10,7 +10,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 
@@ -66,26 +66,36 @@ const Navbar = () => {
   const classes = useStyles();
   const navLinks = [
     {
-      title: "Labtop",
-      path: "/",
+      title: "Labtops",
+      path: "/search/labtops",
     },
     {
-      title: "Mobile",
-      path: "/",
+      title: "Mobiles",
+      path: "/search/mobiles",
     },
     {
       title: "Headphones",
-      path: "/",
+      path: "/search/headphones",
     },
     {
       title: "Screens",
-      path: "/",
+      path: "/search/screens",
     },
     {
       title: "Accessories",
-      path: "/",
+      path: "/search/accessories",
     },
   ];
+  const his=useNavigate();
+  const handleKeyDown = (e) => {
+    if (e.key==='Enter')
+    {
+      his('search/'+e.target.value)
+    }
+  }
+  const handleCategoryClick=(lin)=>{
+    his(lin.path)
+  }
   const top100Films = [
     { title: "The Shawshank Redemption", year: 1994 },
     { title: "The Godfather", year: 1972 },
@@ -114,6 +124,7 @@ const Navbar = () => {
           <Grid item sm={5}>
             <Stack>
               <Autocomplete
+              onKeyDown={handleKeyDown}
                 freeSolo
                 id="free-solo-2-demo"
                 disableClearable
@@ -212,6 +223,9 @@ const Navbar = () => {
       >
         {navLinks.map((navLink) => (
           <ListItem
+          onClick={(e)=>{
+            handleCategoryClick(navLink);
+          }}
             key={navLink.title}
             sx={{ borderRadius: 10 }}
             className={classes.Btn}

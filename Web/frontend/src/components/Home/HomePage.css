@@ -1,0 +1,8 @@
+.Homesliders{
+  display: flex;
+  width: 95%;
+  margin: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 25px;
+}

@@ -9,10 +9,14 @@ const {
   addToCart,
   getOffersData,
   addCustomer,
-  checkOnUser,
-  getUserData,
+  check_GetDataUser,
   addOrder,
   getShippingCompData,
+  getlabtops,
+  getmobiles,
+  getheadphones,
+  getscreens,
+  getaccessories,
 } = require("../controller/Controllers");
 
 
@@ -28,8 +32,13 @@ router.route('/product/:id').get(getProductData);
 router.route("/product/addtocart").post(addToCart);
 router.route('/getOffers').get(getOffersData);
 router.route("/signup").post(addCustomer);
-router.route("/checkOnUser").get(checkOnUser);
-router.route("/getUserData").get(getUserData);
+router.route("/check_GetDataUser").get(check_GetDataUser);
 router.route('/addtoOrders').post(addOrder);
 router.route('/shippingCompany_Data').get(getShippingCompData);
+router.route("/labtops").get(getlabtops);
+router.route("/mobiles").get(getmobiles);
+router.route("/headphones").get(getheadphones);
+router.route("/screens").get(getscreens);
+router.route("/accessories").get(getaccessories);
+
 module.exports=router;
