@@ -74,6 +74,8 @@ dependencies:
   animated_flip_counter: ^0.2.5
   conditional_builder_null_safety: ^0.0.6
   flutter_cart: ^0.0.8
+  fluttertoast: ^8.1.2
+  cached_network_image: ^3.2.3
  # flutter_native_splash: ^2.2.16
 #  path: ^1.8.0
 #  # Qrcode

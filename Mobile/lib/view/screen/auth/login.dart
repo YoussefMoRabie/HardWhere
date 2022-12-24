@@ -47,6 +47,8 @@ class Login extends StatelessWidget {
               ),
               const SizedBox(height: 30,),
               AuthTextField(
+                  controller: loginController.email,
+
                   valid: (val){
                     return validInput(val!, 5, 100, "email");
                   },
@@ -56,6 +58,7 @@ class Login extends StatelessWidget {
               ),
               const SizedBox(height: 30,),
               GetBuilder<LoginControllerImp>(builder: (controller)=>AuthTextField(
+                controller: loginController.password,
                   valid: (val){
                     return validInput(val!, 8, 100, "password");
                   },

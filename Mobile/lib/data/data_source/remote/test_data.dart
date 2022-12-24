@@ -5,11 +5,11 @@ class TestData {
   Crud crud;
   TestData(this.crud);
   getData() async {
-    var response = await crud.postData(AppLink.SignUp,       {
+    var response = await crud.postData(AppLink.signUp,   {
       "firstName": "kkkkk",
       "lastName": "kkk",
       "password":"123456",
-      "phone":"022002266012",
+      "phone":"266012",
       "address":"03",
       "email":"ll6655@ll.ll"
     });

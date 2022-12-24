@@ -4,14 +4,16 @@ class AuthTextField extends StatelessWidget {
   final String labelText;
   final String hintText;
   final IconData  sufIcon;
+  final TextEditingController controller;
   final String? Function(String?) valid;
   final bool ? hide;
-  const AuthTextField({Key? key,this.hide,required this.labelText,required this.sufIcon, required this.hintText,required this.valid}) : super(key: key);
+  const AuthTextField({Key? key,this.hide,required this.labelText,required this.sufIcon, required this.hintText,required this.valid, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       validator: valid,
+      controller: controller,
       obscureText: (hide==null||hide==false)? false:true ,
       decoration:  InputDecoration(
         hintText: hintText,

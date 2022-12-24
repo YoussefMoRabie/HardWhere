@@ -28,6 +28,7 @@ class TestController extends GetxController {
       if (response['status'] == "true") {
 
         data.addAll(response['data']);
+        print(data.toString());
 
 
       }else{
