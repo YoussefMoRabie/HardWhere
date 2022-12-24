@@ -19,7 +19,7 @@ const OfferCard = () => {
   const getOffersData = async () => {
     try {
       const dataRes = await fetch("http://localhost:1444/api/v1/getOffers");
-      const {data} = await dataRes.json();
+      const { data } = await dataRes.json();
       console.log(data);
       setOfferData(data);
       setcount(data.length);
@@ -62,13 +62,7 @@ const OfferCard = () => {
       <Slider {...settings}>
         {OfferData.map((product, index) => {
           return (
-            <div
-              className="productOffer"
-              key={index}
-              onClick={(e) => {
-                navigate(`product/${product.pid}`);
-              }}
-            >
+            <div className="productOffer" key={index}>
               <div className="left">
                 <h3>{product.product_name}</h3>
                 <Box
@@ -144,7 +138,12 @@ const OfferCard = () => {
                   <h3 style={{ margin: "16px 0px" }}>SOLD</h3>
                 )}
               </div>
-              <div className="right">
+              <div
+                className="right"
+                onClick={(e) => {
+                  navigate(`product/${product.pid}`, { state: state });
+                }}
+              >
                 <img src={product.img_link} alt={product + product.pid} />
               </div>
             </div>

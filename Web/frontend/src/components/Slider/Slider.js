@@ -3,8 +3,11 @@ import "./Slider.css";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const ReactCardSlider = (props) => {
+  const { state } = useLocation();
+  console.log("user", state);
+
   const his = useNavigate();
   const slideLeft = () => {
     var slider = document.getElementById("slider" + props.CategoryName);
@@ -29,7 +32,7 @@ const ReactCardSlider = (props) => {
             <div
               className="slider-card"
               key={index}
-              onClick={(e) => his(`product/${slide.pid}`)}
+              onClick={(e) => his(`product/${slide.pid}`, { state: state })}
             >
               <div
                 className="slider-card-image"

@@ -4,8 +4,11 @@ import "../Slider/Slider.css";
 import "./ProductsPage.css";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
-
+import { useLocation } from "react-router-dom";
 const ProductsPage = () => {
+  const { state } = useLocation();
+  console.log("user", state);
+
   const { searchVal: parm } = useParams();
   console.log(parm);
   const his = useNavigate();
@@ -14,7 +17,7 @@ const ProductsPage = () => {
     const getProducts = async () => {
       try {
         const dataRes = await fetch(`http://localhost:1444/api/v1/${parm}`);
-        const {data} = await dataRes.json();
+        const { data } = await dataRes.json();
         console.log("products", data);
         setProducts(data);
       } catch (error) {
@@ -36,7 +39,7 @@ const ProductsPage = () => {
             className="slider-card"
             key={index}
             onClick={(e) => {
-              his(`/product/${product.pid}`);
+              his(`/product/${product.pid}`, { state: state });
             }}
           >
             <div
