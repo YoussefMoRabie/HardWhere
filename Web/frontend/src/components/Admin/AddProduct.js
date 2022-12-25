@@ -8,6 +8,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import validator from 'validator'
+import Autocomplete from '@mui/material/Autocomplete';
 import FilledInput from '@mui/material/FilledInput';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -19,6 +20,7 @@ import { flexbox } from '@mui/system';
 const AddProduct = () => {
   
   const Suppliers=["one","two","three","four","five","six","seven","eight","eight"];
+  const Storages=["one","two","three","four","five","six","seven","eight","eight"];
   const [URLcolor, setURLcolor] = React.useState('primary'); ;
   const [Idcolor, setIdcolor] = React.useState('primary'); ;
   const [color, setColor] = React.useState({});
@@ -71,6 +73,7 @@ const AddProduct = () => {
 
   return (
     <div className="New">
+      <h3><span>Add New Product</span></h3>
       <form className='formAdd' onSubmit={handleSubmit}>
         <TextField
           required
@@ -95,19 +98,23 @@ const AddProduct = () => {
           {Idcolor == "error" && <span style={{ color: 'red', fontSize: 12, padding: 5 }}>*Invalid ID</span>}
 
         </FormControl>
-        <FormControl>
-          <InputLabel required={true} id="demo-simple-select-helper-label">Supplier</InputLabel>
-          <Select required={true}
-            labelId="demo-simple-select-helper-label"
-            id="demo-simple-select-helper"
-            value={Supplier}
-            label="Supplier"
-            onChange={handleSupplierChange}
-          >
-            {Suppliers.map(Suplier => (<MenuItem key={Suplier}>{Suplier}</MenuItem>))}
-          </Select>
-        </FormControl>
-
+        <Autocomplete
+          disablePortal
+          required
+          onChange={handleSupplierChange}
+          id="combo-box-demo"
+          options={Suppliers}
+          fullWidth
+          renderInput={(params) => <TextField {...params} label="Supplier" />}
+        />
+        <Autocomplete
+          disablePortal
+          required
+          id="combo-box-demo"
+          options={Storages}
+          fullWidth
+          renderInput={(params) => <TextField {...params} label="Storage" />}
+        />
         <TextField
           required={true}
           id="outlined-number"

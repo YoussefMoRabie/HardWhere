@@ -11,16 +11,38 @@ class Crud {
       if (await checkInternet()) {
         var response = await http.post(Uri.parse(linkUrl), body: data);
         if (response.statusCode == 200 || response.statusCode == 201) {
+          print(response.body);
           Map responseBody = jsonDecode(response.body);
           return Right(responseBody);
         } else {
+          print("statusCode == 404");
           return const Left(StatusRequest.serverFailure);
         }
       } else {
         return const Left(StatusRequest.offlineFailure);
       }
     } catch (_) {
-      return const Left(StatusRequest.serverFailure);
+      return const Left(StatusRequest.offlineFailure);
     }
   }
+  Future<Either<StatusRequest, Map>> getData(String linkUrl) async {
+    try {
+      if (await checkInternet()) {
+        var response = await http.get(Uri.parse(linkUrl));
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          print(response.body);
+          Map responseBody = jsonDecode(response.body);
+          return Right(responseBody);
+        } else {
+          print("statusCode == 404");
+          return const Left(StatusRequest.serverFailure);
+        }
+      } else {
+        return const Left(StatusRequest.offlineFailure);
+      }
+    } catch (_) {
+      return const Left(StatusRequest.offlineFailure);
+    }
+  }
+
 }

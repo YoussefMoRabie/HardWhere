@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hardwhere/controller/auth/signup_contoller.dart';
 import '../../../core/constans/color.dart';
@@ -21,7 +22,6 @@ class SignUp extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             Get.back();
-
           },
           icon: const Icon(Icons.arrow_back_ios_new_outlined,color: Colors.black,),
 
@@ -49,17 +49,31 @@ class SignUp extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 30,),
-               AuthTextField(
+              const SizedBox(height: 20,),
+              AuthTextField(
+                  controller: controller.fName,
                   valid: (val){
-                    return validInput(val!, 5, 100, "username");
+                    return validInput(val!, 5, 100, "First Name");
                   },
-                  labelText: 'Username',
+
+                  labelText: 'First Name',
                   sufIcon: Icons.person_outline,
-                  hintText: 'Enter your username'
+                  hintText: 'Enter your first name'
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(height: 20,),
                AuthTextField(
+                 controller: controller.lName,
+                  valid: (val){
+                    return validInput(val!, 5, 100, "Last Name");
+                  },
+
+                  labelText: 'Last Name',
+                  sufIcon: Icons.person_outline,
+                  hintText: 'Enter your last name'
+              ),
+              const SizedBox(height: 20,),
+               AuthTextField(
+                   controller: controller.email,
                    valid: (val){
                      return validInput(val!, 5, 100, "email");
                    },
@@ -67,17 +81,29 @@ class SignUp extends StatelessWidget {
                   sufIcon: Icons.email_outlined,
                   hintText: 'Enter your email'
               ),
-              const SizedBox(height: 30,),
-               AuthTextField(
+              const SizedBox(height: 20,),
+              AuthTextField(
+                  controller: controller.address,
                   valid: (val){
+                    return validInput(val!, 5, 100, "Address");
+                  },
+                  labelText: 'Address',
+                  sufIcon: Icons.location_on_outlined,
+                  hintText: 'Enter your address'
+              ),
+              const SizedBox(height: 20,),
+               AuthTextField(
+                   controller: controller.phone,
+                   valid: (val){
                     return validInput(val!, 5, 100, "phone");
                   },
                   labelText: 'Phone',
                   sufIcon: Icons.phone_outlined,
                   hintText: 'Enter your phone'
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(height: 20,),
                AuthTextField(
+                   controller: controller.password,
                    valid: (val){
                      return validInput(val!, 5, 100, "password");
                    },
@@ -87,10 +113,9 @@ class SignUp extends StatelessWidget {
               ),
               const SizedBox(height: 50,),
               customButton(onPressed: () {
-                controller.tologin();
+                controller.signUp();
               }, text: 'Sign In'),
               const SizedBox(height: 30,),
-
               Row(
 
                 mainAxisAlignment: MainAxisAlignment.center,

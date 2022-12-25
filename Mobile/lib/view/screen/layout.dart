@@ -36,18 +36,18 @@ class Layout extends StatelessWidget {
           child: Image(image: AssetImage('assets/images/logo.png')),
         ) ,
         title: const Text('HardWhere'),
-        actions: [
-          Center(
-            child: SwitcherButton(
-              value:  false,//!MainCubit.get(context).isDark,
-              onColor: Colors.grey[200]!,
-              onChange: (value) {
-               ThemeService().changeTheme();
-
-              },
-            ),
-          ),
-        ],
+        // actions: [
+        //   Center(
+        //     child: SwitcherButton(
+        //       value:  false,//!MainCubit.get(context).isDark,
+        //       onColor: Colors.grey[200]!,
+        //       onChange: (value) {
+        //        ThemeService().changeTheme();
+        //
+        //       },
+        //     ),
+        //   ),
+        // ],
       ),
       body: controller.screens.elementAt(controller.currentIndex),
       bottomNavigationBar: CurvedNavigationBar(
