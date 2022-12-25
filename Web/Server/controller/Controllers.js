@@ -279,6 +279,46 @@ const removeFromFavorites = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const getFavorites = async (req, res) => {
+  const sql = `select p_id from favorites where cust_ssn =${req.query.ssn} `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: [...data[0]] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const addSupplier = async (req, res) => {
+  const sql = `Insert into suppliers (su_name,su_address,su_phone) values('${req.body.name}','${req.body.address}','${req.body.phone}');`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "new supplier added " });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const addShipping = async (req, res) => {
+  const sql = `insert into shipping_company (sc_name,cost,delivery_time) values("${req.body.sc_name}",${req.body.cost},${req.body.delivery_time});`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "new shipping company added " });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const addStorage = async (req, res) => {
+  const sql = `insert into storages (st_address,max_capacity) values ("${req.body.address}",${req.body.max_capacity});`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "new Storage added " });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 module.exports = {
   getCartProducts,
   decProductQtyinCart,
@@ -298,4 +338,8 @@ module.exports = {
   getaccessories,
   addToFavorites,
   removeFromFavorites,
+  getFavorites,
+  addSupplier,
+  addShipping,
+  addStorage,
 };

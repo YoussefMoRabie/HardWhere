@@ -19,13 +19,13 @@ const {
   getaccessories,
   removeFromFavorites,
   addToFavorites,
+  getFavorites,
+  addSupplier,
+  addShipping,
+  addStorage,
 } = require("../controller/Controllers");
 
 
-
-// we will add our needed routes here like this
-//&
-// get our functions from PostControllers 
 router.route("/Cart").get(getCartProducts);
 router.route("/Cart/del/:id").delete(deleteProductFromCart);
 router.route("/Cart/decQty/:id").patch(decProductQtyinCart);  
@@ -44,6 +44,12 @@ router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
 router.route("/addToFavorite").get(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
+router.route("/getFavorite").get(getFavorites);
+router.route("/addSupplier").post(addSupplier);
+router.route("/addShipping").post(addShipping);
+router.route("/addStorage").post(addStorage);
+
+
 
 
 module.exports=router;
