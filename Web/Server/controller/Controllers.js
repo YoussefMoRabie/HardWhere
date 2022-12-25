@@ -113,7 +113,7 @@ const addToCart = async (req, res) => {
   }
 };
 const getOffersData = async (req, res) => {
-  const sql = ` select pid,product_name,p.img_link,price,new_price,start_date,p.end_date,p.desc,p.p_value,p.count from product p where has_offer=1;`;
+  const sql = ` select pid,product_name,p.img_link,price,new_price,start_date,p.end_date,p.p_value,p.count from product p where has_offer=1;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -129,6 +129,7 @@ const addCustomer = async (req, res) => {
   const sql4 = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.body.email}" ) as checked;`;
   const checkEmail = await db.execute(sql4);
   const checked = checkEmail[0][0].checked;
+
   if (checked === 0) {
     try {
       await db.execute(sql1);
@@ -169,8 +170,9 @@ const check_GetDataUser = async (req, res) => {
   }
 };
 const addOrder = async (req, res) => {
-  const sql = `insert into orders (price,date,cust_ssn,sc_id)
+  const sql = ` insert into orders (price,date,cust_ssn,sc_id)
    values(${req.body.total},'${req.body.date}',${req.body.cust_ssn},${req.body.scid});`;
+
   const sql3 = `   select max(oid) as maxOrderId from orders `;
   const sql4 = `delete from customer_cart where cust_ssn = ${req.body.cust_ssn}`;
   try {
@@ -256,6 +258,27 @@ const getheadphones = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+
+const addToFavorites = async (req, res) => {
+  const sql = `insert into favorites values(${req.query.ssn},${req.query.pid}) ;`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "added to favorite" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const removeFromFavorites = async (req, res) => {
+  const sql = `delete from favorites where cust_ssn=${req.query.ssn} and p_id=${req.query.pid};`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "removed from favorite" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 module.exports = {
   getCartProducts,
   decProductQtyinCart,
@@ -273,4 +296,6 @@ module.exports = {
   getheadphones,
   getscreens,
   getaccessories,
+  addToFavorites,
+  removeFromFavorites,
 };

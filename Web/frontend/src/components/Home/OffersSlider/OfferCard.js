@@ -85,7 +85,6 @@ const OfferCard = () => {
                     {labels[Number(product.rating)]}
                   </Box>
                 </Box>
-                <p>{product.desc}</p>
 
                 <p>
                   Start Date:{" "}
