@@ -360,6 +360,71 @@ const addProduct = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const deleteProduct = async (req, res) => {
+  const sql = `delete from product where pid = ${req.body.pid};`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "product deleted" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateProduct = async (req, res) => {
+  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price}, st_id = ${req.body.st_id},
+              has_offer = ${req.body.has_offer}, new_price = ${req.body.new_price}, start_date = '${req.body.start_date}', end_date = '${req.body.end_date}'
+              where pid = ${req.body.pid};`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "product updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const filterBySupplier = async (req, res) => {
+  const sql = `select * from product where su_id = ${req.body.su_id}`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const filterByOffer = async (req, res) => {
+  const sql = `select * from product where has_offer = 1`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const filterByPrice = async (req, res) => {
+  const sql = `select * from product where price >= ${req.body.min_price} and price <= ${req.body.max_price} and has_offer != 1 
+              union
+              select * from product where new_price >= ${req.body.min_price} and new_price <= ${req.body.max_price} and has_offer = 1`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const searchProduct = async (req, res) => {
+  const sql = `select * from product where product_name like '%${req.body.search_text}%';`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+
 
 module.exports = {
   getCartProducts,
@@ -379,7 +444,7 @@ module.exports = {
   getscreens,
   getaccessories,
   addToFavorites,
-  removeFromFavorites,
+   removeFromFavorites,
   getFavorites,
   addSupplier,
   addShipping,
@@ -388,4 +453,10 @@ module.exports = {
   getAllStorages,
   getAllSuppliers,
   addProduct,
+  deleteProduct,
+  updateProduct,
+  filterBySupplier,
+  filterByOffer,
+  filterByPrice,
+  searchProduct,
 };

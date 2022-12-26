@@ -27,6 +27,12 @@ const {
   getAllStorages,
   getAllSuppliers,
   addProduct,
+  deleteProduct,
+  updateProduct,
+  filterBySupplier,
+  filterByOffer,
+  filterByPrice,
+  searchProduct,
 } = require("../controller/Controllers");
 
 
@@ -53,12 +59,19 @@ router.route("/addSupplier").post(addSupplier);
 router.route("/addShipping").post(addShipping);
 router.route("/addStorage").post(addStorage);
 
-
-
 //admin
 router.route("/getAllProducts").get(getAllProducts);
 router.route("/getAllStorages").get(getAllStorages);
 router.route("/getAllSuppliers").get(getAllSuppliers);
 router.route("/addProduct").post(addProduct);
+router.route("/deleteProduct").delete(deleteProduct);
+router.route("/deleteProduct").delete(deleteProduct);
+router.route("/updateProduct").patch(updateProduct);
+
+//filtering
+router.route("/filterBySupplier").get(filterBySupplier);
+router.route("/filterByOffer").get(filterByOffer);
+router.route("/filterByPrice").get(filterByPrice);
+router.route("/searchProduct").get(searchProduct);
 
 module.exports=router;
