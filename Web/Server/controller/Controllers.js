@@ -256,6 +256,48 @@ const getheadphones = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const getAllProducts = async (req, res) => {
+  const sql = `SELECT * FROM hardwhere.product;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getAllStorages = async (req, res) => {
+  const sql = `SELECT * FROM hardwhere.storages;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getAllSuppliers = async (req, res) => {
+  const sql = `SELECT * FROM hardwhere.suppliers;`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const addProduct = async (req, res) => {
+  const sql = `insert into product (pid,product_name,price,color,count,st_id,su_id,img_link)
+   values (${req.body.pid},"${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "product added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+
 module.exports = {
   getCartProducts,
   decProductQtyinCart,
@@ -273,4 +315,8 @@ module.exports = {
   getheadphones,
   getscreens,
   getaccessories,
+  getAllProducts,
+  getAllStorages,
+  getAllSuppliers,
+  addProduct,
 };

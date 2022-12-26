@@ -17,6 +17,10 @@ const {
   getheadphones,
   getscreens,
   getaccessories,
+  getAllProducts,
+  getAllStorages,
+  getAllSuppliers,
+  addProduct,
 } = require("../controller/Controllers");
 
 
@@ -40,5 +44,10 @@ router.route("/mobiles").get(getmobiles);
 router.route("/headphones").get(getheadphones);
 router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
+//admin
+router.route("/getAllProducts").get(getAllProducts);
+router.route("/getAllStorages").get(getAllStorages);
+router.route("/getAllSuppliers").get(getAllSuppliers);
+router.route("/addProduct").post(addProduct);
 
 module.exports=router;
