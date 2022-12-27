@@ -24,6 +24,16 @@ const {
   addSupplier,
   addShipping,
   addStorage,
+  getAllProducts,
+  getAllStorages,
+  getAllSuppliers,
+  addProduct,
+  deleteProduct,
+  updateProduct,
+  filterBySupplier,
+  filterByOffer,
+  filterByPrice,
+  searchProduct,
   getEmployees,
   daleteEmpoyee,
   getDepartments,
@@ -66,7 +76,6 @@ router.route("/getEmployees").get(getEmployees);
 router.route("/deleteEmployee").delete(daleteEmpoyee);
 router.route("/getDepartments").get(getDepartments);
 router.route("/addNewEmployee").post(addNewEmployee);
-
 
 //admin
 router.route("/getAllProducts").get(getAllProducts);
