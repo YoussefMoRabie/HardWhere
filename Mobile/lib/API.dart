@@ -12,5 +12,7 @@ class AppLink {
   static const String headphones = "$server/headphones";
   static const String accessories = "$server/accessories";
   static const String screens = "$server/screens";
+  static const String cart = "$server/Cart?ssn=";
+  static const String cartDel = "$server/Cart/del/";
 
 }

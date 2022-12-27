@@ -77,9 +77,7 @@ class HomeControllerImp extends HomeController {
   @override
   goToItems(selectedCat) {
     Get.to(const Items() ,arguments: {
-    //"categories": categories,
     "selectedCat": selectedCat,
-    //"catid": categoryid
     });
   }
 
