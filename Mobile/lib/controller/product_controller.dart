@@ -24,26 +24,7 @@ late StatusRequest statusRequest;
   @override
   Future<void> onInit() async {
     initialData();
-
-
-    statusRequest = StatusRequest.loading;
-    // productDetails.clear();
-    var response = await productData.getData(id);
-    statusRequest = handlingData(response);
-    if (StatusRequest.success == statusRequest) {
-      if (response['status'] == true) {
-        productDetails=response['data'];
-      } else {
-        statusRequest = StatusRequest.failure;
-      }
-    }
-    update();
-
-
-
-
-
-
+    await getData();
     super.onInit();
   }
 
@@ -65,8 +46,6 @@ late StatusRequest statusRequest;
   initialData() {
 
     id = Get.arguments['selectedPro'];
-    print("oooooooooooooooooooooooooooooooooooooooooooooooooooooooo$id");
-
   }
 
 
@@ -80,10 +59,13 @@ getData() async {
   if (StatusRequest.success == statusRequest) {
     if (response['status'] == true) {
       productDetails=response['data'];
+      print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<${productDetails["count"]}");
+
     } else {
       statusRequest = StatusRequest.failure;
     }
   }
+
   update();
 }
 }

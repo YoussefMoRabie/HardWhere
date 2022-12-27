@@ -40,7 +40,8 @@ class Product extends StatelessWidget {
       bottomNavigationBar: Container(
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           height: 40,
-          child: MaterialButton(
+          child:(controller.productDetails["count"]== null|| controller.productDetails["count"]<1)?Container():
+          MaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               color: AppColor.secColor,
@@ -49,7 +50,8 @@ class Product extends StatelessWidget {
                 "Add To Cart",
                 style: TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
-              ))),
+              )),
+      ),
       body: ListView(
         children: [
         Stack(
@@ -88,7 +90,7 @@ class Product extends StatelessWidget {
                       )),
                   const Spacer(),
                   RatingBarIndicator(
-                    rating: double.parse(proController.productDetails["p_value"]),
+                    rating: double.parse(proController.productDetails["p_value"]??"0"),
                     itemBuilder: (context, index) => const Icon(
                       Icons.star,
                       color: Colors.amber,
@@ -139,13 +141,13 @@ class Product extends StatelessWidget {
                   ),
 
                   const Spacer(),
-                  if(proController.productDetails["has_offer"]["data"][0]==0)
+                  if(proController.productDetails["has_offer"]==null||proController.productDetails["has_offer"]["data"][0]==0)
                   Text(
                     "${proController.productDetails["price"]}\$",
                     style: const TextStyle(
                         color: Colors.red, fontSize: 30, height: 1.1),
                   ),
-                  if(proController.productDetails["has_offer"]["data"][0]==1)
+                  if(proController.productDetails["has_offer"]!=null&&proController.productDetails["has_offer"]["data"][0]==1)
                   Text.rich(TextSpan(
                     children: <TextSpan>[
                       TextSpan(
@@ -202,20 +204,25 @@ class Product extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 5,),
+              Text(
+                  "Description : ",
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  )),
               Row(
                 children: [
-                  Text(
-                      "Description : ",
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      )),
-                  Text(
-                      "${proController.productDetails["desc"]}",
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          fontSize: 15
-                      )),
+                  SizedBox(width: 50,),
+                  
+                  Expanded(
+                    child: Text(
+                        "${proController.productDetails["desc"]}",
+                        maxLines: 10,
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontSize: 15
+                        )),
+                  ),
                 ],
               ),
 

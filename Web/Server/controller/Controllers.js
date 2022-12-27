@@ -4,7 +4,7 @@ const db = require("../DB/DBConnect");
 
 //  cust_ssn should be dynamic later
 const getCartProducts = async (req, res) => {
-  const sql = `select p.product_name,p.count as totalCnt,cc.qty,p.price,p.pid,p.img_link from product p , customer_cart cc, customer c 
+  const sql = `select p.product_name,p.count as totalCnt,cc.qty,p.price,p.pid,p.has_offer,p.new_price,p.img_link from product p , customer_cart cc, customer c 
 where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
 
   try {
@@ -19,44 +19,44 @@ where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
 
 // p_id should be dynamic later
 const decProductQtyinCart = async (req, res) => {
-  const sql = `update product set count=count+1 where pid=${req.params.id};`;
+  // const sql = `update product set count=count+1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty-1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
-  const checked = await db.execute(sql3);
+  // const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+  // const checked = await db.execute(sql3);
 
-  if (checked[0][0].has === 1) {
-    try {
-      await db.execute(sql);
-      await db.execute(sql2);
-      res.send({ status: true, message: "decremented" });
-    } catch (error) {
-      console.log(error);
-      res.json({ status: false, message: error.sqlMessage });
-    }
-  } else {
-    res.json({ status: false, message: "this product is't in this cart" });
+  // if (checked[0][0].has === 1) {
+  try {
+    // await db.execute(sql);
+    await db.execute(sql2);
+    res.send({ status: true, message: "decremented" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: error.sqlMessage });
   }
+  // } else {
+  //   res.json({ status: false, message: "this product is't in this cart" });
+  // }
 };
 
 // ssn should be dynamic later
 const incProductQtyinCart = async (req, res) => {
-  const sql = `update product set count=count-1 where pid=${req.params.id};`;
+  // const sql = `update product set count=count-1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty+1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
-  const checked = await db.execute(sql3);
+  // const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+  // const checked = await db.execute(sql3);
 
-  if (checked[0][0].has === 1) {
-    try {
-      await db.execute(sql);
-      await db.execute(sql2);
-      res.send({ status: true, message: "incremented" });
-    } catch (error) {
-      console.log(error);
-      res.json({ status: false, message: error.sqlMessage });
-    }
-  } else {
-    res.json({ status: false, message: "this product is't in this cart" });
+  // if (checked[0][0].has === 1) {
+  try {
+    // await db.execute(sql);
+    await db.execute(sql2);
+    res.send({ status: true, message: "incremented" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: error.sqlMessage });
   }
+  // } else {
+  //   res.json({ status: false, message: "this product is't in this cart" });
+  // }
 };
 
 const deleteProductFromCart = async (req, res) => {
@@ -128,24 +128,26 @@ where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
 const addToCart = async (req, res) => {
   const sql = `insert into customer_cart values(${req.body.cust_ssn},${req.body.pid},${req.body.qty});`;
-  const sql2 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
+  // const sql2 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
   try {
     await db.execute(sql);
-    await db.execute(sql2);
-    res.send({ status: true, message: "product added to cart" });
+    // await db.execute(sql2);
+    res.send({ status: true, message: "new product added to cart" });
   } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
     if (error.code == "ER_DUP_ENTRY") {
-      const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=${req.body.cust_ssn};`;
-      const sql4 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
-      try {
-        db.execute(sql3);
-        db.execute(sql4);
-      } catch (error) {
-        console.log(error.sqlMessage);
-        res.json({ status: false, message: error.sqlMessage });
-      }
+      // const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=${req.body.cust_ssn};`;
+      // const sql4 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
+      // try {
+      //   db.execute(sql3);
+      //   db.execute(sql4);
+      //   res.send({ status: true, message: "old product qty increased" });
+      // } catch (error) {
+      //   console.log(error.sqlMessage);
+      //   res.json({ status: false, message: error.sqlMessage });
+      // }
+      res.json({ status: false, message: "product allready in your cart" });
+    } else {
+      res.json({ status: false, message: error.sqlMessage });
     }
   }
 };
@@ -224,6 +226,8 @@ const addOrder = async (req, res) => {
     console.log(oid);
     for (const product of cartProducts) {
       const sql2 = `insert into contains values (${oid},${product.pid},${product.qty})`;
+      const sql6 = `update product set count=count-${product.qty} where pid=${product.pid};`;
+      await db.execute(sql6);
       await db.execute(sql2);
     }
 
@@ -236,7 +240,7 @@ const addOrder = async (req, res) => {
 };
 
 const getShippingCompData = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.shipping_company;`;
+  const sql = `SELECT * FROM shipping_company;`;
   try {
     const data = await db.execute(sql);
 
@@ -318,7 +322,7 @@ const removeFromFavorites = async (req, res) => {
   }
 };
 const getFavorites = async (req, res) => {
-  const sql = `select p_id from favorites where cust_ssn =${req.query.ssn} `;
+  const sql = `select * from favorites, product where cust_ssn = ${req.query.ssn} and p_id = pid`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: [...data[0]] });
@@ -359,7 +363,7 @@ const addStorage = async (req, res) => {
 };
 
 const getEmployees = async (req, res) => {
-  const sql = `select  CONCAT(f_name,' ',l_name) as fullname, u.ssn from employee e,users u where u.ssn=e.ssn `;
+  const sql = `select  CONCAT(f_name,' ',l_name) as fullname, u.ssn,e.salary,e.working_shift,e.d_id from employee e,users u where u.ssn=e.ssn `;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -370,7 +374,7 @@ const getEmployees = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.product;`;
+  const sql = `SELECT * FROM product;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -380,7 +384,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 const getAllStorages = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.storages;`;
+  const sql = `SELECT * FROM storages;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -390,7 +394,7 @@ const getAllStorages = async (req, res) => {
   }
 };
 const getAllSuppliers = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.suppliers;`;
+  const sql = `SELECT * FROM suppliers;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -399,9 +403,10 @@ const getAllSuppliers = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+//-----------------------------------------------------------------Employee-------------------------------------------------------------------------
 const addProduct = async (req, res) => {
-  const sql = `insert into product (pid,product_name,price,color,count,st_id,su_id,img_link)
-   values (${req.body.pid},"${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
+  const sql = `insert into product (product_name,price,color,count,st_id,su_id,img_link)
+   values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "product added" });
@@ -432,6 +437,7 @@ const updateProduct = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+//------------------------------------------------------------Filter and search--------------------------------------------------------------------
 const filterBySupplier = async (req, res) => {
   const sql = `select * from product where su_id = ${req.query.su_id}`;
   try {
@@ -515,8 +521,90 @@ const addNewEmployee = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
-
+const deleteShippingCompany = async (req, res) => {
+  const sql = `delete from shipping_company where scid=${req.query.scid} `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "deleted" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getStorages = async (req, res) => {
+  const sql = `select * from storages  `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const deleteFromStorages = async (req, res) => {
+  const sql = `delete from storages where stid=${req.query.stid}; `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "storage deleted" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateEmployee = async (req, res) => {
+  const sql = `UPDATE employee
+               SET salary = ${req.body.salary}, working_shift="${req.body.working_shift}", d_id=${req.body.d_id}
+               WHERE ssn=${req.query.ssn}; `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "employee update" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateStorage = async (req, res) => {
+  const sql = ` update storages 
+                set max_capacity=${req.body.max_capacity}
+                where stid = ${req.query.stid} `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "storage updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateShipping = async (req, res) => {
+  const sql = ` update shipping_company 
+                set cost=${req.body.cost} , delivery_time=${req.body.delivery_time} 
+                where scid =${req.query.scid}  `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: " shipping company updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateSupplier = async (req, res) => {
+  const sql = ` update suppliers 
+                set su_address='${req.body.address}', su_phone='${req.body.phone}'
+                where suid=${req.query.suid};`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: " supplier company updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 module.exports = {
+  updateSupplier,
+  updateShipping,
+  deleteFromStorages,
+  getStorages,
+  deleteShippingCompany,
   addNewEmployee,
   getCartProducts,
   decProductQtyinCart,
@@ -553,4 +641,6 @@ module.exports = {
   filterByOffer,
   filterByPrice,
   searchProduct,
+  updateEmployee,
+  updateStorage,
 };
