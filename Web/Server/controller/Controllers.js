@@ -357,117 +357,18 @@ const addStorage = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
-const getAllProducts = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.product;`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const getAllStorages = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.storages;`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const getAllSuppliers = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.suppliers;`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const addProduct = async (req, res) => {
-  const sql = `insert into product (pid,product_name,price,color,count,st_id,su_id,img_link)
-   values (${req.body.pid},"${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
-  try {
-    await db.execute(sql);
-    res.json({ status: true, message: "product added" });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const deleteProduct = async (req, res) => {
-  const sql = `delete from product where pid = ${req.body.pid};`;
-  try {
-    await db.execute(sql);
-    res.json({ status: true, message: "product deleted" });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const updateProduct = async (req, res) => {
-  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price}, st_id = ${req.body.st_id},
-              has_offer = ${req.body.has_offer}, new_price = ${req.body.new_price}, start_date = '${req.body.start_date}', end_date = '${req.body.end_date}'
-              where pid = ${req.body.pid};`;
-  try {
-    await db.execute(sql);
-    res.json({ status: true, message: "product updated" });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const filterBySupplier = async (req, res) => {
-  const sql = `select * from product where su_id = ${req.body.su_id}`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const filterByOffer = async (req, res) => {
-  const sql = `select * from product where has_offer = 1`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const filterByPrice = async (req, res) => {
-  const sql = `select * from product where price >= ${req.body.min_price} and price <= ${req.body.max_price} and has_offer != 1 
-              union
-              select * from product where new_price >= ${req.body.min_price} and new_price <= ${req.body.max_price} and has_offer = 1`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const searchProduct = async (req, res) => {
-  const sql = `select * from product where product_name like '%${req.body.search_text}%';`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
 
-
-<<<<<<< HEAD
 const getEmployees = async (req, res) => {
   const sql = `select  CONCAT(f_name,' ',l_name) as fullname, u.ssn from employee e,users u where u.ssn=e.ssn `;
-=======
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+
 const getAllProducts = async (req, res) => {
   const sql = `SELECT * FROM hardwhere.product;`;
   try {
@@ -565,7 +466,6 @@ const filterByPrice = async (req, res) => {
 };
 const searchProduct = async (req, res) => {
   const sql = `select * from product where product_name like '%${req.body.search_text}%';`;
->>>>>>> f052e7a8071f9187e09f2bd7311f64156d4fc4f2
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -575,7 +475,6 @@ const searchProduct = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 const daleteEmpoyee = async (req, res) => {
   const sql = `delete from users where ssn=${req.query.ssn}`;
   try {
@@ -616,8 +515,6 @@ const addNewEmployee = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
-=======
->>>>>>> f052e7a8071f9187e09f2bd7311f64156d4fc4f2
 
 module.exports = {
   addNewEmployee,
@@ -637,28 +534,15 @@ module.exports = {
   getheadphones,
   getscreens,
   getaccessories,
+  removeFromFavorites,
   addToFavorites,
-    removeFromFavorites,
   getFavorites,
   addSupplier,
   addShipping,
   addStorage,
-<<<<<<< HEAD
   getEmployees,
   daleteEmpoyee,
   getDepartments,
-=======
-  getAllProducts,
-  getAllStorages,
-  getAllSuppliers,
-  addProduct,
-  deleteProduct,
-  updateProduct,
-  filterBySupplier,
-  filterByOffer,
-  filterByPrice,
-  searchProduct,
->>>>>>> f052e7a8071f9187e09f2bd7311f64156d4fc4f2
   getAllProducts,
   getAllStorages,
   getAllSuppliers,
