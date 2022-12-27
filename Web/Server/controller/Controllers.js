@@ -132,16 +132,15 @@ const addToCart = async (req, res) => {
   try {
     await db.execute(sql);
     await db.execute(sql2);
-    res.send({ status: true, message: "product added to cart" });
+    res.send({ status: true, message: "new product added to cart" });
   } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
     if (error.code == "ER_DUP_ENTRY") {
       const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=${req.body.cust_ssn};`;
       const sql4 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
       try {
         db.execute(sql3);
         db.execute(sql4);
+        res.send({ status: true, message: "old product qty increased" });
       } catch (error) {
         console.log(error.sqlMessage);
         res.json({ status: false, message: error.sqlMessage });
@@ -399,6 +398,7 @@ const getAllSuppliers = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+//-----------------------------------------------------------------Employee-------------------------------------------------------------------------
 const addProduct = async (req, res) => {
   const sql = `insert into product (product_name,price,color,count,st_id,su_id,img_link)
    values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
@@ -432,6 +432,7 @@ const updateProduct = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+//------------------------------------------------------------Filter and search--------------------------------------------------------------------
 const filterBySupplier = async (req, res) => {
   const sql = `select * from product where su_id = ${req.body.su_id}`;
   try {
