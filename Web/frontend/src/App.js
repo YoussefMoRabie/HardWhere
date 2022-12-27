@@ -14,6 +14,7 @@ import Search from './components/search/search'
 import AddSupplier from "./components/Manager/AddSupplier";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
+import SearchResults from './components/search/search'
 import AddAdmin from './components/Manager/AddAdmin'
 import AddShipping from "./components/Manager/AddShipping";
 import AddStorage from "./components/Manager/AddStorages";
@@ -39,7 +40,8 @@ function App() {
           <Route path="/addproduct" element={<AddProduct />}></Route>
           <Route path="/updateproduct" element={<UpdateProduct />}></Route>
           <Route path="/deleteproduct" element={<Delete />}></Route>
-          <Route path="/search/:searchVal" element={<ShowProducts />}></Route>
+          <Route path="/:categoryVal" element={<ShowProducts />}></Route>
+          <Route path="search/:searchVal" element={<SearchResults />}></Route>
           <Route path="/addemployee" element={<AddAdmin />}></Route>
           <Route path="/addsupplier" element={<AddSupplier />}></Route>
           <Route path="/addshipping" element={<AddShipping/>}></Route>

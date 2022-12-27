@@ -48,7 +48,7 @@ const Product = () => {
   const { state } = useLocation();
 
   const [has_offer, setHasOffer] = useState(0);
-  const [proName, setName] = useState("product" + id);
+  const [proName, setName] = React.useState('product dummy');
   const [price, setPrice] = useState(99.99);
   const [count, setcount] = useState(6);
   const [supplier, setSupplier] = useState("Apple");
@@ -138,7 +138,7 @@ const Product = () => {
     <div className="propage">
       <div className="product">
         <div className="productimage">
-          <img src={imgLink} alt={"product " + id} />
+          <img src={imgLink} alt={proName} />
         </div>
         <div className="productinfo">
           <h2 className="proHead">{proName}</h2>
