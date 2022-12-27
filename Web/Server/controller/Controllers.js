@@ -4,7 +4,7 @@ const db = require("../DB/DBConnect");
 
 //  cust_ssn should be dynamic later
 const getCartProducts = async (req, res) => {
-  const sql = `select p.product_name,p.count as totalCnt,cc.qty,p.price,p.pid,p.img_link from product p , customer_cart cc, customer c 
+  const sql = `select p.product_name,p.count as totalCnt,cc.qty,p.price,p.pid,p.has_offer,p.new_price,p.img_link from product p , customer_cart cc, customer c 
 where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
 
   try {
@@ -235,7 +235,7 @@ const addOrder = async (req, res) => {
 };
 
 const getShippingCompData = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.shipping_company;`;
+  const sql = `SELECT * FROM shipping_company;`;
   try {
     const data = await db.execute(sql);
 
@@ -358,7 +358,7 @@ const addStorage = async (req, res) => {
 };
 
 const getEmployees = async (req, res) => {
-  const sql = `select  CONCAT(f_name,' ',l_name) as fullname, u.ssn from employee e,users u where u.ssn=e.ssn `;
+  const sql = `select  CONCAT(f_name,' ',l_name) as fullname, u.ssn,e.salary,e.working_shift,e.d_id from employee e,users u where u.ssn=e.ssn `;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -369,7 +369,7 @@ const getEmployees = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.product;`;
+  const sql = `SELECT * FROM product;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -379,7 +379,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 const getAllStorages = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.storages;`;
+  const sql = `SELECT * FROM storages;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -516,8 +516,52 @@ const addNewEmployee = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
-
+const deleteShippingCompany = async (req, res) => {
+  const sql = `delete from shipping_company where scid=${req.query.scid} `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "deleted" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getStorages = async (req, res) => {
+  const sql = `select * from storages  `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const deleteFromStorages = async (req, res) => {
+  const sql = `delete from storages where stid=${req.query.stid}; `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "storage deleted" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateEmployee = async (req, res) => {
+  const sql = `UPDATE employee
+               SET salary = ${req.body.salary}, working_shift="${req.body.working_shift}", d_id=${req.body.d_id}
+               WHERE ssn=${req.query.ssn}; `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "employee update" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 module.exports = {
+  deleteFromStorages,
+  getStorages,
+  deleteShippingCompany,
   addNewEmployee,
   getCartProducts,
   decProductQtyinCart,
@@ -554,4 +598,5 @@ module.exports = {
   filterByOffer,
   filterByPrice,
   searchProduct,
+  updateEmployee,
 };

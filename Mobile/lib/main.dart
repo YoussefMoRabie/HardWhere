@@ -9,7 +9,7 @@ import 'package:hardwhere/view/screen/onboarding.dart';
 
 import 'Binding/initialBinding.dart';
 import 'core/shared/styles/themes.dart';
-
+var id=-1;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
@@ -18,7 +18,7 @@ void main() async{
   MyServices myServices=Get.find();
   Widget startWidget=  const OnBoarding();
   if(myServices.sharedPreferences.getString("onBoarding")=="1") {
-    var id=myServices.sharedPreferences.getString("id");
+    id=int.parse(myServices.sharedPreferences.getString("id")!);
     if(id==null||id==-1){
       startWidget=const Login();
 

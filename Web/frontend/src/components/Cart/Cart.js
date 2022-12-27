@@ -11,14 +11,14 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CheckIcon from "@mui/icons-material/Check";
 
 const Cart = () => {
   const { state } = useLocation();
   const customer_ssn = state.ssn;
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const [shippingName, setShippingName] = useState("none");
   const [shippingCost, setShippingCost] = useState(0);
@@ -138,22 +138,27 @@ const Cart = () => {
         <div className="myproducts">
           {cartProducts.map((product, index) => {
             let totalProductPrice = 0;
+            const has_offer = product.has_offer.data[0];
 
-            totalProductPrice = Number(product.qty) * Number(product.price);
+            totalProductPrice =
+              Number(product.qty) *
+              Number(has_offer === 1 ? product.new_price : product.price);
 
             total += totalProductPrice;
 
             return (
               <div className="productInCart">
-                <img
-                  src={product.img_link}
-                  alt={`product ${product.pid}`}
-                />
+                <img src={product.img_link} alt={`product ${product.pid}`} />
                 <div className="data">
                   <h3 style={{ fontSize: "30px" }}>{product.product_name}</h3>
                   <div className="price">
                     <span>{Number(product.qty) === 0 ? 0 : product.qty}</span> *{" "}
-                    <span>{(+product.price).toFixed(2)}</span>
+                    <span>
+                      {(has_offer === 1
+                        ? product.new_price
+                        : product.price
+                      ).toFixed(2)}
+                    </span>
                     &nbsp; &nbsp; &nbsp;
                     <span style={{ color: "red" }}>
                       ${totalProductPrice.toFixed(2)}

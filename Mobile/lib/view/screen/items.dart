@@ -73,7 +73,7 @@ class Items extends StatelessWidget {
             return GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount:controller.length[controller.selectedCat!],
+                itemCount:controller.length[controller.selectedCat!]??0,
                 gridDelegate:
                 const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, childAspectRatio: 0.7),

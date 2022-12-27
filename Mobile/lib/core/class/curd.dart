@@ -44,5 +44,27 @@ class Crud {
       return const Left(StatusRequest.offlineFailure);
     }
   }
+  Future<Either<StatusRequest, Map>> deletData(String linkUrl) async {
+    try {
+      if (await checkInternet()) {
+        var response = await http.delete(Uri.parse(linkUrl));
+        print(linkUrl);
+        print(response.body);
+        print(response.statusCode);
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          Map responseBody = jsonDecode(response.body);
+          print(responseBody);
+          return Right(responseBody);
+        } else {
+          print("statusCode == 404");
+          return const Left(StatusRequest.serverFailure);
+        }
+      } else {
+        return const Left(StatusRequest.offlineFailure);
+      }
+    } catch (_) {
+      return const Left(StatusRequest.offlineFailure);
+    }
+  }
 
 }

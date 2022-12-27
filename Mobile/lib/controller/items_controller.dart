@@ -42,12 +42,12 @@ class ItemsControllerImp extends ItemsController{
   late StatusRequest statusRequest;
 
   @override
-  void onInit() {
-    getLaptops();
-    getMobiles();
-    getHeadphones();
-    getAccessories();
-    getScreens();
+  Future<void> onInit() async {
+    await getLaptops();
+    await getMobiles();
+    await getHeadphones();
+    await getAccessories();
+    await getScreens();
 
     initialData();
     super.onInit();
