@@ -167,14 +167,57 @@ class Product extends StatelessWidget {
                   )
                 ],
               ),
-              //PriceAndCountItems(
-                 // onAdd: () {}, onRemove: () {}, price: "200.0", count: "2"),
               const SizedBox(height: 10),
-              Text(
-                  "Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.",//${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc} ${controller.itemsModel.itemsDesc}",
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontSize: 15
-                  )),
+              Row(
+                children: [
+                  Text(
+                      "Color : ",
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      )),
+                  Text(
+                      "${proController.productDetails["color"]}",
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 15
+                      )),
+                ],
+              ),
+              const SizedBox(height: 5,),
+              Row(
+                children: [
+                  Text(
+                      "Company : ",
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      )),
+                  Text(
+                      "${proController.productDetails["su_name"]}",
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 15
+                      )),
+                ],
+              ),
+              const SizedBox(height: 5,),
+              Row(
+                children: [
+                  Text(
+                      "Description : ",
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      )),
+                  Text(
+                      "${proController.productDetails["desc"]}",
+                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          fontSize: 15
+                      )),
+                ],
+              ),
 
             ]),
           )
