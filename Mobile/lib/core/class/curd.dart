@@ -30,8 +30,8 @@ class Crud {
       if (await checkInternet()) {
         var response = await http.get(Uri.parse(linkUrl));
         if (response.statusCode == 200 || response.statusCode == 201) {
-          print(response.body);
           Map responseBody = jsonDecode(response.body);
+          print(responseBody);
           return Right(responseBody);
         } else {
           print("statusCode == 404");

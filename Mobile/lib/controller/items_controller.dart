@@ -1,35 +1,60 @@
 import 'package:get/get.dart';
+import 'package:hardwhere/data/data_source/remote/cat_data.dart';
 import 'package:hardwhere/view/screen/product.dart';
 
 import '../core/class/status_request.dart';
 import '../core/functions/handling_data_controller.dart';
 
 abstract class ItemsController extends GetxController{
-  intialData();
+  initialData();
   changeCat(int val, String catVal);
-  getItems(String categoryId);
-  goToProducts();
-
+  getLaptops();
+  getScreens();
+  getMobiles();
+  getAccessories();
+  getHeadphones();
+  goToProduct(int selectedPro);
 }
 class ItemsControllerImp extends ItemsController{
   List categories = [];
   String? catid;
   int? selectedCat;
 
-  //ItemsData testData = ItemsData(Get.find());
+  CatData catData = CatData(Get.find());
 
-  List data = [];
+  List laptops = [];
+  List screens = [];
+  List headphones = [];
+  List mobiles = [];
+  List accessories = [];
+  List lists = [];
+  List length= [];
+
+
+  List categoriesName = [
+    "Laptops",
+    "Mobiles",
+    "Headphones",
+    "Accessories",
+    "Screens"
+  ];
 
   late StatusRequest statusRequest;
 
   @override
   void onInit() {
-    intialData();
+    getLaptops();
+    getMobiles();
+    getHeadphones();
+    getAccessories();
+    getScreens();
+
+    initialData();
     super.onInit();
   }
 
   @override
-  intialData() {
+  initialData() {
     // categories = Get.arguments['categories'];
     selectedCat = Get.arguments['selectedCat'];
     // catid = Get.arguments['catid'];
@@ -45,26 +70,119 @@ class ItemsControllerImp extends ItemsController{
   }
 
   @override
-  getItems(categoryid) async {
-    // data.clear();
-    // statusRequest = StatusRequest.loading;
-    // var response = await testData.getData(categoryid);
-    // print("=============================== Controller $response ");
-    // statusRequest = handlingData(response);
-    // if (StatusRequest.success == statusRequest) {
-    //   // Start backend
-    //   if (response['status'] == "success") {
-    //     data.addAll(response['data']);
-    //   } else {
-    //     statusRequest = StatusRequest.failure;
-    //   }
-    //   // End
-    // }
-    // update();
+  getLaptops() async {
+    laptops.clear();
+    statusRequest = StatusRequest.loading;
+    var response = await catData.getLaptopsData();
+    print("=============================== Controller $response ");
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      // Start backend
+      if (response['status'] == true) {
+        laptops.addAll(response['data']);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+      // End
+    }
+    lists.add(laptops);
+    length.add(laptops.length);
+    update();
+  }
+
+
+
+  @override
+  getAccessories() async {
+    accessories.clear();
+    statusRequest = StatusRequest.loading;
+    var response = await catData.getAccessoriesData();
+    print("=============================== Controller $response ");
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      // Start backend
+      if (response['status'] == true) {
+        accessories.addAll(response['data']);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+      // End
+    }
+    lists.add(accessories);
+    length.add(accessories.length);
+
+    update();
   }
 
   @override
-  goToProducts() {
-    Get.to(const Product());
+  getHeadphones() async {
+    headphones.clear();
+    statusRequest = StatusRequest.loading;
+    var response = await catData.getHeadphonesData();
+    print("=============================== Controller $response ");
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      // Start backend
+      if (response['status'] == true) {
+        headphones.addAll(response['data']);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+      // End
+    }
+    lists.add(headphones);
+    length.add(headphones.length);
+
+    update();
+  }
+
+  @override
+  getMobiles() async {
+    mobiles.clear();
+    statusRequest = StatusRequest.loading;
+    var response = await catData.getMobilesData();
+    print("=============================== Controller $response ");
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      // Start backend
+      if (response['status'] == true) {
+        mobiles.addAll(response['data']);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+      // End
+    }
+    lists.add(mobiles);
+    length.add(mobiles.length);
+    update();
+  }
+
+  @override
+  getScreens() async {
+    screens.clear();
+    statusRequest = StatusRequest.loading;
+    var response = await catData.getScreensData();
+    print("=============================== Controller $response ");
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      // Start backend
+      if (response['status'] == true) {
+        screens.addAll(response['data']);
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+      // End
+    }
+    lists.add(screens);
+    length.add(screens.length);
+
+    update();
+  }
+
+  @override
+  goToProduct(int selectedPro) {
+    Get.to(()=> const Product() ,arguments: {
+      "selectedPro": selectedPro,
+    });
   }
 }

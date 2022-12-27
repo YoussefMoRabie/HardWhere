@@ -85,7 +85,7 @@ class Home extends StatelessWidget {
                 itemBuilder: (context, i) {
                   return InkWell(
                     onTap: (){
-
+                                  controller.goToProduct(controller.items[i]["pid"]);
                     },
                     child: Column(
                       children: [
@@ -133,13 +133,9 @@ Widget buildCatItem(controller,index)=>InkWell(
 
             color: AppColor.lightBackGroundColor,
             borderRadius: BorderRadius.circular(20)),
-        //padding: const EdgeInsets.symmetric(horizontal: 0),
         height: 90,
         width: 90,
         child:  Image(image:controller.categoriesImages[index],),
-        // SvgPicture.network(
-        //     "categories_image}",
-        //     color: AppColor.secColor),
       ),
       const SizedBox(height: 5),
        Text(

@@ -72,16 +72,53 @@ const deleteProductFromCart = async (req, res) => {
 };
 
 const getProductData = async (req, res) => {
-  const sql = `select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 1 as favorite
+  const sql = `select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 1 as favorite
 from product p,suppliers s,favorites fv,customer c
 where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
 union all
-select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value,p.desc, 0 as favorite
+select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 0 as favorite
 from product p,suppliers s,customer c
 where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
+  const sql1 = `select count(*) as found, ram,processor,gpu,screen from labtops where pid = ${req.params.id};  `;
+  const sql2 = `select count(*) as found, ram,processor,screen from mobiles where pid = ${req.params.id};`;
+  const sql3 = `select count(*) as found, type,resolution,is_smart from screens where pid = ${req.params.id}; `;
+  const sql4 = `select count(*) as found, frequency from headphones where pid = ${req.params.id};`;
+  const sql5 = `select count(*) as found, type from accessories where pid = ${req.params.id}; `;
+
   try {
+    const labData = await db.execute(sql1);
+    const mobData = await db.execute(sql2);
+    const screensData = await db.execute(sql3);
+    const headphonesData = await db.execute(sql4);
+    const accessoData = await db.execute(sql5);
     const data = await db.execute(sql);
+
+    if (labData[0][0].found == 1) {
+      const desc = `this labtop has ram: ${labData[0][0].ram}, processor: ${labData[0][0].processor}, gpu: ${labData[0][0].gpu}, screen: ${labData[0][0].screen}`;
+      data[0][0].desc = desc;
+    } else if (mobData[0][0].found == 1) {
+      const desc = ` this mobile has ram: ${mobData[0][0].ram}, processor: ${mobData[0][0].processor}, screen: ${mobData[0][0].screen}`;
+      data[0][0].desc = desc;
+    } else if (screensData[0][0].found == 1) {
+      const desc = `screen type: ${screensData[0][0].type}, resolution: ${
+        screensData[0][0].resolution
+      }${
+        screensData[0][0].is_smart == null
+          ? ""
+          : screensData[0][0].is_smart == 1
+          ? ", smart"
+          : ", not smart"
+      }`;
+      data[0][0].desc = desc;
+    } else if (headphonesData[0][0].found == 1) {
+      const desc = `frequency of this headphone is ${headphonesData[0][0].frequency} HZ`;
+      data[0][0].desc = desc;
+    } else if (accessoData[0][0].found == 1) {
+      const desc = `type is ${accessoData[0][0].type}`;
+      data[0][0].desc = desc;
+    }
+
     res.json({ status: true, data: data[0][0] });
   } catch (error) {
     console.log(error);
@@ -124,7 +161,8 @@ const getOffersData = async (req, res) => {
 };
 
 const addCustomer = async (req, res) => {
-  const sql1 = `insert into users (f_name,l_name,phone,address,email,authority,password) values('${req.body.firstName}','${req.body.lastName}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
+  const sql1 = `insert into users (f_name,l_name,phone,address,email,authority,password)
+   values('${req.body.firstName}','${req.body.lastName}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
   const sql3 = `select ssn from users where email="${req.body.email}" and password ="${req.body.password}"; `;
   const sql4 = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.body.email}" ) as checked;`;
   const checkEmail = await db.execute(sql4);
@@ -209,7 +247,7 @@ const getShippingCompData = async (req, res) => {
   }
 };
 const getlabtops = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from labtops l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.has_offer,p.new_price,p.img_link from labtops l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -219,7 +257,7 @@ const getlabtops = async (req, res) => {
   }
 };
 const getscreens = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from screens l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.has_offer,p.new_price,p.img_link from screens l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -229,7 +267,7 @@ const getscreens = async (req, res) => {
   }
 };
 const getaccessories = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from accessories l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.has_offer,p.new_price,p.p_value,p.img_link from accessories l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -239,7 +277,7 @@ const getaccessories = async (req, res) => {
   }
 };
 const getmobiles = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from mobiles l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.has_offer,p.new_price,p.p_value,p.img_link from mobiles l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -249,7 +287,7 @@ const getmobiles = async (req, res) => {
   }
 };
 const getheadphones = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from headphones l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.has_offer,p.new_price,p.price,p.p_value,p.img_link from headphones l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -319,6 +357,18 @@ const addStorage = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+
+const getEmployees = async (req, res) => {
+  const sql = `select  CONCAT(f_name,' ',l_name) as fullname, u.ssn from employee e,users u where u.ssn=e.ssn `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+
 const getAllProducts = async (req, res) => {
   const sql = `SELECT * FROM hardwhere.product;`;
   try {
@@ -425,8 +475,49 @@ const searchProduct = async (req, res) => {
   }
 };
 
+const daleteEmpoyee = async (req, res) => {
+  const sql = `delete from users where ssn=${req.query.ssn}`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: `employee deleted` });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getDepartments = async (req, res) => {
+  const sql = `select * from department `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const addNewEmployee = async (req, res) => {
+  const sql = `insert into users (f_name,l_name,address,email)
+   values("${req.body.f_name}","${req.body.l_name}",'${req.body.address}','${req.body.email}'); `;
+  const sql2 = `select max(ssn) as empssn from users`;
+
+  try {
+    await db.execute(sql);
+
+    const dataEmp = await db.execute(sql2);
+    const empssn = dataEmp[0][0].empssn;
+
+    const sql3 = `insert into employee values (${empssn},${req.body.salary},"${req.body.shift}",${req.body.d_id});`;
+    await db.execute(sql3);
+
+    res.json({ status: true, message: "employee added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 
 module.exports = {
+  addNewEmployee,
   getCartProducts,
   decProductQtyinCart,
   incProductQtyinCart,
@@ -443,12 +534,15 @@ module.exports = {
   getheadphones,
   getscreens,
   getaccessories,
+  removeFromFavorites,
   addToFavorites,
-   removeFromFavorites,
   getFavorites,
   addSupplier,
   addShipping,
   addStorage,
+  getEmployees,
+  daleteEmpoyee,
+  getDepartments,
   getAllProducts,
   getAllStorages,
   getAllSuppliers,
