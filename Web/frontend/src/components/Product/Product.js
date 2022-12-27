@@ -112,7 +112,7 @@ const Product = () => {
     try {
       const dataRes = await fetch(`http://localhost:1444/api/v1/product/${id}`);
       console.log(dataRes);
-      const {data} = await dataRes.json();
+      const { data } = await dataRes.json();
 
       console.log(data);
       const productData = data;
@@ -138,10 +138,7 @@ const Product = () => {
     <div className="propage">
       <div className="product">
         <div className="productimage">
-          <img
-            src={imgLink}
-            alt={"product " + id}
-          />
+          <img src={imgLink} alt={"product " + id} />
         </div>
         <div className="productinfo">
           <h2 className="proHead">{proName}</h2>
@@ -170,7 +167,12 @@ const Product = () => {
               {supplier}
             </span>{" "}
           </p>
-          <p className="proDesc">{desc}</p>
+          <p
+            className="proDesc"
+            style={{ color: "lightslategray", fontWeight: 900 }}
+          >
+            {desc}
+          </p>
           {inStock && (
             <div>
               <p className="available">

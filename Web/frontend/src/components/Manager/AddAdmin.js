@@ -12,6 +12,8 @@ import Select from "@mui/material/Select";
 import FilledInput from "@mui/material/FilledInput";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
+import useFetch from "../useFetch";
+import { useState } from "react";
 const AddAdmin = () => {
   const [newadmin, setnewAdmin] = React.useState("");
   const [err, seterr] = React.useState(false);
@@ -19,8 +21,11 @@ const AddAdmin = () => {
   const [salary, setSalary] = React.useState(0);
   const [shift, setShift] = React.useState("");
   const shifts = ["Night", "Day"];
-  const departments = ["dummy1", "dummy2"];
+  const departments = [];
   const [department, setDepartment] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [address, setaddress] = useState("");
   const handleSalaryChange = (e) => {
     setSalary(e.target.value);
   };
@@ -39,13 +44,54 @@ const AddAdmin = () => {
       seterr(true);
     }
   };
-  const handleSubmit = () => {
+
+  const { data } = useFetch("http://localhost:1444/api/v1/getDepartments");
+  for (const dep of data) {
+    departments.push({ label: dep.d_name, d_id: dep.did });
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (newadmin == "") {
       seterrMsg("Please Enter a valid User Email!");
       seterr(true);
       return false;
     }
-    seterrMsg("");
+    const res = await fetch(`http://localhost:1444/api/v1/addNewEmployee`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        d_id: department.d_id,
+        shift,
+        salary,
+        email: newadmin,
+        address,
+        l_name: lastName,
+        f_name: firstName,
+      }),
+    });
+
+    const { status } = await res.json();
+    if (status === true) {
+      setFirstName("");
+      setLastName("");
+      setSalary("");
+      setaddress("");
+      setnewAdmin("");
+      setShift("");
+      setDepartment("");
+      document.querySelector(".addedSuccessfully").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".addedSuccessfully").classList.remove("active");
+      }, 3000);
+    } else {
+      document.querySelector(".tryagain").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".tryagain").classList.remove("active");
+      }, 3000);
+    }
   };
   return (
     <div className="addA">
@@ -63,7 +109,47 @@ const AddAdmin = () => {
         }}
         className="AddSupp"
       >
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "20px",
+          }}
+        >
+          <TextField
+            sx={{ width: 300 }}
+            required
+            onChange={(e) => setFirstName(e.target.value)}
+            id="outlined-basic"
+            label="First Name"
+            variant="outlined"
+            value={firstName}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "20px",
+          }}
+        >
+          <TextField
+            sx={{ width: 300 }}
+            required
+            onChange={(e) => setLastName(e.target.value)}
+            id="outlined-basic"
+            label="Last Name"
+            variant="outlined"
+            value={lastName}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "20px",
+          }}
+        >
           <TextField
             sx={{ width: 300 }}
             error={err}
@@ -72,12 +158,29 @@ const AddAdmin = () => {
             id="outlined-basic"
             label="User Email"
             variant="outlined"
+            value={newadmin}
           />
           <label style={{ color: "red", fontSize: "11px", padding: "2px" }}>
             {errMsg}
           </label>
         </div>
-
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "20px",
+          }}
+        >
+          <TextField
+            sx={{ width: 300 }}
+            required
+            onChange={(e) => setaddress(e.target.value)}
+            id="outlined-basic"
+            label="Address"
+            value={address}
+            variant="outlined"
+          />
+        </div>
         <FormControl sx={{ marginTop: "10px", marginBottom: "10px" }}>
           <InputLabel required={true} htmlFor="outlined-adornment-amount">
             Salary
@@ -122,6 +225,8 @@ const AddAdmin = () => {
           {" "}
           Add Admin
         </button>
+        <div className="addedSuccessfully">employee Added Successfully</div>
+        <div className="tryagain">try again</div>
       </form>
     </div>
   );
