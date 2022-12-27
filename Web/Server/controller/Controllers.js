@@ -247,7 +247,7 @@ const getShippingCompData = async (req, res) => {
   }
 };
 const getlabtops = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from labtops l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.has_offer,p.new_price,p.img_link from labtops l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -257,7 +257,7 @@ const getlabtops = async (req, res) => {
   }
 };
 const getscreens = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from screens l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.has_offer,p.new_price,p.img_link from screens l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -267,7 +267,7 @@ const getscreens = async (req, res) => {
   }
 };
 const getaccessories = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from accessories l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.has_offer,p.new_price,p.p_value,p.img_link from accessories l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -277,7 +277,7 @@ const getaccessories = async (req, res) => {
   }
 };
 const getmobiles = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from mobiles l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.price,p.has_offer,p.new_price,p.p_value,p.img_link from mobiles l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -287,7 +287,7 @@ const getmobiles = async (req, res) => {
   }
 };
 const getheadphones = async (req, res) => {
-  const sql = `select p.pid,p.product_name,p.price,p.p_value,p.img_link from headphones l, product p where p.pid=l.pid ;`;
+  const sql = `select p.pid,p.product_name,p.has_offer,p.new_price,p.price,p.p_value,p.img_link from headphones l, product p where p.pid=l.pid ;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
