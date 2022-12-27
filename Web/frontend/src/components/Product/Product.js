@@ -61,18 +61,31 @@ const Product = () => {
   const [imgLink, setimgLink] = useState("");
   const AddporductToCart = async (req, res) => {
     try {
-      fetch(`http://localhost:1444/api/v1/product/addtocart`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          pid: id,
-          cust_ssn: state.ssn, //must be dynamic later
-          qty,
-        }),
-      });
-      navigate("/Cart", { state: state });
+      const res = await fetch(
+        `http://localhost:1444/api/v1/product/addtocart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: id,
+            cust_ssn: state.ssn, //must be dynamic later
+            qty,
+          }),
+        }
+      );
+      const { status } = await res.json();
+      if (status === true) {
+        navigate("/Cart", { state: state });
+      } else {
+        document.querySelector(".addedSuccessfully").classList.add("active");
+        setTimeout(() => {
+          document
+            .querySelector(".addedSuccessfully")
+            .classList.remove("active");
+        }, 3000);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -227,6 +240,9 @@ const Product = () => {
                   </Button>
                 </ThemeProvider>
               )}
+              <div style={{color:"red"}} className="addedSuccessfully">
+                Product Allready in Your Cart
+              </div>
             </div>
           )}
           {!inStock && <p className="notAvailable">Out Of Stock</p>}

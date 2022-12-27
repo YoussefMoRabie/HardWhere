@@ -192,7 +192,7 @@ const Cart = () => {
                 ></BsFillCartDashFill>
                 <BsFillCartPlusFill
                   onClick={async () => {
-                    if (product.totalCnt !== 0) {
+                    if (product.totalCnt !== product.qty) {
                       try {
                         await fetch(
                           `http://localhost:1444/api/v1/Cart/incQty/${product.pid}?ssn=${customer_ssn}`,
@@ -207,6 +207,11 @@ const Cart = () => {
                       document.querySelector(
                         `.message${product.pid}`
                       ).style.display = "block";
+                      setTimeout((e) => {
+                        document.querySelector(
+                          `.message${product.pid}`
+                        ).style.display = "none";
+                      }, 3000);
                     }
                   }}
                   className="BsFillCartPlusFill"

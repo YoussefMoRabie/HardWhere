@@ -19,44 +19,44 @@ where p.pid=cc.p_id and cc.cust_ssn=c.ssn and c.ssn=${req.query.ssn};`;
 
 // p_id should be dynamic later
 const decProductQtyinCart = async (req, res) => {
-  const sql = `update product set count=count+1 where pid=${req.params.id};`;
+  // const sql = `update product set count=count+1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty-1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
-  const checked = await db.execute(sql3);
+  // const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+  // const checked = await db.execute(sql3);
 
-  if (checked[0][0].has === 1) {
-    try {
-      await db.execute(sql);
-      await db.execute(sql2);
-      res.send({ status: true, message: "decremented" });
-    } catch (error) {
-      console.log(error);
-      res.json({ status: false, message: error.sqlMessage });
-    }
-  } else {
-    res.json({ status: false, message: "this product is't in this cart" });
+  // if (checked[0][0].has === 1) {
+  try {
+    // await db.execute(sql);
+    await db.execute(sql2);
+    res.send({ status: true, message: "decremented" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: error.sqlMessage });
   }
+  // } else {
+  //   res.json({ status: false, message: "this product is't in this cart" });
+  // }
 };
 
 // ssn should be dynamic later
 const incProductQtyinCart = async (req, res) => {
-  const sql = `update product set count=count-1 where pid=${req.params.id};`;
+  // const sql = `update product set count=count-1 where pid=${req.params.id};`;
   const sql2 = `update customer_cart  set qty=qty+1 where p_id=${req.params.id} and cust_ssn=${req.query.ssn};`;
-  const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
-  const checked = await db.execute(sql3);
+  // const sql3 = `select exists(select * from customer_cart where cust_ssn =${req.query.ssn} and p_id=${req.params.id}) as has`;
+  // const checked = await db.execute(sql3);
 
-  if (checked[0][0].has === 1) {
-    try {
-      await db.execute(sql);
-      await db.execute(sql2);
-      res.send({ status: true, message: "incremented" });
-    } catch (error) {
-      console.log(error);
-      res.json({ status: false, message: error.sqlMessage });
-    }
-  } else {
-    res.json({ status: false, message: "this product is't in this cart" });
+  // if (checked[0][0].has === 1) {
+  try {
+    // await db.execute(sql);
+    await db.execute(sql2);
+    res.send({ status: true, message: "incremented" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: error.sqlMessage });
   }
+  // } else {
+  //   res.json({ status: false, message: "this product is't in this cart" });
+  // }
 };
 
 const deleteProductFromCart = async (req, res) => {
@@ -128,23 +128,26 @@ where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
 const addToCart = async (req, res) => {
   const sql = `insert into customer_cart values(${req.body.cust_ssn},${req.body.pid},${req.body.qty});`;
-  const sql2 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
+  // const sql2 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
   try {
     await db.execute(sql);
-    await db.execute(sql2);
+    // await db.execute(sql2);
     res.send({ status: true, message: "new product added to cart" });
   } catch (error) {
     if (error.code == "ER_DUP_ENTRY") {
-      const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=${req.body.cust_ssn};`;
-      const sql4 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
-      try {
-        db.execute(sql3);
-        db.execute(sql4);
-        res.send({ status: true, message: "old product qty increased" });
-      } catch (error) {
-        console.log(error.sqlMessage);
-        res.json({ status: false, message: error.sqlMessage });
-      }
+      // const sql3 = `update customer_cart  set qty=qty+${req.body.qty} where p_id=${req.body.pid} and cust_ssn=${req.body.cust_ssn};`;
+      // const sql4 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
+      // try {
+      //   db.execute(sql3);
+      //   db.execute(sql4);
+      //   res.send({ status: true, message: "old product qty increased" });
+      // } catch (error) {
+      //   console.log(error.sqlMessage);
+      //   res.json({ status: false, message: error.sqlMessage });
+      // }
+      res.json({ status: false, message: "product allready in your cart" });
+    } else {
+      res.json({ status: false, message: error.sqlMessage });
     }
   }
 };
@@ -223,6 +226,8 @@ const addOrder = async (req, res) => {
     console.log(oid);
     for (const product of cartProducts) {
       const sql2 = `insert into contains values (${oid},${product.pid},${product.qty})`;
+      const sql6 = `update product set count=count-${product.qty} where pid=${product.pid};`;
+      await db.execute(sql6);
       await db.execute(sql2);
     }
 
