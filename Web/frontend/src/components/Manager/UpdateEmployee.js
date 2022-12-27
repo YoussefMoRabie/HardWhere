@@ -54,28 +54,56 @@ const UpdateEmployee = () => {
   };
   const handleSalaryChange = (event) => {
     setAnyChange(1);
+
     event.target.value < 1
       ? (event.target.value = 1)
       : setSalary(event.target.value);
   };
   const handleShiftChange = (e, val) => {
     setShift(val);
+
     setAnyChange(1);
   };
   const handleDepartmentChange = (e, val) => {
     setDepartment(val);
+
     setAnyChange(1);
   };
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
-    console.log(department);
-    console.log(shift);
-    console.log(salary);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    
+    const res = await fetch(
+      `http://localhost:1444/api/v1/updateEmployee?ssn=${selected.ssn}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          d_id: department.d_id,
+          working_shift: shift,
+          salary,
+        }),
+      }
+    );
 
-
+    const { status } = await res.json();
+    if (status === true) {
+      setSalary(0);
+      setSelected(null);
+      setDepartment("");
+      setShift("");
+      document.querySelector(".addedSuccessfully").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".addedSuccessfully").classList.remove("active");
+      }, 3000);
+    } else {
+      document.querySelector(".tryagain").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".tryagain").classList.remove("active");
+      }, 3000);
+    }
   };
 
   return (
@@ -144,7 +172,7 @@ const UpdateEmployee = () => {
 
           <button
             className="addP"
-            disabled={anyChange == 0}
+            disabled={anyChange === 0}
             type="submit"
             onClick={handleSubmit}
           >
@@ -153,6 +181,8 @@ const UpdateEmployee = () => {
           </button>
         </form>
       )}
+      <div className="addedSuccessfully">Employee updated Successfully</div>
+      <div className="tryagain"> try again</div>
     </div>
   );
 };

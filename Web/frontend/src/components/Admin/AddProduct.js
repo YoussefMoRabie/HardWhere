@@ -19,8 +19,8 @@ import { flexbox } from '@mui/system';
 
 const AddProduct = () => {
   
-  const Suppliers=["one","two","three","four","five","six","seven","eight","eight"];
-  const Storages=["one","two","three","four","five","six","seven","eight","eight"];
+  const [Suppliers,setSupps]=React.useState(["one","two","three","four","five","six","seven","eight","eight"]);
+  const [Storages,setStorages]=React.useState(["one","two","three","four","five","six","seven","eight","eight"]);
   const [URLcolor, setURLcolor] = React.useState('primary'); ;
   const [Idcolor, setIdcolor] = React.useState('primary'); ;
   const [color, setColor] = React.useState({});

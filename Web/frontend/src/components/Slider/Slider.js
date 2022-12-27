@@ -2,6 +2,8 @@ import React from "react";
 import "./Slider.css";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
 const ReactCardSlider = (props) => {
@@ -13,11 +15,14 @@ const ReactCardSlider = (props) => {
     var slider = document.getElementById("slider" + props.CategoryName);
     slider.scrollLeft = slider.scrollLeft + 500;
   };
-
+  console.log(props.slides);
   const slideRight = () => {
     var slider = document.getElementById("slider" + props.CategoryName);
     slider.scrollLeft = slider.scrollLeft - 500;
   };
+  const handleFavouriteClick=(e) => {
+    e.target.style.color ='#faaf00'
+     }
 
   return (
     <div id="main-slider-container">
@@ -32,17 +37,18 @@ const ReactCardSlider = (props) => {
             <div
               className="slider-card"
               key={index}
-              onClick={(e) => his(`product/${slide.pid}`, { state: state })}
             >
               <div
                 className="slider-card-image"
+                onClick={(e) => his(`product/${slide.pid}`, { state: state })}
                 style={{
                   backgroundImage: `url(${slide.img_link})`,
                   backgroundSize: "cover",
                 }}
               ></div>
-              <p className="slider-card-title">{slide.product_name}</p>
+              <p onClick={(e) => his(`product/${slide.pid}`, { state: state })} className="slider-card-title">{slide.product_name}</p>
               <Rating
+                onClick={(e) => his(`product/${slide.pid}`, { state: state })}
                 className="slider_rating"
                 name="half-rating-read"
                 defaultValue={slide.p_value}
@@ -50,7 +56,11 @@ const ReactCardSlider = (props) => {
                 size="small"
                 readOnly
               />
-              <p className="slider-card-price">{slide.price}</p>
+              
+              <div style={{display:'flex',justifyContent:'space-between'}}>
+                {<FavoriteIcon color='disabled' onClick={handleFavouriteClick} />}
+              <p className="slider-card-price">{slide.price}$</p>
+              </div>
             </div>
           );
         })}

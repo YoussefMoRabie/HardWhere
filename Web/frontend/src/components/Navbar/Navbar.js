@@ -66,45 +66,37 @@ const Navbar = () => {
   const classes = useStyles();
   const navLinks = [
     {
-      title: "Labtops",
-      path: "/search/labtops",
+      title: "Laptops",
+      path: "/laptops",
     },
     {
       title: "Mobiles",
-      path: "/search/mobiles",
+      path: "/mobiles",
     },
     {
       title: "Headphones",
-      path: "/search/headphones",
+      path: "/headphones",
     },
     {
       title: "Screens",
-      path: "/search/screens",
+      path: "/screens",
     },
     {
       title: "Accessories",
-      path: "/search/accessories",
+      path: "/accessories",
     },
   ];
   const his=useNavigate();
   const handleKeyDown = (e) => {
     if (e.key==='Enter')
     {
-      his('search/'+e.target.value)
+      his('/search/'+e.target.value)
     }
   }
   const handleCategoryClick=(lin)=>{
     his(lin.path, { state: state });
   }
-  const top100Films = [
-    { title: "The Shawshank Redemption", year: 1994 },
-    { title: "The Godfather", year: 1972 },
-    { title: "The Godfather: Part II", year: 1974 },
-    { title: "The Dark Knight", year: 2008 },
-    { title: "12 Angry Men", year: 1957 },
-    { title: "Schindler's List", year: 1993 },
-    { title: "Pulp Fiction", year: 1994 },
-  ];
+  const top100Films = [];
   return (
     <ThemeProvider theme={theme}>
       <div className="header">
