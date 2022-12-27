@@ -1,23 +1,49 @@
 import 'package:get/get.dart';
+import 'package:hardwhere/view/screen/product.dart';
+
+import '../core/class/status_request.dart';
+import '../core/functions/handling_data_controller.dart';
+import '../data/data_source/remote/product_data.dart';
 
 abstract class ProductController extends GetxController {
   void incCount();
   void decCount();
+  initialData();
+  getData();
+
 }
 
 class ProductControllerImp extends ProductController {
- // late ItemsModel itemsModel;
 int count=1;
-
-
-  intialData() {
-    //itemsModel = Get.arguments['itemsmodel'];
-  }
+late int id;
+ Map<String,dynamic> productDetails ={};
+ProductData productData = ProductData(Get.find());
+late StatusRequest statusRequest;
 
 
   @override
-  void onInit() {
-    intialData();
+  Future<void> onInit() async {
+    initialData();
+
+
+    statusRequest = StatusRequest.loading;
+    // productDetails.clear();
+    var response = await productData.getData(id);
+    statusRequest = handlingData(response);
+    if (StatusRequest.success == statusRequest) {
+      if (response['status'] == true) {
+        productDetails=response['data'];
+      } else {
+        statusRequest = StatusRequest.failure;
+      }
+    }
+    update();
+
+
+
+
+
+
     super.onInit();
   }
 
@@ -34,4 +60,30 @@ int count=1;
     }
     update();
   }
+
+  @override
+  initialData() {
+
+    id = Get.arguments['selectedPro'];
+    print("oooooooooooooooooooooooooooooooooooooooooooooooooooooooo$id");
+
+  }
+
+
+
+@override
+getData() async {
+  statusRequest = StatusRequest.loading;
+  // productDetails.clear();
+  var response = await productData.getData(id);
+  statusRequest = handlingData(response);
+  if (StatusRequest.success == statusRequest) {
+    if (response['status'] == true) {
+      productDetails=response['data'];
+    } else {
+      statusRequest = StatusRequest.failure;
+    }
+  }
+  update();
+}
 }

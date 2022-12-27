@@ -85,7 +85,7 @@ class Home extends StatelessWidget {
                 itemBuilder: (context, i) {
                   return InkWell(
                     onTap: (){
-
+                                  controller.goToProduct(controller.items[i]["pid"]);
                     },
                     child: Column(
                       children: [

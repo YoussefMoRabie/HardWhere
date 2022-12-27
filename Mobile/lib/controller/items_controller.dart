@@ -6,15 +6,14 @@ import '../core/class/status_request.dart';
 import '../core/functions/handling_data_controller.dart';
 
 abstract class ItemsController extends GetxController{
-  intialData();
+  initialData();
   changeCat(int val, String catVal);
   getLaptops();
   getScreens();
   getMobiles();
   getAccessories();
   getHeadphones();
-  goToProducts();
-
+  goToProduct(int selectedPro);
 }
 class ItemsControllerImp extends ItemsController{
   List categories = [];
@@ -50,12 +49,12 @@ class ItemsControllerImp extends ItemsController{
     getAccessories();
     getScreens();
 
-    intialData();
+    initialData();
     super.onInit();
   }
 
   @override
-  intialData() {
+  initialData() {
     // categories = Get.arguments['categories'];
     selectedCat = Get.arguments['selectedCat'];
     // catid = Get.arguments['catid'];
@@ -181,7 +180,9 @@ class ItemsControllerImp extends ItemsController{
   }
 
   @override
-  goToProducts() {
-    Get.to(const Product());
+  goToProduct(int selectedPro) {
+    Get.to(()=> const Product() ,arguments: {
+      "selectedPro": selectedPro,
+    });
   }
 }
