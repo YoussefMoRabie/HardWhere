@@ -89,6 +89,8 @@ const DeleteSupplier = () => {
         {" "}
         Delete Supplier
       </button>
+      <div className="addedSuccessfully">Storage deleted Successfully</div>
+      <div className="tryagain"> try again</div>
     </div>
   );
 };
