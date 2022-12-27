@@ -390,7 +390,7 @@ const getAllStorages = async (req, res) => {
   }
 };
 const getAllSuppliers = async (req, res) => {
-  const sql = `SELECT * FROM hardwhere.suppliers;`;
+  const sql = `SELECT * FROM suppliers;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -557,7 +557,45 @@ const updateEmployee = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const updateStorage = async (req, res) => {
+  const sql = ` update storages 
+                set max_capacity=${req.body.max_capacity}
+                where stid = ${req.query.stid} `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "storage updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateShipping = async (req, res) => {
+  const sql = ` update shipping_company 
+                set cost=${req.body.cost} , delivery_time=${req.body.delivery_time} 
+                where scid =${req.query.scid}  `;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: " shipping company updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateSupplier = async (req, res) => {
+  const sql = ` update suppliers 
+                set su_address='${req.body.address}', su_phone='${req.body.phone}'
+                where suid=${req.query.suid};`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: " supplier company updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 module.exports = {
+  updateSupplier,
+  updateShipping,
   deleteFromStorages,
   getStorages,
   deleteShippingCompany,
@@ -598,4 +636,5 @@ module.exports = {
   filterByPrice,
   searchProduct,
   updateEmployee,
+  updateStorage,
 };

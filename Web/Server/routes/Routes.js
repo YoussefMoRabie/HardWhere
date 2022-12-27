@@ -41,6 +41,9 @@ const {
   deleteShippingCompany,
   deleteFromStorages,
   updateEmployee,
+  updateStorage,
+  updateShipping,
+  updateSupplier,
 } = require("../controller/Controllers");
 
 //customer
@@ -76,6 +79,9 @@ router.route("/deleteShippingCompany").delete(deleteShippingCompany);
 router.route("/getStorages").get(getStorages);
 router.route("/deleteFromStorages").delete(deleteFromStorages);
 router.route("/updateEmployee").patch(updateEmployee);
+router.route("/updateStorage").patch(updateStorage);
+router.route("/updateShipping").patch(updateShipping);
+router.route("/updateSupplier").patch(updateSupplier);
 
 //admin
 router.route("/getAllProducts").get(getAllProducts);
