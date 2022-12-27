@@ -1,4 +1,4 @@
-.formAdd{
+.formAdd {
   max-width: 700px;
   margin: 20px auto;
   padding: 20px;
@@ -6,9 +6,9 @@
   flex-direction: column;
 
   justify-content: space-between;
-  gap:20px;
+  gap: 20px;
 }
-.addP{
+.addP {
   min-width: 150px;
   padding: 10px;
   border-radius: 17px;
@@ -19,37 +19,54 @@
   box-shadow: 0 0 5px 1px #dadada;
   align-self: center;
 }
-label{
+label {
   font-size: 0.9rem;
 }
-.colorpicker{
+.addedSuccessfully {
+  text-align: center;
+  color: green;
+  display: none;
+}
+.addedSuccessfully.active {
+  display: block;
+}
+.tryagain {
+  text-align: center;
+  color: red;
+  display: none;
+}
+.tryagain.active {
+  display: block;
+}
+.colorpicker {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.UpdateP,.DeleteP,.addA{
+.UpdateP,
+.DeleteP,
+.addA {
   margin: 20px auto;
-display: flex;
-justify-content: center;
-align-items: center;
-gap: 10px;
-flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: column;
 }
-.offerMenu{
+.offerMenu {
   display: flex;
   flex-direction: column;
-  gap:10px
+  gap: 10px;
 }
-h3 span{
-    border-radius: 5px;
+h3 span {
+  border-radius: 5px;
   border-bottom: 2px solid rgb(221, 224, 16);
 }
-h3{
+h3 {
   text-align: center;
 
   padding: 25px;
   font-size: 1.25rem;
   text-transform: uppercase;
-    color: #c8c20e;
-
+  color: #c8c20e;
 }
