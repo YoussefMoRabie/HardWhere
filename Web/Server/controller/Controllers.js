@@ -373,19 +373,8 @@ const getEmployees = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
-
 const getAllProducts = async (req, res) => {
   const sql = `SELECT * FROM product;`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const getAllStorages = async (req, res) => {
-  const sql = `SELECT * FROM storages;`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });

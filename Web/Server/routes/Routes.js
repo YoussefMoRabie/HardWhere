@@ -97,8 +97,6 @@ router.route("/filterBySupplier/:su_id").get(filterBySupplier);
 router.route("/filterByOffer").get(filterByOffer);
 router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
 router.route("/searchProduct/:search_text").get(searchProduct);
-router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
-router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
 router.route("/updateUserData").get(UpdateUserData);
