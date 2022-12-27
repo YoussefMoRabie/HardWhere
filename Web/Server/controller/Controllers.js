@@ -297,7 +297,7 @@ const getheadphones = async (req, res) => {
 };
 
 const addToFavorites = async (req, res) => {
-  const sql = `insert into favorites values(${req.query.ssn},${req.query.pid}) ;`;
+  const sql = `insert into favorites values(${req.body.ssn},${req.body.pid}) ;`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "added to favorite" });
@@ -434,7 +434,7 @@ const updateProduct = async (req, res) => {
 };
 //------------------------------------------------------------Filter and search--------------------------------------------------------------------
 const filterBySupplier = async (req, res) => {
-  const sql = `select * from product where su_id = ${req.body.su_id}`;
+  const sql = `select * from product where su_id = ${req.params.su_id}`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -454,9 +454,9 @@ const filterByOffer = async (req, res) => {
   }
 };
 const filterByPrice = async (req, res) => {
-  const sql = `select * from product where price >= ${req.body.min_price} and price <= ${req.body.max_price} and has_offer != 1 
+  const sql = `select * from product where price >= ${req.params.min_price} and price <= ${req.params.max_price} and has_offer != 1 
               union
-              select * from product where new_price >= ${req.body.min_price} and new_price <= ${req.body.max_price} and has_offer = 1`;
+              select * from product where new_price >= ${req.params.min_price} and new_price <= ${req.params.max_price} and has_offer = 1`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -466,7 +466,7 @@ const filterByPrice = async (req, res) => {
   }
 };
 const searchProduct = async (req, res) => {
-  const sql = `select * from product where product_name like '%${req.body.search_text}%';`;
+  const sql = `select * from product where product_name like '%${req.params.search_text}%';`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: data[0] });
@@ -475,7 +475,7 @@ const searchProduct = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
-
+//-----------------------------------------------manager----------------------------------------------------------
 const daleteEmpoyee = async (req, res) => {
   const sql = `delete from users where ssn=${req.query.ssn}`;
   try {
@@ -552,12 +552,26 @@ const updateEmployee = async (req, res) => {
                WHERE ssn=${req.query.ssn}; `;
   try {
     await db.execute(sql);
-    res.json({ status: true, message: "employee update" });
+    res.json({ status: true, message: "employee updated" });
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+//-------------------------------------------------------User-----------------------------------------------------------------------
+const updateUserData = async (req, res) => {
+  const sql = `UPDATE user
+               SET phone = ${req.body.phone}, address="${req.body.address}", email=${req.body.email}, password=${req.body.password}
+               WHERE ssn = ${req.body.ssn};`;
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "user updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+
 module.exports = {
   deleteFromStorages,
   getStorages,
@@ -599,4 +613,5 @@ module.exports = {
   filterByPrice,
   searchProduct,
   updateEmployee,
+  updateUserData
 };
