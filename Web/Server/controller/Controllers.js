@@ -280,7 +280,7 @@ const removeFromFavorites = async (req, res) => {
   }
 };
 const getFavorites = async (req, res) => {
-  const sql = `select p_id from favorites where cust_ssn =${req.query.ssn} `;
+  const sql = `select * from favorites, product where cust_ssn = ${req.query.ssn} and p_id = pid`;
   try {
     const data = await db.execute(sql);
     res.json({ status: true, data: [...data[0]] });
@@ -350,8 +350,8 @@ const getAllSuppliers = async (req, res) => {
   }
 };
 const addProduct = async (req, res) => {
-  const sql = `insert into product (pid,product_name,price,color,count,st_id,su_id,img_link)
-   values (${req.body.pid},"${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
+  const sql = `insert into product (product_name,price,color,count,st_id,su_id,img_link)
+   values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "product added" });
