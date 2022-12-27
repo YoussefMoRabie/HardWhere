@@ -1,6 +1,7 @@
 const express= require('express');
 const router =express.Router();
 const {
+  addNewEmployee,
   getCartProducts,
   decProductQtyinCart,
   incProductQtyinCart,
@@ -23,6 +24,9 @@ const {
   addSupplier,
   addShipping,
   addStorage,
+  getEmployees,
+  daleteEmpoyee,
+  getDepartments,
 } = require("../controller/Controllers");
 
 
@@ -48,6 +52,11 @@ router.route("/getFavorite").get(getFavorites);
 router.route("/addSupplier").post(addSupplier);
 router.route("/addShipping").post(addShipping);
 router.route("/addStorage").post(addStorage);
+router.route("/getEmployees").get(getEmployees);
+router.route("/deleteEmployee").delete(daleteEmpoyee);
+router.route("/getDepartments").get(getDepartments);
+router.route("/addNewEmployee").post(addNewEmployee);
+
 
 
 
