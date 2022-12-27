@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hardwhere/view/screen/product.dart';
 
 import '../core/class/status_request.dart';
 import '../core/functions/handling_data_controller.dart';
@@ -11,6 +12,7 @@ abstract class HomeController extends GetxController {
   initialData();
   getData();
   goToItems(int selectedCat);
+  goToProduct(int selectedPro);
 }
 
 class HomeControllerImp extends HomeController {
@@ -78,6 +80,13 @@ class HomeControllerImp extends HomeController {
     //"categories": categories,
     "selectedCat": selectedCat,
     //"catid": categoryid
+    });
+  }
+
+  @override
+  goToProduct(int selectedPro) {
+    Get.to(()=> const Product() ,arguments: {
+      "selectedPro": selectedPro,
     });
   }
 }

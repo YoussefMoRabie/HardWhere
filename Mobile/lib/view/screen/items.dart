@@ -80,7 +80,7 @@ class Items extends StatelessWidget {
                 itemBuilder: (BuildContext context, index) {
                   return InkWell(
                       onTap: (){
-                        controller.goToProducts();
+                        controller.goToProduct(controller.lists[controller.selectedCat!][index]["pid"]);
                       },
                       child: Card(
                         child: Padding(
@@ -90,7 +90,7 @@ class Items extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Hero(
-                                  tag: "$index",//"55555555555555555",
+                                  tag: "${controller.lists[controller.selectedCat!][index]["pid"]}",
                                   child: Image(
                                     image:
                                     NetworkImage(controller.lists[controller.selectedCat!][index]["img_link"]),
@@ -128,18 +128,18 @@ class Items extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("5555\$",//"${itemsModel.itemsPrice} \$",
+                                    Text("${controller.lists[controller.selectedCat!][index]["price"]}\$",//"${itemsModel.itemsPrice} \$",
                                         style: TextStyle(
                                             color: AppColor.primaryColor,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                             fontFamily: "sans")),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          CupertinoIcons.heart_fill,
-                                          color: Colors.red,
-                                        ))
+                                    // IconButton(
+                                    //     onPressed: () {},
+                                    //     icon: Icon(
+                                    //       CupertinoIcons.heart_fill,
+                                    //       color: Colors.red,
+                                    //     ))
                                   ],
                                 )
                               ]),

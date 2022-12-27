@@ -1,6 +1,7 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 import '../../controller/product_controller.dart';
@@ -12,7 +13,7 @@ class Product extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProductControllerImp proController=Get.put(ProductControllerImp());
-    return Scaffold(
+    return GetBuilder<ProductControllerImp>(builder: (controller) =>Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -63,14 +64,11 @@ class Product extends StatelessWidget {
               right: Get.width / 8,
               left: Get.width / 8,
               child: Hero(
-                tag: "2",//${controller.itemsModel.itemsId}",
-                child: Image(image: AssetImage('assets/images/lol.png'),),
-                // CachedNetworkImage(
-                //   imageUrl:
-                //   "${AppLink.imagestItems}/${controller.itemsModel.itemsImage!}",
-                //   height: 250,
-                //   fit: BoxFit.fill,
-                // ),
+                tag: "${proController.id}",
+
+                child: Image(image: NetworkImage("${proController.productDetails["img_link"]}"),
+                height: 230,
+                ),
               ))
         ],
       ),
@@ -81,11 +79,26 @@ class Product extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("Prodect Name",//${controller.itemsModel.itemsName}",
-                  style: Theme.of(context).textTheme.headline1!.copyWith(
-                    fontSize: 30,
-                    color: AppColor.darkBackGroundColor,
-                  )),
+              Row(
+                children: [
+                  Text("${proController.productDetails["product_name"]}",
+                      style: Theme.of(context).textTheme.headline1!.copyWith(
+                        fontSize: 30,
+                        color: AppColor.darkBackGroundColor,
+                      )),
+                  const Spacer(),
+                  RatingBarIndicator(
+                    rating: double.parse(proController.productDetails["p_value"]),
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    itemCount: 5,
+                    itemSize: 30.0,
+                    direction: Axis.horizontal,
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
               Row(
                 children: [
@@ -126,10 +139,31 @@ class Product extends StatelessWidget {
                   ),
 
                   const Spacer(),
+                  if(proController.productDetails["has_offer"]["data"][0]==0)
                   Text(
-                    "200 \$",
+                    "${proController.productDetails["price"]}\$",
                     style: const TextStyle(
                         color: Colors.red, fontSize: 30, height: 1.1),
+                  ),
+                  if(proController.productDetails["has_offer"]["data"][0]==1)
+                  Text.rich(TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '\$${proController.productDetails["price"]}',
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' \$${proController.productDetails["new_price"]}',
+                        style: const TextStyle(
+                            color: Colors.red, fontSize: 30, height: 1.1
+                        ),
+
+                      ),
+                    ],
+                  ),
                   )
                 ],
               ),
@@ -147,6 +181,6 @@ class Product extends StatelessWidget {
         ],
       ),
 
-    );
+    ));
   }
 }
