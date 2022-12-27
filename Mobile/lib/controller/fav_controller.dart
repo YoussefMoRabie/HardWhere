@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,29 +5,22 @@ import 'package:hardwhere/core/shared/toast.dart';
 
 import '../core/class/status_request.dart';
 import '../core/functions/handling_data_controller.dart';
-import '../data/data_source/remote/cart_data.dart';
+import '../data/data_source/remote/fav_data.dart';
 
-abstract class CartController extends GetxController {
-  void incCount();
-  void decCount();
+abstract class FavController extends GetxController {
   deleteItem(int proId) ;
   getData();
 }
 
-class CartControllerImp extends CartController {
-int count=1;
-CartData cartData = CartData(Get.find());
+class FavControllerImp extends FavController {
+FavData favData = FavData(Get.find());
 late StatusRequest statusRequest;
 
-  //
-  // intialData() {
-  //   //itemsModel = Get.arguments['itemsmodel'];
-  // }
 
 
   @override
   void onInit() {
-    //intialData();
+    statusRequest = StatusRequest.loading;
     getData();
     super.onInit();
   }
@@ -39,7 +31,7 @@ List items = [];
 @override
 getData() async {
   statusRequest = StatusRequest.loading;
-  var response = await cartData.getData();
+  var response = await favData.getData();
   print("=============================== Controller $response ");
   statusRequest = handlingData(response);
   if (StatusRequest.success == statusRequest) {
@@ -55,7 +47,7 @@ getData() async {
 @override
 deleteItem(proId) async {
   statusRequest = StatusRequest.loading;
-  var response = await cartData.deletePro(proId);
+  var response = await favData.deletePro(proId);
   print("=============================== Controller $response ");
   statusRequest = handlingData(response);
   if (StatusRequest.success == statusRequest) {
@@ -71,21 +63,4 @@ deleteItem(proId) async {
 
   update();
 }
-
-  @override
-  void   incCount() {
-    count++;
-    print(count);
-
-    update();
-  }
-
-  @override
-  void decCount() {
-    if(count>1) {
-      count--;
-    }
-    print(count);
-    update();
-  }
 }
