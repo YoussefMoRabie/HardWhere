@@ -23,7 +23,9 @@ class Cart extends StatelessWidget {
 
     return GetBuilder<CartControllerImp>(
       builder: (controller){
-        return controller.items.isEmpty?Center(child: Text("Cart is Empty"),):Scaffold(
+        return controller.items.isEmpty?const Center(
+            child: Text('Cart is empty',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24))):Scaffold(
           body:
           Column(
             children: [
@@ -43,7 +45,6 @@ class Cart extends StatelessWidget {
                               height: 150,
                               //fit: BoxFit.fitHeight,
                             ),
-                            if (true)
                               Container(
                                 color: Colors.red,
                                 child: Padding(
