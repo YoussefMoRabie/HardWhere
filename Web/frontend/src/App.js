@@ -79,6 +79,7 @@ function App() {
               path="/adminpanel"
             ></Route>
           </Route>
+          <Route path="/updatecustomer" element={<UpdateCustomer />}></Route>
         </Routes>
 
         <Footer auth={auth} />
@@ -99,7 +100,7 @@ export default App;
 //           {/* <Route path="search/:searchVal" element={<SearchResults />}></Route> */}
 //           {/* <Route path="/adminPanel" element={<AdminPanel />}></Route> */}
 //           {/* <Route path="/wishlist" element={<WishList />}></Route> */}
-//           <Route path="/updatecustomer" element={<UpdateCustomer />}></Route>
+//           
 //         </Routes>
 
 //         <Footer />

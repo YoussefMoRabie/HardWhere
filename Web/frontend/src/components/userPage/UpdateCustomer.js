@@ -43,13 +43,14 @@ const UpdateCustomer = () => {
 
   const handlePhoneChange = (value) => {
     setphone(value);
-    if (!validator.isMobilePhone(value)) {
-      seterr(true);
-      setAnyChange(0);
-    } else {
-      seterr(false);
-      setAnyChange(1);
-    }
+seterr(false);
+    // if (!validator.isMobilePhone(value)) {
+    //   seterr(true);
+    //   setAnyChange(0);
+    // } else {
+      
+    //   setAnyChange(1);
+    // }
   };
 
   const handlemailChange = (e) => {
@@ -181,7 +182,7 @@ const UpdateCustomer = () => {
               />
             </div>
             <button
-              disabled={err == true}
+              disabled={err === true}
               className="addP"
               type="submit"
               onClick={handleSubmit}
