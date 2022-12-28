@@ -4,12 +4,10 @@ import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import './AddProduct.css'
 import useFetch from "../useFetch";
-import {useNavigate} from "react-router-dom";
 
 const DeleteProduct = () => {
   const products = [];
   const [selected, setSelected] = React.useState(null);
-  const history = useNavigate();
   const { data: Data } = useFetch(
     "http://localhost:1444/api/v1/getAllProducts"
   );
@@ -24,7 +22,7 @@ const DeleteProduct = () => {
     setSelected(v);
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     const res = await fetch(
       `http://localhost:1444/api/v1/deleteproduct`,
       {
@@ -37,7 +35,6 @@ const DeleteProduct = () => {
         }),
       }
     );
-    history(0);
     }
   return ( <div className="DeleteP">
     <h3><span>Delete Product</span></h3>

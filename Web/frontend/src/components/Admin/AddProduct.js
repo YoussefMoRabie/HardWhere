@@ -20,9 +20,7 @@ import useFetch from "../useFetch";
 const AddProduct = () => {
   const [URLcolor, setURLcolor] = React.useState('primary'); ;
   const [Idcolor, setIdcolor] = React.useState('primary'); ;
-  const [color, setColor] = React.useState({});
-  const [Suid, setSupplierId] = React.useState('');
-  const [Stid, setStorageId] = React.useState('');
+  const [color, setColor] = React.useState();
   const [Img, setImg] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [count, setCount] = React.useState('');
@@ -48,11 +46,9 @@ const AddProduct = () => {
 
   const handleSupplierChange = (event,val) => {
     set_selected_supplier(val);
-    setSupplierId(val.suid);
   };
   const handleStorageChange = (event,val) => {
     set_selected_storage(val);
-    setStorageId(val.stid);
   };
 
   const handlePriceChange = (event) =>
@@ -95,8 +91,8 @@ const AddProduct = () => {
         price:price,
         color:color,
         count:count,
-        st_id:Stid,
-        su_id:Suid,
+        st_id:selected_storage.stid,
+        su_id:selected_supplier.suid,
         img_link:Img
       }),
     });

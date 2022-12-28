@@ -415,7 +415,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 const updateProduct = async (req, res) => {
-  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price}, st_id = ${req.body.st_id},
+  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price},
               has_offer = ${req.body.has_offer}, new_price = ${req.body.new_price}, start_date = '${req.body.start_date}', end_date = '${req.body.end_date}'
               where pid = ${req.body.pid};`;
   try {
