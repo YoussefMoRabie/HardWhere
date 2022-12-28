@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  addOrder_fluter,
   getStorages,
   addNewEmployee,
   getCartProducts,
@@ -44,6 +45,9 @@ const {
   updateShipping,
   updateSupplier,
   updateUserData,
+  getCustomer,
+  getProductWithId,
+  getStorageWithId
 } = require("../controller/Controllers");
 
 //customer
@@ -63,11 +67,11 @@ router.route("/mobiles").get(getmobiles);
 router.route("/headphones").get(getheadphones);
 router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
-router.route("/addToFavorite").post(addToFavorites);
+router.route("/addToFavorite").get(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
-///
 router.route("/getFavorite").get(getFavorites);
-
+router.route("/getCustomer").get(getCustomer);
+router.route("/addOrder_fluter").post(addOrder_fluter);
 //manager
 router.route("/addSupplier").post(addSupplier);
 router.route("/addShipping").post(addShipping);
@@ -98,5 +102,10 @@ router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
 router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
-router.route("/updateUserData").get(updateUserData);
+router.route("/updateUserData").patch(updateUserData);
+
+
+//helper apis
+router.route("/getProductWithId").get(getProductWithId);
+router.route("/getStorageWithId").get(getStorageWithId);
 module.exports = router;

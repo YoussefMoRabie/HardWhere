@@ -14,7 +14,7 @@ const OfferCard = () => {
   //cust_ssn
   const { state } = useLocation();
   console.log(state);
-
+  const [count, setcount] = useState(3);
   const [OfferData, setOfferData] = useState([]);
   const getOffersData = async () => {
     try {
@@ -43,7 +43,7 @@ const OfferCard = () => {
     4.5: "4.5",
     5: "5",
   };
-  const [count, setcount] = useState(3);
+
   const settings = {
     // dots: true,               //add it if you want
     infinite: true,
@@ -53,55 +53,65 @@ const OfferCard = () => {
     autoplay: true,
   };
   const navigate = useNavigate();
-  return (
-    <>
-      <h2 className="CategoryName">
-        {" "}
-        <span>Offers</span>
-      </h2>
-      <Slider {...settings}>
-        {OfferData.map((product, index) => {
-          return (
-            <div className="productOffer" key={index}>
-              <div className="left">
-                <h3>{product.product_name}</h3>
-                <Box
-                  sx={{
-                    width: 200,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Rating
-                    name="text-feedback"
-                    value={Number(product.p_value)}
-                    readOnly
-                    precision={0.5}
-                    emptyIcon={
-                      <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                    }
-                  />
-                  <Box sx={{ color: "orange", ml: 2 }}>
-                    {labels[Number(product.rating)]}
+  if (count === 0) {
+    return (
+      <>
+        <h2 className="CategoryName">NO Offers</h2>
+      </>
+    );
+  } else
+    return (
+      <>
+        <h2 className="CategoryName">
+          {" "}
+          <span>Offers</span>
+        </h2>
+        <Slider {...settings}>
+          {OfferData.map((product, index) => {
+            return (
+              <div className="productOffer" key={index}>
+                <div className="left">
+                  <h3>{product.product_name}</h3>
+                  <Box
+                    sx={{
+                      width: 200,
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Rating
+                      name="text-feedback"
+                      value={Number(product.p_value)}
+                      readOnly
+                      precision={0.5}
+                      emptyIcon={
+                        <StarIcon
+                          style={{ opacity: 0.55 }}
+                          fontSize="inherit"
+                        />
+                      }
+                    />
+                    <Box sx={{ color: "orange", ml: 2 }}>
+                      {labels[Number(product.rating)]}
+                    </Box>
                   </Box>
-                </Box>
 
-                <p>
-                  Start Date:{" "}
-                  <span>{product.start_date.toString().slice(0, 10)}</span>
-                </p>
-                <p>
-                  End Date:{" "}
-                  <span>{product.end_date.toString().slice(0, 10)}</span>
-                </p>
-                <p>
-                  Old Price:{" "}
-                  <span className="oldPrice">{`${product.price}$`}</span>
-                </p>
-                <p>
-                  New Price: <span>{`${product.new_price}$`}</span>
-                </p>
-                {state && product.count > 0 && (
+                  <p>
+                    Start Date:{" "}
+                    <span>{product.start_date.toString().slice(0, 10)}</span>
+                  </p>
+                  <p>
+                    End Date:{" "}
+                    <span>{product.end_date.toString().slice(0, 10)}</span>
+                  </p>
+                  <p>
+                    Old Price:{" "}
+                    <span className="oldPrice">{`${product.price}$`}</span>
+                  </p>
+                  <p>
+                    New Price: <span>{`${product.new_price}$`}</span>
+                  </p>
+                  {/* {state && product.count > 0 && (
                   <Button
                     className="addCartBtn"
                     endIcon={<BsCartCheckFill className="BsCartCheckFill" />}
@@ -131,26 +141,26 @@ const OfferCard = () => {
                     }}
                   >
                     Add To Cart!
-                  </Button>
-                )}
-                {product.count <= 0 && (
-                  <h3 style={{ margin: "16px 0px" }}>SOLD</h3>
-                )}
+                  </Button> */}
+                  {/* )} */}
+                  {product.count <= 0 && (
+                    <h3 style={{ margin: "16px 0px" }}>SOLD</h3>
+                  )}
+                </div>
+                <div
+                  className="right"
+                  onClick={(e) => {
+                    navigate(`product/${product.pid}`, { state: state });
+                  }}
+                >
+                  <img src={product.img_link} alt={product + product.pid} />
+                </div>
               </div>
-              <div
-                className="right"
-                onClick={(e) => {
-                  navigate(`product/${product.pid}`, { state: state });
-                }}
-              >
-                <img src={product.img_link} alt={product + product.pid} />
-              </div>
-            </div>
-          );
-        })}
-      </Slider>
-    </>
-  );
+            );
+          })}
+        </Slider>
+      </>
+    );
 };
 
 export default OfferCard;

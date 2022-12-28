@@ -92,7 +92,6 @@ class Home extends StatelessWidget {
                         Container(
 
                           decoration: BoxDecoration(
-
                               color: AppColor.lightBackGroundColor,
                               borderRadius: BorderRadius.circular(20)),
                           //padding: const EdgeInsets.symmetric(horizontal: 0),

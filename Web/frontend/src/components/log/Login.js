@@ -14,8 +14,8 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(0);
   const navigate = useNavigate();
-  const classes=props;
-  console.log(classes)
+  const classes = props;
+  console.log(classes);
   // const [userSsn, setUserSsn] = useState(0);
   const handelSubmit = async (e) => {
     e.preventDefault();
@@ -27,25 +27,26 @@ const Login = (props) => {
         `http://localhost:1444/api/v1/check_GetDataUser?email=${userEmail}&password=${password}`
       );
 
-      
-      const { data,status } = await dataRes.json();
-      console.log(data,status);
+      const { data, status } = await dataRes.json();
+     
       if (status === true) {
+        localStorage.setItem("state", data);
         props.setAuth(data.authority);
-        console.log('loginpage', data.authority)
-        if (data.authority=='customer')
-        {
-        navigate(`/`, {
-          state: {
-            ssn: data.ssn,
-            f_name: data.f_name,
-            l_name: data.l_name,
-            email: userEmail,
-            address: data.address,
-            auth: data.authority
-          },
-        });}
-        else{
+        console.log("loginpage", data.authority);
+        if (data.authority == "customer") {
+          navigate(`/`, {
+            state: {
+              ssn: data.ssn,
+              phone: data.phone,
+              password: data.password,
+              f_name: data.f_name,
+              l_name: data.l_name,
+              email: userEmail,
+              address: data.address,
+              auth: data.authority,
+            },
+          });
+        } else {
           navigate(`/adminpanel`, {
             state: {
               ssn: data.ssn,
@@ -53,7 +54,7 @@ const Login = (props) => {
               l_name: data.l_name,
               email: userEmail,
               address: data.address,
-              auth: data.authority
+              auth: data.authority,
             },
           });
         }

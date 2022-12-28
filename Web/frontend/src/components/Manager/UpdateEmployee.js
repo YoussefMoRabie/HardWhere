@@ -23,6 +23,7 @@ const UpdateEmployee = () => {
   const { data: depData } = useFetch(
     "http://localhost:1444/api/v1/getDepartments"
   );
+
   for (const dep of depData) {
     departments.push({ label: dep.d_name, d_id: dep.did });
   }

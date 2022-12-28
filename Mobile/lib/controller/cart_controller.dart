@@ -7,6 +7,7 @@ import 'package:hardwhere/core/shared/toast.dart';
 import '../core/class/status_request.dart';
 import '../core/functions/handling_data_controller.dart';
 import '../data/data_source/remote/cart_data.dart';
+import '../view/screen/checkout.dart';
 
 abstract class CartController extends GetxController {
   void incCount(proId,index);
@@ -14,6 +15,7 @@ abstract class CartController extends GetxController {
   deleteItem(int proId) ;
   getData();
   getOrder();
+  goToCheckOut();
   num? getTotal();
 }
 
@@ -24,7 +26,6 @@ late StatusRequest statusRequest;
 
   @override
   void onInit() {
-    //intialData();
     getData();
     super.onInit();
   }
@@ -142,6 +143,15 @@ deleteItem(proId) async {
         "pid":items[i]["pid"],
       });
     }
-    print(order);
+}
+@override
+goToCheckOut() {
+  getOrder();
+  Get.to(const CheckOut() ,arguments: {
+    "orders": items,
+    "orders_to_DB":order,
+    "total":count,
+
+  });
 }
 }

@@ -53,7 +53,7 @@ const UpdateShipping = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(selcted);
+
     const res = await fetch(
       `http://localhost:1444/api/v1/updateShipping?scid=${selcted.scid}`,
       {

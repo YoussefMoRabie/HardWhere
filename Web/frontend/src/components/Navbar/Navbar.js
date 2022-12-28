@@ -7,14 +7,17 @@ import Autocomplete from "@mui/material/Autocomplete";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import MemoryOutlinedIcon from "@mui/icons-material/MemoryOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import GradeIcon from '@mui/icons-material/Grade';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import GradeIcon from "@mui/icons-material/Grade";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Grid, List, ListItem, ListItemText } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
+import LogoutIcon from "@mui/icons-material/Logout";
+import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstructions";
+import { BiCaretLeft } from "react-icons/bi";
 
 const useStyles = makeStyles({
   listBtn: {
@@ -89,20 +92,23 @@ const Navbar = (props) => {
   ];
   const his = useNavigate();
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      his('/search/' + e.target.value)
+    if (e.key === "Enter") {
+      his("/search/" + e.target.value);
     }
-  }
+  };
   const handleCategoryClick = (lin) => {
     his(lin.path, { state: state });
-  }
-  const iscust = () => { return state == null || state.auth === 'customer' }
-  const isemp = () => { return state != null && state.auth !== 'customer' }
+  };
+  const iscust = () => {
+    return state == null || state.auth === "customer";
+  };
+  const isemp = () => {
+    return state != null && state.auth !== "customer";
+  };
   const top100Films = [];
   return (
     <ThemeProvider theme={theme}>
-      {
-         iscust()&&
+      {iscust() && (
         <div>
           <div className="header">
             <Grid container spacing={2} justifyContent={"space-between"}>
@@ -163,7 +169,9 @@ const Navbar = (props) => {
                         <Button
                           variant="contained"
                           color="primary"
-                          endIcon={<PermIdentityOutlinedIcon fontSize="inherit" />}
+                          endIcon={
+                            <PermIdentityOutlinedIcon fontSize="inherit" />
+                          }
                           sx={{
                             color: "#251c57",
                             fontWeight: "bold",
@@ -179,16 +187,6 @@ const Navbar = (props) => {
                       // if no customer, no Cart
                       state && (
                         <>
-                          <div>
-                            {
-                              <Avatar style={{ display: "inline", padding: "5px", backgroundColor: 'darkcyan' }}>
-                                {state.f_name[0]}
-                              </Avatar>
-                            }{" "}
-                            <span id="userName">
-                              {state.f_name} {state.l_name}
-                            </span>
-                          </div>
                           <Link to="/Cart" className="Link" state={state}>
                             <Button
                               variant="contained"
@@ -219,6 +217,48 @@ const Navbar = (props) => {
                               WishList
                             </Button>
                           </Link>
+                          <BiCaretLeft />
+
+                          <Link
+                            to="/updatecustomer"
+                            className="Link"
+                            state={state}
+                          >
+                            <div>
+                              {
+                                <Avatar
+                                  style={{
+                                    display: "inline",
+                                    padding: "5px",
+                                    backgroundColor: "darkcyan",
+                                  }}
+                                >
+                                  {state.f_name[0]}
+                                </Avatar>
+                              }{" "}
+                              <span id="userName">
+                                {state.f_name} {state.l_name}
+                              </span>
+                            </div>
+                          </Link>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<LogoutIcon />}
+                            onClick={(e) => {
+                              window.localStorage.clear();
+                              window.history.replaceState(null, null, "/");
+                              his("/Signin");
+                            }}
+                            sx={{
+                              color: "#251c57",
+                              fontWeight: "bold",
+                              minWidth: 90,
+                              backgroundColor: "transparent",
+                            }}
+                          >
+                            Log out
+                          </Button>
                         </>
                       )
                     }
@@ -251,8 +291,8 @@ const Navbar = (props) => {
             ))}
           </List>
         </div>
-          }
-       { isemp() &&
+      )}
+      {isemp() && (
         <div>
           <div className="header">
             <Grid item>
@@ -266,16 +306,23 @@ const Navbar = (props) => {
                 </Stack>
               </Link>
             </Grid>
-            <div><Avatar style={{ display: "inline", padding: "5px", backgroundColor: 'darkcyan' }}>
-              {state.f_name[0]}
-            </Avatar>
-              <span style={{padding:'10px'}} id="userName">
+            <div>
+              <Avatar
+                style={{
+                  display: "inline",
+                  padding: "5px",
+                  backgroundColor: "darkcyan",
+                }}
+              >
+                {state.f_name[0]}
+              </Avatar>
+              <span style={{ padding: "10px" }} id="userName">
                 {state.f_name} {state.l_name}
-              </span></div>
+              </span>
+            </div>
           </div>
         </div>
-       }  
-      
+      )}
     </ThemeProvider>
   );
 };
