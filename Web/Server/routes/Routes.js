@@ -47,7 +47,8 @@ const {
   updateUserData,
   getCustomer,
   getProductWithId,
-  getStorageWithId
+  getStorageWithId,
+  getOrders,
 } = require("../controller/Controllers");
 
 //customer
@@ -72,6 +73,8 @@ router.route("/removeFromFavorite").get(removeFromFavorites);
 router.route("/getFavorite").get(getFavorites);
 router.route("/getCustomer").get(getCustomer);
 router.route("/addOrder_fluter").post(addOrder_fluter);
+router.route("/getOrders").get(getOrders);
+
 //manager
 router.route("/addSupplier").post(addSupplier);
 router.route("/addShipping").post(addShipping);
@@ -103,7 +106,6 @@ router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
 router.route("/updateUserData").patch(updateUserData);
-
 
 //helper apis
 router.route("/getProductWithId").get(getProductWithId);
