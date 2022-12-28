@@ -9,26 +9,47 @@ import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
 const ReactCardSlider = (props) => {
   const { state } = useLocation();
-  const [favs, setFavs] = React.useState([]);
+  const [addfav, setaddtofav] = React.useState(null);
+  const [Favs, setFavs] = React.useState([]);
+  const [isFavs, setisFav] = React.useState(false);
   console.log("user", state);
 
   useEffect(() => {
-    if (state != null) {
-      const getFavs = async () => {
-        try {
-          const dataRes = await fetch(
-            `http://localhost:1444/api/v1/getFavorite?ssn=${state.ssn}`
-          );
-          const { data } = await dataRes.json();
-          console.log("products", data);
-          setFavs(data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      getFavs();
+    const getFav = async () => {
+      try {
+        const dataRes = await fetch(`http://localhost:1444/api/v1/getFavorite?ssn=${state.ssn}`);
+        const { data } = await dataRes.json();
+        setFavs(data);
+        console.log('Favs', Favs)
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, [state]);
+    getFav();
+  }, [])
+
+
+  const addtofav = async (id) => {
+    const res = await fetch(`http://localhost:1444/api/v1/addToFavorite`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pid: parseInt(id),
+        ssn: state.ssn
+      }),
+    });
+    console.log(res);
+  }
+
+  const handleFavouriteClick = (e) => {
+    e.target.style.color = '#faaf00'
+    setaddtofav(e.currentTarget.dataset.pid);
+    addtofav(e.currentTarget.dataset.pid);
+  }
+  const checkFav = (product) => Favs.find((elem) => elem.pid == product.pid) ? true : false;
+
   const his = useNavigate();
   const slideLeft = () => {
     var slider = document.getElementById("slider" + props.CategoryName);
@@ -39,9 +60,7 @@ const ReactCardSlider = (props) => {
     var slider = document.getElementById("slider" + props.CategoryName);
     slider.scrollLeft = slider.scrollLeft - 500;
   };
-  const handleFavouriteClick = (e) => {
-    e.target.style.color = "#faaf00";
-  };
+
 
   return (
     <div id="main-slider-container">
@@ -80,16 +99,18 @@ const ReactCardSlider = (props) => {
 
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {state != null &&
-                  !favs.find((elem) => elem.pid === slide.pid) && (
+                  !Favs.find((elem) => elem.pid === slide.pid) && (
                     <FavoriteIcon
                       color="disabled"
+                      data-pid={slide.pid}
                       onClick={handleFavouriteClick}
                     />
                   )}
                 {state != null &&
-                  favs.find((elem) => elem.pid === slide.pid) && (
+                  Favs.find((elem) => elem.pid === slide.pid) && (
                     <FavoriteIcon
                       sx={{ color: "#faaf00" }}
+                    data-pid={slide.pid}
                       onClick={handleFavouriteClick}
                     />
                   )}
