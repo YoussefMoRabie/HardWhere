@@ -44,6 +44,7 @@ const {
   updateStorage,
   updateShipping,
   updateSupplier,
+  UpdateUserData,
 } = require("../controller/Controllers");
 
 //customer
@@ -92,9 +93,11 @@ router.route("/deleteProduct").delete(deleteProduct);
 router.route("/updateProduct").patch(updateProduct);
 
 //filtering
-router.route("/filterBySupplier?su_id").get(filterBySupplier);
+router.route("/filterBySupplier/:su_id").get(filterBySupplier);
 router.route("/filterByOffer").get(filterByOffer);
 router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
 router.route("/searchProduct/:search_text").get(searchProduct);
 
+//General user
+router.route("/updateUserData").get(UpdateUserData);
 module.exports = router;
