@@ -9,7 +9,7 @@ import '../data/data_source/remote/fav_data.dart';
 
 abstract class FavController extends GetxController {
   deleteItem(int proId) ;
-  getData();
+  getFavData();
 }
 
 class FavControllerImp extends FavController {
@@ -21,22 +21,23 @@ late StatusRequest statusRequest;
   @override
   void onInit() {
     statusRequest = StatusRequest.loading;
-    getData();
+    getFavData();
     super.onInit();
   }
-List items = [];
+List favItems = [];
 
 
 
 @override
-getData() async {
+getFavData() async {
+  favItems.clear();
   statusRequest = StatusRequest.loading;
   var response = await favData.getData();
   print("=============================== Controller $response ");
   statusRequest = handlingData(response);
   if (StatusRequest.success == statusRequest) {
     if (response['status'] == true) {
-      items.addAll(response['data']);
+      favItems.addAll(response['data']);
     } else {
       statusRequest = StatusRequest.failure;
     }
@@ -58,8 +59,8 @@ deleteItem(proId) async {
     }
   }
 
-  items.clear();
-  await getData();
+  favItems.clear();
+  await getFavData();
 
   update();
 }

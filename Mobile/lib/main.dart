@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hardwhere/core/services/services.dart';
 import 'package:hardwhere/view/screen/auth/login.dart';
+import 'package:hardwhere/view/screen/checkout.dart';
 import 'package:hardwhere/view/screen/layout.dart';
 import 'package:hardwhere/view/screen/onboarding.dart';
 
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeService().darkTheme,
 
       themeMode: ThemeService().getThemeMode(),
-      home:startWidget,
+      home:CartOnePage(),
     );
   }
 }
