@@ -9,7 +9,7 @@ class Crud {
   Future<Either<StatusRequest, Map>> postData(String linkUrl, Map data) async {
     print(linkUrl);
     print(data);
-    // try {
+    try {
       if (await checkInternet()) {
         var response = await http.post(Uri.parse(linkUrl), body: data);
         if (response.statusCode == 200 || response.statusCode == 201) {
@@ -23,9 +23,30 @@ class Crud {
       } else {
         return const Left(StatusRequest.offlineFailure);
       }
-    // } catch (_) {
-    //   return const Left(StatusRequest.serverFailure);
-    // }
+    } catch (_) {
+      return const Left(StatusRequest.serverFailure);
+    }
+  }
+  Future<Either<StatusRequest, Map>> patchData(String linkUrl, Map data) async {
+    print(linkUrl);
+    print(data);
+    try {
+      if (await checkInternet()) {
+        var response = await http.patch(Uri.parse(linkUrl), body: data);
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          print(response.body);
+          Map responseBody = jsonDecode(response.body);
+          return Right(responseBody);
+        } else {
+          print("statusCode == 404");
+          return const Left(StatusRequest.serverFailure);
+        }
+      } else {
+        return const Left(StatusRequest.offlineFailure);
+      }
+    } catch (_) {
+      return const Left(StatusRequest.serverFailure);
+    }
   }
   Future<Either<StatusRequest, Map>> getData(String linkUrl) async {
     try {
@@ -46,7 +67,7 @@ class Crud {
       return const Left(StatusRequest.offlineFailure);
     }
   }
-  Future<Either<StatusRequest, Map>> deletData(String linkUrl) async {
+  Future<Either<StatusRequest, Map>> deleteData(String linkUrl) async {
     try {
       if (await checkInternet()) {
         var response = await http.delete(Uri.parse(linkUrl));

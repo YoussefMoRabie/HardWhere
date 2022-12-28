@@ -41,13 +41,24 @@ class Product extends StatelessWidget {
       bottomNavigationBar: Container(
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           height: 40,
-          child:(controller.productDetails["count"]== null|| controller.productDetails["count"]<1)?Container():
+          child:(controller.productDetails["count"]== null|| controller.productDetails["count"]<1)?Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.secColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+            child: const Center(
+              child: Text(
+                "Sold Out",
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ):
           MaterialButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               color: AppColor.secColor,
               onPressed: () {
-                print("5555555555555555555555555555555");
                 controller.addToCart();
               },
               child: const Text(
@@ -117,41 +128,45 @@ class Product extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
+                      if(controller.productDetails["count"]>0)
+                      Row(
+                        children: [
+                          SizedBox(
+                            height: 30,
+                            width: 50,
+                            child: ElevatedButton(
 
-                      SizedBox(
-                        height: 30,
-                        width: 50,
-                        child: ElevatedButton(
+                              onPressed: (){
+                                proController.incCount();
+                              },
 
-                          onPressed: (){
-                            proController.incCount();
-                          },
+                              child: Icon(CupertinoIcons.minus),
 
-                          child: Icon(CupertinoIcons.minus),
-
-                        ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GetBuilder<ProductControllerImp>(builder: (controller) =>
+                                AnimatedFlipCounter(
+                                  curve: Curves.elasticOut,
+                                  textStyle: TextStyle(fontSize: 30, color: Colors.black),
+                                  value: controller.count ,
+                                ),),
+                          ),
+                          SizedBox(
+                            height: 30,
+                            width: 50,
+                            child: ElevatedButton(
+                                child:  const Icon(CupertinoIcons.plus),
+                                onPressed: (){
+                                  proController.decCount();
+                                }
+                            ),
+                          ),
+                        ],
                       ),
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GetBuilder<ProductControllerImp>(builder: (controller) =>
-                            AnimatedFlipCounter(
-                              curve: Curves.elasticOut,
-                              textStyle: TextStyle(fontSize: 30, color: Colors.black),
-                              value: controller.count ,
-                            ),),
-                      ),
 
-                      SizedBox(
-                        height: 30,
-                        width: 50,
-                        child: ElevatedButton(
-                            child:  const Icon(CupertinoIcons.plus),
-                            onPressed: (){
-                              proController.decCount();
-                            }
-                        ),
-                      ),
 
                       const Spacer(),
                       if(proController.productDetails["has_offer"]==null||proController.productDetails["has_offer"]["data"][0]==0)

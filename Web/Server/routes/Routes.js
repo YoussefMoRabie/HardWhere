@@ -63,7 +63,7 @@ router.route("/mobiles").get(getmobiles);
 router.route("/headphones").get(getheadphones);
 router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
-router.route("/addToFavorite").post(addToFavorites);
+router.route("/addToFavorite").get(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
 router.route("/getFavorite").get(getFavorites);
 

@@ -35,7 +35,12 @@ late StatusRequest statusRequest;
 
   @override
   void decCount() {
-    count++;
+    if(count<productDetails["count"]) {
+      count++;
+    }
+    else{
+      toast("We have $count pieces only", Colors.amberAccent);
+    }
     update();
   }
 
@@ -102,7 +107,6 @@ addToCart() async {
   print(statusRequest.toString());
 
   if (StatusRequest.success == statusRequest) {
-    print ("looooooooooooooooooooooooooooooooooooooooooool");
     if (response['status'] == true) {
       toast(response['message'], Colors.green);
       CartControllerImp cartController=Get.put(CartControllerImp());

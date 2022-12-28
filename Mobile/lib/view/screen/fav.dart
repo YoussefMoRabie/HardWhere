@@ -32,8 +32,8 @@ class fav extends StatelessWidget {
                         if(controller.favItems[index]["has_offer"]!=null&&controller.favItems[index]["has_offer"]["data"][0]==1)
                           Container(
                             color: Colors.red,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 'DISCOUNT',
                                 style: TextStyle(fontSize: 10, color: Colors.white),

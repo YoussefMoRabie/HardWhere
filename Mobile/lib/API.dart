@@ -18,5 +18,7 @@ class AppLink {
   static const String delFav = "$server/removeFromFavorite?ssn=";
   static const String addFav = "$server/addToFavorite?ssn=";
   static const String addToCart = "$server//product/addtocart";
+  static const String incCart = "$server/Cart/incQty/";
+  static const String decCart = "$server/Cart/decQty/";
 
 }

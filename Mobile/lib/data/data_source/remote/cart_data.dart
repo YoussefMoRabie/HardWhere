@@ -11,7 +11,15 @@ class CartData {
     return response.fold((l) => l, (r) => r);
   }
   deletePro(proId) async {
-    var response = await crud.deletData("${AppLink.cartDel}$proId?ssn=$id");
+    var response = await crud.deleteData("${AppLink.cartDel}$proId?ssn=$id");
+    return response.fold((l) => l, (r) => r);
+  }
+  incPro(proId) async {
+    var response = await crud.patchData("${AppLink.incCart}$proId?ssn=$id",{});
+    return response.fold((l) => l, (r) => r);
+  }
+  decPro(proId) async {
+    var response = await crud.patchData("${AppLink.decCart}$proId?ssn=$id",{});
     return response.fold((l) => l, (r) => r);
   }
 }
