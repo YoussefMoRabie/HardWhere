@@ -46,6 +46,8 @@ const {
   updateSupplier,
   updateUserData,
   getCustomer,
+  getProductWithId,
+  getStorageWithId
 } = require("../controller/Controllers");
 
 //customer
@@ -101,4 +103,9 @@ router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
 router.route("/updateUserData").patch(updateUserData);
+module.exports = router;
+
+//helper apis
+router.route("/getProductWithId").get(getProductWithId);
+router.route("/getStorageWithId").get(getStorageWithId);
 module.exports = router;
