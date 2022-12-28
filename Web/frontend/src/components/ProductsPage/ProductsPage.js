@@ -49,7 +49,6 @@ const ProductsPage = () => {
     e.target.style.color = '#faaf00'
     console.log(e.currentTarget.dataset.pid);
     setaddtofav(e.currentTarget.dataset.pid);
-
     addtofav(e);
   }
 
@@ -106,7 +105,7 @@ const ProductsPage = () => {
               readOnly
             />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              {<FavoriteIcon color='disabled' data-pid={product.pid} onClick={handleFavouriteClick} />}
+              {state!==null && <FavoriteIcon color='disabled' data-pid={product.pid} onClick={handleFavouriteClick} />}
               <p className="slider-card-price">{product.price}$</p>
             </div>
           </div>

@@ -102,6 +102,8 @@ console.log(state);
       avatarUrl: "https://ui-avatars.com/api/name=Lily&background=random",
       replies: [],
     },
+
+    
   ];
   const inStock = count > 0 ? true : false;
 

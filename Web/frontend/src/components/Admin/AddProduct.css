@@ -8,6 +8,9 @@
   justify-content: space-between;
   gap:20px;
 }
+body{
+  min-height: 1200px;
+}
 .addP{
   min-width: 150px;
   padding: 10px;
@@ -34,7 +37,11 @@ justify-content: center;
 align-items: center;
 gap: 10px;
 flex-direction: column;
+min-height: 1200px;
+margin: 20px auto;
+  justify-content: start !important;
 }
+
 .offerMenu{
   display: flex;
   flex-direction: column;
@@ -52,4 +59,10 @@ h3{
   text-transform: uppercase;
     color: #c8c20e;
 
+}
+.successD,.FailD{
+  display: none;
+}
+.active{
+  display: block !important;
 }

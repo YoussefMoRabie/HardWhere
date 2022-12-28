@@ -20,7 +20,7 @@ const Cart = () => {
 
   const navigate = useNavigate();
 
-  const [shippingName, setShippingName] = useState("none");
+  const [shippingName, setShippingName] = useState("");
   const [shippingCost, setShippingCost] = useState(0);
   const [shippingTime, setShippingTime] = useState(0);
   const [shippingData, setShippingData] = useState([]);
@@ -82,7 +82,7 @@ const Cart = () => {
           item.delivery_time === shippingTime
       );
 
-      if (result === undefined && shippingName === "none") {
+      if (result === undefined && shippingName === "") {
         document.getElementById("messageNeededComp").classList.add("active");
         setTimeout(() => {
           document
@@ -116,6 +116,9 @@ const Cart = () => {
       console.log(res);
       const resRes = await res.json();
       if (resRes.status === true) {
+        setShippingCost(0);
+        setShippingName('');
+        setShippingTime(0);
         document.getElementById("messageOrderSuccess").classList.add("active");
         setTimeout(() => {
           document

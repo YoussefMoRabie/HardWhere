@@ -164,7 +164,7 @@ const getOffersData = async (req, res) => {
 
 const addCustomer = async (req, res) => {
   const sql1 = `insert into users (f_name,l_name,phone,address,email,authority,password)
-   values('${req.body.firstName}','${req.body.lastName}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
+   values('${req.body.firstName}','${req.body.lastName}','${req.body.phone}','${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
   const sql3 = `select ssn from users where email="${req.body.email}" and password ="${req.body.password}"; `;
   const sql4 = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.body.email}" ) as checked;`;
   const checkEmail = await db.execute(sql4);
@@ -193,7 +193,7 @@ const addCustomer = async (req, res) => {
 
 const check_GetDataUser = async (req, res) => {
   const sql = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.query.email}" and password='${req.query.password}') as checked;`;
-  const sql2 = `SELECT ssn,f_name,l_name,phone,address,authority FROM users u
+  const sql2 = `SELECT * FROM users u
    where email='${req.query.email}' and password='${req.query.password}';`;
   try {
     const dataCheck = await db.execute(sql);
@@ -558,9 +558,9 @@ const updateEmployee = async (req, res) => {
 };
 //-------------------------------------------------------User-----------------------------------------------------------------------
 const updateUserData = async (req, res) => {
-  const sql = `UPDATE user
-               SET phone = ${req.body.phone}, address="${req.body.address}", email=${req.body.email}, password=${req.body.password}
-               WHERE ssn = ${req.body.ssn};`;
+  const sql = `UPDATE users
+               SET phone = '${req.body.phone}', address="${req.body.address}", email='${req.body.email}', password='${req.body.password}'
+               WHERE ssn = ${req.query.ssn};`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "user updated" });
@@ -605,6 +605,16 @@ const updateSupplier = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const getCustomer = async (req, res) => {
+  const sql = `select * from users where ssn = ${req.query.ssn}  `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0][0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 //---------------------------------------------------Helper Apis---------------------------------------------------------------
 const getProductWithId = async (req, res) => {
   const sql = `select * from product where pid = ${req.params.pid} `;
@@ -627,6 +637,7 @@ const getStorageWithId = async (req, res) => {
   }
 };
 module.exports = {
+  getCustomer,
   updateSupplier,
   updateShipping,
   deleteFromStorages,
