@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  addOrder_fluter,
   getStorages,
   addNewEmployee,
   getCartProducts,
@@ -68,7 +69,7 @@ router.route("/addToFavorite").get(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
 router.route("/getFavorite").get(getFavorites);
 router.route("/getCustomer").get(getCustomer);
-
+router.route("/addOrder_fluter").post(addOrder_fluter);
 //manager
 router.route("/addSupplier").post(addSupplier);
 router.route("/addShipping").post(addShipping);

@@ -238,7 +238,35 @@ const addOrder = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const addOrder_fluter = async (req, res) => {
+  const sql = ` insert into orders (price,date,cust_ssn,sc_id)
+   values(${req.body.total},'${req.body.date}',${req.body.cust_ssn},${req.body.scid});`;
 
+  const sql3 = `   select max(oid) as maxOrderId from orders `;
+  const sql4 = `delete from customer_cart where cust_ssn = ${req.body.cust_ssn}`;
+  try {
+    await db.execute(sql);
+    const cartProducts = req.body.products;
+    console.log(cartProducts);
+
+    const data = await db.execute(sql3);
+    const oid = data[0][0].maxOrderId;
+
+    console.log(oid);
+    for (const product of cartProducts) {
+      const sql2 = `insert into contains values (${oid},${product.pid},${product.qty})`;
+      // const sql6 = `update product set count=count-${product.qty} where pid=${product.pid};`;
+      // await db.execute(sql6);
+      await db.execute(sql2);
+    }
+
+    await db.execute(sql4);
+    res.send({ status: true, message: "order added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 const getShippingCompData = async (req, res) => {
   const sql = `SELECT * FROM shipping_company;`;
   try {
@@ -656,4 +684,5 @@ module.exports = {
   updateEmployee,
   updateStorage,
   updateUserData,
+  addOrder_fluter,
 };

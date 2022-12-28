@@ -4,7 +4,7 @@
   box-sizing: border-box;
   margin: 0;
 }
-@import url("https://fonts.googleapis.com/css2?family=Chewy&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 .material-symbols-outlined {
   display: block;
   font-variation-settings: "FILL" 10, "wght" 800, "GRAD" 0, "opsz" 48;
@@ -15,7 +15,7 @@
   margin-bottom: 1px;
 }
 #userName {
-  font-family: "Chewy", cursive;
+ font-family: 'Russo One', sans-serif;
   color: #505050;
   font-size: 20px;
   margin-right: 10px;
