@@ -32,6 +32,8 @@ const Login = (props) => {
         navigate(`/`, {
           state: {
             ssn: data.ssn,
+            phone:data.phone,
+            password:data.password,
             f_name: data.f_name,
             l_name: data.l_name,
             email: userEmail,

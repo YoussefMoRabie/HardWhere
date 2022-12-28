@@ -86,16 +86,15 @@ const Navbar = () => {
       path: "/accessories",
     },
   ];
-  const his=useNavigate();
+  const his = useNavigate();
   const handleKeyDown = (e) => {
-    if (e.key==='Enter')
-    {
-      his('/search/'+e.target.value)
+    if (e.key === "Enter") {
+      his("/search/" + e.target.value);
     }
-  }
-  const handleCategoryClick=(lin)=>{
+  };
+  const handleCategoryClick = (lin) => {
     his(lin.path, { state: state });
-  }
+  };
   const top100Films = [];
   return (
     <ThemeProvider theme={theme}>
@@ -116,7 +115,7 @@ const Navbar = () => {
           <Grid item sm={5}>
             <Stack>
               <Autocomplete
-              onKeyDown={handleKeyDown}
+                onKeyDown={handleKeyDown}
                 freeSolo
                 id="free-solo-2-demo"
                 disableClearable
@@ -174,16 +173,25 @@ const Navbar = () => {
                   // if no customer, no Cart
                   state && (
                     <>
-                      <div>
-                        {
-                          <Avatar style={{ display: "inline", padding: "5px",    backgroundColor: 'darkcyan' }}>
-                            {state.f_name[0]}
-                          </Avatar>
-                        }{" "}
-                        <span id="userName">
-                          {state.f_name} {state.l_name}
-                        </span>
-                      </div>
+                      <Link to="/updatecustomer" state={state}>
+                        <div>
+                          {
+                            <Avatar
+                              style={{
+                                display: "inline",
+                                padding: "5px",
+                                backgroundColor: "darkcyan",
+                              }}
+                            >
+                              {state.f_name[0]}
+                            </Avatar>
+                          }{" "}
+                          <span id="userName">
+                            {state.f_name} {state.l_name}
+                          </span>
+                        </div>
+                      </Link>
+
                       <Link to="/Cart" className="Link" state={state}>
                         <Button
                           variant="contained"
@@ -215,9 +223,9 @@ const Navbar = () => {
       >
         {navLinks.map((navLink) => (
           <ListItem
-          onClick={(e)=>{
-            handleCategoryClick(navLink);
-          }}
+            onClick={(e) => {
+              handleCategoryClick(navLink);
+            }}
             key={navLink.title}
             sx={{ borderRadius: 10 }}
             className={classes.Btn}

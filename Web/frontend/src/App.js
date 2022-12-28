@@ -29,14 +29,14 @@ import DeleteCompany from "./components/Manager/DltShipping";
 import AdminPanel from "./components/EmployeeNav/AdminPanel";
 import React from "react";
 import WishList from "./components/WishlistPage/WishList";
+import UpdateCustomer from './components/userPage/UpdateCustomer'
 function App() {
   const[auth,setAuth]=React.useState('');
   return (
     <div className="App">
       <Router path="/">
- <Navbar />
-       <Routes>
-      
+        <Navbar />
+        <Routes>
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/product/:id" element={<Product />}></Route>
           <Route path="/Cart" element={<Cart />}></Route>
@@ -44,13 +44,12 @@ function App() {
           <Route path="/Signup" element={<Signup />}></Route>
           <Route path="/:categoryVal" element={<ShowProducts />}></Route>
           <Route path="search/:searchVal" element={<SearchResults />}></Route>
-          <Route path="/adminPanel" element={<AdminPanel/>}></Route>
-          <Route path="/wishlist" element={<WishList/>}></Route>
-          
+          <Route path="/adminPanel" element={<AdminPanel />}></Route>
+          <Route path="/wishlist" element={<WishList />}></Route>
+          <Route path="/updatecustomer" element={<UpdateCustomer />}></Route>
         </Routes>
 
         <Footer />
-
       </Router>
     </div>
   );

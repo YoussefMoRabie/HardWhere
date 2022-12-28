@@ -44,6 +44,7 @@ const {
   updateShipping,
   updateSupplier,
   updateUserData,
+  getCustomer,
 } = require("../controller/Controllers");
 
 //customer
@@ -63,10 +64,10 @@ router.route("/mobiles").get(getmobiles);
 router.route("/headphones").get(getheadphones);
 router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
-router.route("/addToFavorite").post(addToFavorites);
+router.route("/addToFavorite").get(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
-///سس
 router.route("/getFavorite").get(getFavorites);
+router.route("/getCustomer").get(getCustomer);
 
 //manager
 router.route("/addSupplier").post(addSupplier);
@@ -98,5 +99,5 @@ router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
 router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
-router.route("/updateUserData").get(updateUserData);
+router.route("/updateUserData").patch(updateUserData);
 module.exports = router;

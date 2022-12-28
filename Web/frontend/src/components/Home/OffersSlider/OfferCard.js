@@ -101,7 +101,7 @@ const OfferCard = () => {
                 <p>
                   New Price: <span>{`${product.new_price}$`}</span>
                 </p>
-                {state && product.count > 0 && (
+                {/* {state && product.count > 0 && (
                   <Button
                     className="addCartBtn"
                     endIcon={<BsCartCheckFill className="BsCartCheckFill" />}
@@ -131,8 +131,8 @@ const OfferCard = () => {
                     }}
                   >
                     Add To Cart!
-                  </Button>
-                )}
+                  </Button> */}
+                {/* )} */}
                 {product.count <= 0 && (
                   <h3 style={{ margin: "16px 0px" }}>SOLD</h3>
                 )}
