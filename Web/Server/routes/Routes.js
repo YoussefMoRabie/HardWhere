@@ -65,7 +65,6 @@ router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
 router.route("/addToFavorite").get(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
-///سس
 router.route("/getFavorite").get(getFavorites);
 
 //manager

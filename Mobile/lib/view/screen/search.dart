@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hardwhere/core/class/status_request.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'fav.dart';
+import '../../controller/search_controller.dart';
+import '../../core/constans/color.dart';
 
 class Search extends StatelessWidget {
  const Search({Key? key}) : super(key: key);
@@ -9,11 +13,15 @@ class Search extends StatelessWidget {
   Widget build(BuildContext context) {
     var searchController = TextEditingController();
     var formKey = GlobalKey<FormState>();
-    return Form(
+    SearchControllerImp SearchController=Get.put(SearchControllerImp());
+    return GetBuilder<SearchControllerImp>(builder: ( controller) {
+      return
+      Form(
         key: formKey,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextFormField(
                 validator: (value) {
@@ -23,27 +31,29 @@ class Search extends StatelessWidget {
                   return null;
                 },
                 onChanged: (value){
+                  controller.getSearchData(value);
                   //SearchCubit.get(context).search(value);
                 },
                 controller: searchController,
                 keyboardType: TextInputType.text,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Search',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.search),
 
                 ),
               ),
-              //if(state is ShopSearchLoadingState)
-              if(!searchController.text.isEmpty)
+              if(controller.statusRequest!=StatusRequest.success)
+              if(searchController.text.isNotEmpty)
                 const LinearProgressIndicator(),
 
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               // if(state is ShopSearchSuccessState)
-              if(!searchController.text.isEmpty)
+              if(searchController.text.isNotEmpty)
                 Expanded(
                   child: ListView.separated(
-                      itemBuilder: (BuildContext context, int index) =>Padding(
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: SizedBox(
                           height: 130,
@@ -52,16 +62,16 @@ class Search extends StatelessWidget {
                               Stack(alignment: AlignmentDirectional.topStart, children: [
                                 //Image(image: NetworkImage(model?.image??''),width: double.infinity,height: 100,),
                                 Image(
-                                  image: AssetImage('assets/images/lol.png'),
+                                  image: NetworkImage(controller.Items[index]["img_link"]),
                                   width: 150,
                                   height: 150,
                                   //fit: BoxFit.fitHeight,
                                 ),
-                                if (true)
+                                if(controller.Items[index]["has_offer"]!=null&&controller.Items[index]["has_offer"]["data"][0]==1)
                                   Container(
                                     color: Colors.red,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 10),
                                       child: Text(
                                         'DISCOUNT',
                                         style: TextStyle(fontSize: 10, color: Colors.white),
@@ -77,7 +87,7 @@ class Search extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Name',
+                                      controller.Items[index]["product_name"],
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -85,32 +95,38 @@ class Search extends StatelessWidget {
                                     Spacer(),
                                     Row(
                                       children: [
-                                        Text(
-                                          '5555',
-                                          style:
-                                          TextStyle(fontSize: 18, color: Colors.deepOrange),
-                                        ),
-                                        SizedBox(
-                                          width: 7,
-                                        ),
-                                        if (true)
+                                        if(controller.Items[index]["has_offer"]==null||controller.Items[index]["has_offer"]["data"][0]==0)
                                           Text(
-                                            '5555555',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey,
-                                                decoration: TextDecoration.lineThrough),
+                                            "${controller.Items[index]["price"]}\$",
+                                            style: const TextStyle(
+                                                color: Colors.red, fontSize: 20,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                        Spacer(),
-                                        IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              //ShopCubit.get(context).favoraties[model?.id]==true?Icons.favorite:
-                                              Icons.favorite_border,
-                                              color:
-                                              // ShopCubit.get(context).favoraties[model?.id]==true?Colors.red:
-                                              Colors.black,
-                                            ))
+                                        if(controller.Items[index]["has_offer"]!=null&&controller.Items[index]["has_offer"]["data"][0]==1)
+                                          Text.rich(TextSpan(
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: '\$${controller.Items[index]["price"]}',
+                                                style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  decoration: TextDecoration.lineThrough,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: ' \$${controller.Items[index]["new_price"]}',
+                                                style: const TextStyle(
+                                                    color: Colors.red, fontSize: 20,
+                                                    fontWeight: FontWeight.bold
+                                                ),
+
+                                              ),
+                                            ],
+                                          ),
+                                          ),
+
+
+
+                                        const Spacer(),
                                       ],
                                     ),
                                   ],
@@ -119,14 +135,56 @@ class Search extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ),
-                      separatorBuilder: (BuildContext context, int index) {
-                        return Container(width: double.infinity,height: 1,color: Colors.grey,);
-                      },
-                      itemCount:5  ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: Colors.grey,
+                      );
+                    },
+                    itemCount: controller.Items.length,
+                  ),
                 ),
+              // if(controller.Items.isNotEmpty)
+              GetBuilder<SearchControllerImp>(builder: (controller_)=>FloatingActionButton(
+                backgroundColor: AppColor.secColor,
+                onPressed: () {
+
+                  showMaterialModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(30))
+                    ),
+                    context: context,
+                    builder: (context) => SingleChildScrollView(
+                      controller: ModalScrollController.of(context),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            CheckboxListTile(
+                              title: Text("title text"),
+                              value: controller_.checkedValue,
+                              onChanged: (newValue) {
+                                print(newValue);
+                                controller_.changeCheckBox();
+                              },
+                              controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                            ),
+                            Text("LOL",style: TextStyle(fontSize: 25),),
+                            Text("LOL",style: TextStyle(fontSize: 25),),
+                            Text("LOL",style: TextStyle(fontSize: 25),),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Icon(Icons.filter_alt_outlined),
+              )),
             ],
           ),
         ));
+    });
   }
 }

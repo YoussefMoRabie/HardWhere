@@ -55,17 +55,13 @@ class ItemsControllerImp extends ItemsController{
 
   @override
   initialData() {
-    // categories = Get.arguments['categories'];
+
     selectedCat = Get.arguments['selectedCat'];
-    // catid = Get.arguments['catid'];
-    // getItems(catid!);
   }
 
   @override
   changeCat(val,catval) {
      selectedCat = val;
-    // catid = catval;
-    // getItems(catid!);
      update();
   }
 
