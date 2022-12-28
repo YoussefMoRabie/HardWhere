@@ -46,9 +46,9 @@ const Product = () => {
 
   const navigate = useNavigate();
   const { state } = useLocation();
-
+console.log(state);
   const [has_offer, setHasOffer] = useState(0);
-  const [proName, setName] = useState("product" + id);
+  const [proName, setName] = React.useState('product dummy');
   const [price, setPrice] = useState(99.99);
   const [count, setcount] = useState(6);
   const [supplier, setSupplier] = useState("Apple");
@@ -61,18 +61,31 @@ const Product = () => {
   const [imgLink, setimgLink] = useState("");
   const AddporductToCart = async (req, res) => {
     try {
-      fetch(`http://localhost:1444/api/v1/product/addtocart`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          pid: id,
-          cust_ssn: state.ssn, //must be dynamic later
-          qty,
-        }),
-      });
-      navigate("/Cart", { state: state });
+      const res = await fetch(
+        `http://localhost:1444/api/v1/product/addtocart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: id,
+            cust_ssn: state.ssn, //must be dynamic later
+            qty,
+          }),
+        }
+      );
+      const { status } = await res.json();
+      if (status === true) {
+        navigate("/Cart", { state: state });
+      } else {
+        document.querySelector(".addedSuccessfully").classList.add("active");
+        setTimeout(() => {
+          document
+            .querySelector(".addedSuccessfully")
+            .classList.remove("active");
+        }, 3000);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -138,7 +151,7 @@ const Product = () => {
     <div className="propage">
       <div className="product">
         <div className="productimage">
-          <img src={imgLink} alt={"product " + id} />
+          <img src={imgLink} alt={proName} />
         </div>
         <div className="productinfo">
           <h2 className="proHead">{proName}</h2>
@@ -227,6 +240,9 @@ const Product = () => {
                   </Button>
                 </ThemeProvider>
               )}
+              <div style={{color:"red"}} className="addedSuccessfully">
+                Product Allready in Your Cart
+              </div>
             </div>
           )}
           {!inStock && <p className="notAvailable">Out Of Stock</p>}
@@ -235,17 +251,16 @@ const Product = () => {
       <h2 style={{ paddingLeft: 17 }}>Reviews</h2>
       <CommentSection
         titleStyle={{ content: "Reviews" }}
-        currentUser={{
-          currentUserId: "01a",
+        currentUser={state == null ? null : {
+          currentUserId: state.ssn,
           currentUserImg:
-            "https://ui-avatars.com/api/name=Mahmoud&background=random",
-          currentUserProfile:
-            "https://www.linkedin.com/in/riya-negi-8879631a9/",
-          currentUserFullName: "Mahmoud Sobhy",
-        }}
+            `https://ui-avatars.com/api/name=${state.f_name}&background=random`,
+         
+          currentUserFullName: `${state.f_name} ${state.l_name}`
+}}
         logIn={{
-          loginLink: "http://localhost:3001/",
-          signupLink: "http://localhost:3001/",
+          loginLink: "http://localhost:3000/signin",
+          signupLink: "http://localhost:3000/signup",
         }}
         commentData={data}
         onSubmitAction={(data) => console.log("check submit, ", data)}

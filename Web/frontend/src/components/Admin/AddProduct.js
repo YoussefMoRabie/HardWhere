@@ -14,22 +14,21 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputColor from 'react-input-color';
 import { flexbox } from '@mui/system';
-
+import useFetch from "../useFetch";
 
 
 const AddProduct = () => {
-  
-  const Suppliers=["one","two","three","four","five","six","seven","eight","eight"];
-  const Storages=["one","two","three","four","five","six","seven","eight","eight"];
   const [URLcolor, setURLcolor] = React.useState('primary'); ;
   const [Idcolor, setIdcolor] = React.useState('primary'); ;
   const [color, setColor] = React.useState({});
-  const [Supplier, setSupplier] = React.useState('');
+  const [Suid, setSupplierId] = React.useState('');
+  const [Stid, setStorageId] = React.useState('');
   const [Img, setImg] = React.useState('');
-  const [Id, setId] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [count, setCount] = React.useState('');
   const [name, setName] = React.useState('');
+  const [selected_storage, set_selected_storage] = React.useState(null);
+  const [selected_supplier, set_selected_supplier] = React.useState(null);
 
   const handleImgChange = (event) => {
     if (validator.isURL(event.target.value)) {
@@ -40,35 +39,68 @@ const AddProduct = () => {
     setImg(event.target.value);
   };
   const handleNameChange = (event) => {
-
     setName(event.target.value);
-  };
-  const handleIdChange = (event) => {
-    if (validator.isNumeric(event.target.value)) {
-      setIdcolor("primary");
-    }
-    else {
-      setIdcolor("error");
-    }
-    setId(event.target.value);
   };
   const handleCountChange = (event) =>
     event.target.value < 1
       ? (event.target.value = 1)
       : setCount(event.target.value)
 
-  const handleSupplierChange = (event) => {
-    setSupplier(event.target.value);
+  const handleSupplierChange = (event,val) => {
+    set_selected_supplier(val);
+    setSupplierId(val.suid);
   };
+  const handleStorageChange = (event,val) => {
+    set_selected_storage(val);
+    setStorageId(val.stid);
+  };
+
   const handlePriceChange = (event) =>
     event.target.value < 1
       ? (event.target.value = 1)
       : setPrice(event.target.value);
-  const handleSubmit = () => {
 
+
+    const Storages = [];
+    const { data: stoData } = useFetch(
+      "http://localhost:1444/api/v1/getStorages"
+    );
+    for (const sto of stoData) {
+      Storages.push({
+        label: sto.st_address,
+        stid: sto.stid,
+      });
+    };
+
+    const Suppliers = [];
+    const { data: supData } = useFetch(
+      "http://localhost:1444/api/v1/getAllSuppliers"
+    );
+    for (const sup of supData) {
+      Suppliers.push({
+        label: sup.su_name,
+        suid: sup.suid,
+      });
+    };
+
+
+  const handleSubmit = async () => {
+    const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_name:name,
+        price:price,
+        color:color,
+        count:count,
+        st_id:Stid,
+        su_id:Suid,
+        img_link:Img
+      }),
+    });
   };
-
-
 
 
   return (
@@ -84,23 +116,11 @@ const AddProduct = () => {
           label="Product Name"
 
         />
-        <FormControl>
-        <TextField
-          required
-          fullWidth={false}
-          id="outlined-required"
-          value={Id}
-          error={Idcolor=="error"}
-          onChange={handleIdChange}
-          label="Product ID"
-
-        />
-          {Idcolor == "error" && <span style={{ color: 'red', fontSize: 12, padding: 5 }}>*Invalid ID</span>}
-
-        </FormControl>
+  
         <Autocomplete
           disablePortal
           required
+          value={selected_supplier}
           onChange={handleSupplierChange}
           id="combo-box-demo"
           options={Suppliers}
@@ -110,6 +130,8 @@ const AddProduct = () => {
         <Autocomplete
           disablePortal
           required
+          value={selected_storage}
+          onChange={handleStorageChange}
           id="combo-box-demo"
           options={Storages}
           fullWidth
@@ -155,7 +177,7 @@ const AddProduct = () => {
         <div className='colorpicker'>
           <label htmlFor="">Choose Color </label>
           <input className='colorp' type="color" value={color}
-            onChange={(e) => { setColor(e.target.value) }}></input>
+            onChange={(e) => { console.log(e.target.value); setColor(e.target.value) }}></input>
         </div>
 
 
