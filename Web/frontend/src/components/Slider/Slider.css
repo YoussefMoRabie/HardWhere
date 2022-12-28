@@ -30,21 +30,22 @@
 } */
 
 .slider-card-title{
-    font-weight: 500;
-    margin-top: 10px;
+    font-weight: 900;
+    text-transform: capitalize;
+    margin: 10px 0 0 0 !important;
+    
 }
-.slider_rating{
+/* .slider_rating{
     padding-bottom: 5px;
   padding-left: 10px;
-}
+} */
 .slider-card-price{
   text-align: end;
-  opacity: 0.5;
   font-size: 1.3rem;
   font-weight: bold;
   padding-right: 10px;
   padding-bottom: 5px;
-  color: rgb(0, 0, 0);
+  color: #faaf00;
     }
 
 .slider-card-image{
@@ -60,7 +61,7 @@
     border-radius: 100%;
     position: absolute;
     opacity: 0.5;
-    box-shadow: 2px 2px 2px 2px rgb(0 0 0 / 12%);
+    box-shadow: 3px 2px 4px 2px rgb(0 0 0 / 12%);
     cursor: pointer;
 }
 
@@ -84,7 +85,9 @@
     display: inline-block;
     margin-left: 5px;
     margin-right: 5px;
-    box-shadow: 2px 2px 2px 2px rgb(0 0 0 / 12%);
+    padding-right: 10px;
+    padding-left: 10px;
+    box-shadow: 1px 2px 3px 2px rgb(0 0 0 / 12%);
     cursor: pointer;
 }
 

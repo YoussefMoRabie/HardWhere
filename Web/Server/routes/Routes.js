@@ -29,7 +29,6 @@ const {
   daleteEmpoyee,
   getDepartments,
   getAllProducts,
-  getAllStorages,
   getAllSuppliers,
   addProduct,
   deleteProduct,
@@ -44,6 +43,7 @@ const {
   updateStorage,
   updateShipping,
   updateSupplier,
+  updateUserData,
 } = require("../controller/Controllers");
 
 //customer
@@ -63,7 +63,7 @@ router.route("/mobiles").get(getmobiles);
 router.route("/headphones").get(getheadphones);
 router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
-router.route("/addToFavorite").get(addToFavorites);
+router.route("/addToFavorite").post(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
 ///سس
 router.route("/getFavorite").get(getFavorites);
@@ -86,16 +86,17 @@ router.route("/updateSupplier").patch(updateSupplier);
 
 //admin
 router.route("/getAllProducts").get(getAllProducts);
-router.route("/getAllStorages").get(getAllStorages);
 router.route("/getAllSuppliers").get(getAllSuppliers);
 router.route("/addProduct").post(addProduct);
 router.route("/deleteProduct").delete(deleteProduct);
 router.route("/updateProduct").patch(updateProduct);
 
 //filtering
-router.route("/filterBySupplier").get(filterBySupplier);
+router.route("/filterBySupplier/:su_id").get(filterBySupplier);
 router.route("/filterByOffer").get(filterByOffer);
-router.route("/filterByPrice").get(filterByPrice);
-router.route("/searchProduct").get(searchProduct);
+router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
+router.route("/searchProduct/:search_text").get(searchProduct);
 
+//General user
+router.route("/updateUserData").get(updateUserData);
 module.exports = router;
