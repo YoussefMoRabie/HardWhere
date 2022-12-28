@@ -94,12 +94,12 @@ const ReactCardSlider = (props) => {
                     />
                   )}
                 <p className="slider-card-price">{slide.price}$</p>
-                <p className="slider-card-price">
+                {/* <p className="slider-card-price">
                   {slide.has_offer.data[0] === 1
                     ? slide.new_price
                     : slide.price}
                   $
-                </p>
+                </p> */}
               </div>
             </div>
           );
