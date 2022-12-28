@@ -15,6 +15,9 @@ import { makeStyles } from "@mui/styles";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useLocation, useSearchParams } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
+import LogoutIcon from "@mui/icons-material/Logout";
+import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstructions";
+import { BiCaretLeft } from "react-icons/bi";
 
 const useStyles = makeStyles({
   listBtn: {
@@ -68,7 +71,7 @@ const Navbar = (props) => {
   const navLinks = [
     {
       title: "Laptops",
-      path: "/laptops",
+      path: "/labtops",
     },
     {
       title: "Mobiles",
@@ -184,28 +187,6 @@ const Navbar = (props) => {
                       // if no customer, no Cart
                       state && (
                         <>
-                          <Link
-                            to="/updatecustomer"
-                            className="Link"
-                            state={state}
-                          >
-                            <div>
-                              {
-                                <Avatar
-                                  style={{
-                                    display: "inline",
-                                    padding: "5px",
-                                    backgroundColor: "darkcyan",
-                                  }}
-                                >
-                                  {state.f_name[0]}
-                                </Avatar>
-                              }{" "}
-                              <span id="userName">
-                                {state.f_name} {state.l_name}
-                              </span>
-                            </div>
-                          </Link>
                           <Link to="/Cart" className="Link" state={state}>
                             <Button
                               variant="contained"
@@ -236,6 +217,48 @@ const Navbar = (props) => {
                               WishList
                             </Button>
                           </Link>
+                          <BiCaretLeft />
+
+                          <Link
+                            to="/updatecustomer"
+                            className="Link"
+                            state={state}
+                          >
+                            <div>
+                              {
+                                <Avatar
+                                  style={{
+                                    display: "inline",
+                                    padding: "5px",
+                                    backgroundColor: "darkcyan",
+                                  }}
+                                >
+                                  {state.f_name[0]}
+                                </Avatar>
+                              }{" "}
+                              <span id="userName">
+                                {state.f_name} {state.l_name}
+                              </span>
+                            </div>
+                          </Link>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<LogoutIcon />}
+                            onClick={(e) => {
+                              window.localStorage.clear();
+                              window.history.replaceState(null, null, "/");
+                              his("/Signin");
+                            }}
+                            sx={{
+                              color: "#251c57",
+                              fontWeight: "bold",
+                              minWidth: 90,
+                              backgroundColor: "transparent",
+                            }}
+                          >
+                            Log out
+                          </Button>
                         </>
                       )
                     }

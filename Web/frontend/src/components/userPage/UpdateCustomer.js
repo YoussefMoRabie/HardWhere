@@ -38,17 +38,23 @@ const UpdateCustomer = () => {
     setphone(state.phone);
     setAddress(state.address);
     setPassword(state.password);
-    setShown(true);
+    if (shown) {
+      setShown(false);
+      document.getElementById("showbtn").innerText = "Show My Data";
+    } else {
+      setShown(true);
+         document.getElementById("showbtn").innerText = "Hide My Data";
+    }
   };
 
   const handlePhoneChange = (value) => {
     setphone(value);
-seterr(false);
+    seterr(false);
     // if (!validator.isMobilePhone(value)) {
     //   seterr(true);
     //   setAnyChange(0);
     // } else {
-      
+
     //   setAnyChange(1);
     // }
   };
@@ -103,10 +109,6 @@ seterr(false);
 
   return (
     <div className="addA">
-      <h3>
-        <span>Your Data</span>
-      </h3>
-
       <form
         action=""
         style={{
@@ -117,7 +119,13 @@ seterr(false);
         }}
         className="AddSupp"
       >
-        <button className="addP" type="submit" onClick={HandelShow}>
+        <button
+          style={{ fontSize: "18px", marginBottom: "13px" }}
+          className="addP"
+          id="showbtn"
+          type="submit"
+          onClick={HandelShow}
+        >
           {" "}
           Show My Data
         </button>
@@ -125,6 +133,9 @@ seterr(false);
 
         {shown && (
           <>
+            <h3>
+              <span>Your Data</span>
+            </h3>
             <div
               style={{
                 display: "flex",

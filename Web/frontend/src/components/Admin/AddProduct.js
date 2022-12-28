@@ -27,9 +27,56 @@ const AddProduct = () => {
   const [Img, setImg] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [count, setCount] = React.useState('');
+  const [category, setCat] = React.useState('');
+  const [CPU, setCPU] = React.useState('');
+  const [GPU, setGPU] = React.useState('');
+  const [RAM, setRAM] = React.useState('');
+  const [Freq, setFreq] = React.useState('');
+  const [ScreenType, setScType] = React.useState('');
+  const [isSmart, setisSmart] = React.useState('');
+  const [Reso, setReso] = React.useState('');
+  const [AcType, setAcType] = React.useState('');
+  const [Screen, setScreen] = React.useState('');
   const [name, setName] = React.useState('');
   const [selected_storage, set_selected_storage] = React.useState(null);
   const [selected_supplier, set_selected_supplier] = React.useState(null);
+  const categories = [{ label: 'Laptops' }, { label: 'Mobiles' }, { label: 'Headphones' }, { label: 'Screens' }, { label: 'Accessories' }]
+
+  const handleCatChange = (e, v) => {
+    setCat(v.label);
+  }
+  const handleCPUChange = (e, v) => {
+    setCPU(v);
+  }
+  const handleGPUChange = (e, v) => {
+    setGPU(v);
+  }
+  const handleRAMChange = (e, v) => {
+    setRAM(v);
+  }
+  const handleFreqChange = (event, v) => {
+    event.target.value < 1
+      ? (event.target.value = 1)
+      : setFreq(v);
+
+  }
+  const handleResoChange = (e, v) => {
+    setReso(v);
+  }
+  const handleTypeChange = (e, v) => {
+    setScType(v);
+  }
+  const handleisSmartChange = (e, v) => {
+    setisSmart(v);
+  }
+  const handleAcTypeChange = (e, v) => {
+    setAcType(v);
+  }
+  const handleScreenChange = (event, v) => {
+    event.target.value < 1
+      ? (event.target.value = 1)
+      : setScreen(v);
+  }
 
   const handleImgChange = (event) => {
     if (validator.isURL(event.target.value)) {
@@ -47,10 +94,10 @@ const AddProduct = () => {
       ? (event.target.value = 1)
       : setCount(event.target.value)
 
-  const handleSupplierChange = (event,val) => {
+  const handleSupplierChange = (event, val) => {
     set_selected_supplier(val);
   };
-  const handleStorageChange = (event,val) => {
+  const handleStorageChange = (event, val) => {
     set_selected_storage(val);
   };
 
@@ -73,17 +120,32 @@ const AddProduct = () => {
       });
     };
 
-    const Suppliers = [];
-    const { data: supData } = useFetch(
-      "http://localhost:1444/api/v1/getAllSuppliers"
-    );
-    for (const sup of supData) {
-      Suppliers.push({
-        label: sup.su_name,
-        suid: sup.suid,
-      });
-    };
+  const Suppliers = [];
+  const { data: supData } = useFetch(
+    "http://localhost:1444/api/v1/getAllSuppliers"
+  );
+  for (const sup of supData) {
+    Suppliers.push({
+      label: sup.su_name,
+      suid: sup.suid,
+    });
+  };
 
+  const isLab = () => {
+    return category == 'Laptops'
+  }
+  const isLabMob = () => {
+    return category == 'Laptops' || category == 'Mobiles'
+  }
+  const ishead = () => {
+    return category == 'Headphones'
+  }
+  const isscrenn = () => {
+    return category == 'Screens'
+  }
+  const isAc = () => {
+    return category == 'Accessories'
+  }
   const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
       method: "POST",
@@ -132,7 +194,7 @@ const AddProduct = () => {
   return (
     <div className="New">
       <h3><span>Add New Product</span></h3>
-      <form className='formAdd' onSubmit={(e)=>{
+      <form className='formAdd' onSubmit={(e) => {
         handleSubmit(e)
         e.preventDefault();
       }}>
@@ -145,7 +207,121 @@ const AddProduct = () => {
           label="Product Name"
 
         />
-  
+
+        <Autocomplete
+          disablePortal
+          required
+          clearOnEscape
+          value={category}
+          onChange={handleCatChange}
+          id="combo-box-demo"
+          options={categories}
+          fullWidth
+          renderInput={(params) => <TextField {...params} label="Cateogry" />}
+        />
+        {isLabMob() &&
+          <TextField
+            required
+            fullWidth={false}
+            id="outlined-required"
+            value={CPU}
+            onChange={handleCPUChange}
+            label="CPU"
+          />}
+        {isLabMob() &&
+          <TextField
+            required
+            fullWidth={false}
+            id="outlined-required"
+            value={RAM}
+            onChange={handleRAMChange}
+            label="RAM"
+          />}
+        {isLab() &&
+          <TextField
+            required
+            fullWidth={false}
+            id="outlined-required"
+            value={GPU}
+            onChange={handleGPUChange}
+            label="GPU"
+          />}
+        {isLabMob() &&
+          <TextField
+            required={true}
+            id="outlined-number"
+            label="Screen Size"
+            type="number"
+            value={Screen}
+            onChange={handleScreenChange}
+            InputLabelProps={{
+              shrink: true,
+              min: 0,
+            }}
+          />
+          }
+
+        {ishead() &&
+          <TextField
+            required={true}
+            id="outlined-number"
+            label="Frequency"
+            type="number"
+            value={Freq}
+            onChange={handleFreqChange}
+            InputLabelProps={{
+              shrink: true,
+              min: 0,
+            }}
+          />
+        }
+        {isscrenn() &&
+          <>
+            <Autocomplete
+              disablePortal
+              required
+              clearOnEscape
+              value={ScreenType}
+              onChange={handleTypeChange}
+              id="combo-box-demo"
+              options={[{ label: 'LED' }, { label: 'LCD' }, { label: 'OLED' }, { label: 'AMOLED' }]}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label="Type" />}
+            />
+            <TextField
+              required
+              fullWidth={false}
+              id="outlined-required"
+              value={Reso}
+              onChange={handleResoChange}
+              label="Resolution"
+            />
+            <Autocomplete
+              disablePortal
+              required
+              clearOnEscape
+              value={isSmart}
+              onChange={handleisSmartChange}
+              id="combo-box-demo"
+              options={[{ label: 'YES' }, { label: 'NO' }]}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label="Is Smart?" />}
+            />
+          </>
+        }
+        {isAc() &&
+          <>
+            <TextField
+              required
+              fullWidth={false}
+              id="outlined-required"
+              value={AcType}
+              onChange={handleAcTypeChange}
+              label="Type"
+            />
+          </>
+        }
+
         <Autocomplete
           disablePortal
           required
@@ -156,6 +332,7 @@ const AddProduct = () => {
           fullWidth
           renderInput={(params) => <TextField {...params} label="Supplier" />}
         />
+
         <Autocomplete
           disablePortal
           required
@@ -178,17 +355,17 @@ const AddProduct = () => {
           }}
         />
         <FormControl>
-        <TextField
-          id="outlined-multiline-static"
-          label="Image Link"
-          multiline
-          required={true}
-          error={URLcolor=='error'}
-          rows={4}
-          value={Img}
-          onChange={handleImgChange}
-        />
-         {URLcolor=="error" && <span style={{color:'red', fontSize:12,padding:5}}>*Invalid URL</span>}
+          <TextField
+            id="outlined-multiline-static"
+            label="Image Link"
+            multiline
+            required={true}
+            error={URLcolor == 'error'}
+            rows={4}
+            value={Img}
+            onChange={handleImgChange}
+          />
+          {URLcolor == "error" && <span style={{ color: 'red', fontSize: 12, padding: 5 }}>*Invalid URL</span>}
         </FormControl>
         <FormControl>
           <InputLabel required={true} htmlFor="outlined-adornment-amount">Price</InputLabel>
@@ -217,7 +394,7 @@ const AddProduct = () => {
           Fail Addition!
         </div>
       </form>
-      
+
     </div>
 
 

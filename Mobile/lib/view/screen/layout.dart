@@ -6,27 +6,24 @@ import 'package:hardwhere/core/constans/color.dart';
 import 'package:hardwhere/core/shared/styles/themes.dart';
 import 'package:hardwhere/view/screen/home.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:switcher_button/switcher_button.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../controller/layout_controller.dart';
+import '../../controller/search_controller.dart';
+import 'old_orders.dart';
 
 class Layout extends StatelessWidget {
   const Layout({Key? key}) : super(key: key);
-
-
-  List<Widget> _buildScreens() {
-    return [
-          Home(),
-      Container(child: Center(child: Text("lol"),),)
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {
     Get.put(LayoutControllerImp());
 
-    GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
+    GlobalKey<CurvedNavigationBarState> bottomNavigationKey = GlobalKey();
 
 
     return GetBuilder<LayoutControllerImp>(builder: (controller)=>Scaffold(
@@ -36,22 +33,20 @@ class Layout extends StatelessWidget {
           child: Image(image: AssetImage('assets/images/logo.png')),
         ) ,
         title: const Text('HardWhere'),
-        // actions: [
-        //   Center(
-        //     child: SwitcherButton(
-        //       value:  false,//!MainCubit.get(context).isDark,
-        //       onColor: Colors.grey[200]!,
-        //       onChange: (value) {
-        //        ThemeService().changeTheme();
-        //
-        //       },
-        //     ),
-        //   ),
-        // ],
+        actions: [
+          Center(
+            child: IconButton(
+              icon: const Icon(Icons.list_alt),
+              onPressed: (){
+                Get.to(const Orders());
+              },
+            ),
+          ),
+        ],
       ),
       body: controller.screens.elementAt(controller.currentIndex),
       bottomNavigationBar: CurvedNavigationBar(
-        key: _bottomNavigationKey,
+        key: bottomNavigationKey,
         index: 0,
         height: 60.0,
         items: const <Widget>[
@@ -71,7 +66,6 @@ class Layout extends StatelessWidget {
         },
         letIndexChange: (index) => true,
       ),
-
     ));
 
   }

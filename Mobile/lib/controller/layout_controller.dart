@@ -12,6 +12,7 @@ abstract class LayoutController extends GetxController{
 }
 class LayoutControllerImp extends LayoutController{
   int currentIndex=0;
+
   List<Widget> screens=  [
       Home(),
       Cart(),

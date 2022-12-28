@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:hardwhere/core/class/status_request.dart';
 import 'package:dartz/dartz.dart';
@@ -48,7 +49,7 @@ class Crud {
       return const Left(StatusRequest.serverFailure);
     }
   }
-  Future<Either<StatusRequest, Map>> getData(String linkUrl) async {
+  Future<Either<StatusRequest, Map>> getData(String linkUrl,) async {
     try {
       if (await checkInternet()) {
         var response = await http.get(Uri.parse(linkUrl));

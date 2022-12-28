@@ -77,6 +77,10 @@ dependencies:
   fluttertoast: ^8.1.2
   cached_network_image: ^3.2.3
   flutter_rating_bar: ^4.0.1
+  custom_radio_grouped_button: ^2.1.2+2
+  modal_bottom_sheet: ^2.1.2
+  syncfusion_flutter_sliders: ^20.4.38
+
 
 #  path: ^1.8.0
 #  # Qrcode
