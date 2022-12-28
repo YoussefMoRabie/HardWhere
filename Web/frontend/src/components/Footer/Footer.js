@@ -1,21 +1,29 @@
+import * as React from'react'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './footStyle.css'
 import { makeStyles } from '@mui/styles';
 
 
-const Footer = () => {
+const Footer = (props) => {
   const date = new Date();
+  const { state } = useLocation();
+
   const laptopsBrands = [{ title: "Apple", path: "/" }, { title: "Dell", path: "/" }, { title: "Acer", path: "/" }, { title: "Lenovo", path: "/" }, { title: "Asus", path: "/" }]
   const mobileBrands = [{ title: "Iphone", path: "/" }, { title: "Samsung", path: "/" }, { title: "OnePlus", path: "/" }, { title: "Oppo", path: "/" }, { title: "Xioami", path: "/" }]
   const headphonesBrands = [{ title: "Sony", path: "/" }, { title: "JPL", path: "/" }, { title: "Apple", path: "/" }, { title: "Beats", path: "/" }, { title: "Razer", path: "/" }]
   const screenBrands = [{ title: "Samsung", path: "/" }, { title: "LG", path: "/" }, { title: "Toshiba", path: "/" }]
   const accessoryBrands = [{ title: "Apple", path: "/" }, { title: "Dell", path: "/" }, { title: "Acer", path: "/" }, { title: "Lenovo", path: "/" }, { title: "Asus", path: "/" }]
+  const iscust = () => { return state == null || state.auth === 'customer' }
+  const isemp = () => { return state != null && state.auth !== 'customer' }
   return (
+    
+      <>
+      {iscust() &&
     <div className="footer">
       <div className="head">
         <div className="Laptop category">
@@ -80,6 +88,7 @@ const Footer = () => {
         </ul>
       </div>
     </div>
+}</>  
   );
 }
 

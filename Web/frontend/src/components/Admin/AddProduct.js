@@ -20,9 +20,7 @@ import useFetch from "../useFetch";
 const AddProduct = () => {
   const [URLcolor, setURLcolor] = React.useState('primary'); ;
   const [Idcolor, setIdcolor] = React.useState('primary'); ;
-  const [color, setColor] = React.useState({});
-  const [Suid, setSupplierId] = React.useState('');
-  const [Stid, setStorageId] = React.useState('');
+  const [color, setColor] = React.useState();
   const [Img, setImg] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [count, setCount] = React.useState('');
@@ -48,11 +46,9 @@ const AddProduct = () => {
 
   const handleSupplierChange = (event,val) => {
     set_selected_supplier(val);
-    setSupplierId(val.suid);
   };
   const handleStorageChange = (event,val) => {
     set_selected_storage(val);
-    setStorageId(val.stid);
   };
 
   const handlePriceChange = (event) =>
@@ -84,7 +80,7 @@ const AddProduct = () => {
     };
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
       method: "POST",
       headers: {
@@ -95,18 +91,42 @@ const AddProduct = () => {
         price:price,
         color:color,
         count:count,
-        st_id:Stid,
-        su_id:Suid,
+        st_id:selected_storage.stid,
+        su_id:selected_supplier.suid,
         img_link:Img
       }),
     });
+    const { status } = await res.json();
+    if (status === true) {
+      setURLcolor('primary')
+      setIdcolor('primary')
+      setColor()
+      setImg('')
+      setPrice()
+      setCount()
+      setName()
+      set_selected_storage(null)
+      set_selected_supplier(null)
+      document.querySelector(".successD").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".successD").classList.remove("active");
+      }, 3000);
+    } else {
+      document.querySelector(".FailD").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".FailD").classList.remove("active");
+      }, 3000);
+    }
   };
 
 
   return (
     <div className="New">
       <h3><span>Add New Product</span></h3>
-      <form className='formAdd' onSubmit={handleSubmit}>
+      <form className='formAdd' onSubmit={(e)=>{
+        handleSubmit(e)
+        e.preventDefault();
+      }}>
         <TextField
           required
           fullWidth={false}
@@ -182,9 +202,15 @@ const AddProduct = () => {
 
 
 
-        <button className='addP' type='submit' onSubmit={handleSubmit}> Add Product</button>
+        <button className='addP' type='submit' > Add Product</button>
+        <div className='successD' style={{ color: 'green' }}>
+          Product Added!
+        </div>
+        <div className='FailD' style={{ color: 'red' }}>
+          Fail Addition!
+        </div>
       </form>
-
+      
     </div>
 
 

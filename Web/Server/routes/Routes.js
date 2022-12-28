@@ -44,6 +44,9 @@ const {
   updateShipping,
   updateSupplier,
   updateUserData,
+  getCustomer,
+  getProductWithId,
+  getStorageWithId
 } = require("../controller/Controllers");
 
 //customer
@@ -66,6 +69,7 @@ router.route("/accessories").get(getaccessories);
 router.route("/addToFavorite").get(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
 router.route("/getFavorite").get(getFavorites);
+router.route("/getCustomer").get(getCustomer);
 
 //manager
 router.route("/addSupplier").post(addSupplier);
@@ -97,5 +101,9 @@ router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
 router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
-router.route("/updateUserData").get(updateUserData);
+router.route("/updateUserData").patch(updateUserData);
+
+//helper apis
+router.route("/getProductWithId").get(getProductWithId);
+router.route("/getStorageWithId").get(getStorageWithId);
 module.exports = router;

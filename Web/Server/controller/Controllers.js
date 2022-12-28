@@ -73,12 +73,12 @@ const deleteProductFromCart = async (req, res) => {
 
 const getProductData = async (req, res) => {
   const sql = `select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 1 as favorite
-from product p,suppliers s,favorites fv,customer c
-where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
-union all
-select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 0 as favorite
-from product p,suppliers s,customer c
-where p.su_id=s.suid  and p.pid=${req.params.id};`;
+              from product p,suppliers s,favorites fv,customer c
+              where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
+              union all
+              select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 0 as favorite
+              from product p,suppliers s,customer c
+              where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
   const sql1 = `select count(*) as found, ram,processor,gpu,screen from labtops where pid = ${req.params.id};  `;
   const sql2 = `select count(*) as found, ram,processor,screen from mobiles where pid = ${req.params.id};`;
@@ -165,7 +165,7 @@ const getOffersData = async (req, res) => {
 
 const addCustomer = async (req, res) => {
   const sql1 = `insert into users (f_name,l_name,phone,address,email,authority,password)
-   values('${req.body.firstName}','${req.body.lastName}',${req.body.phone},'${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
+   values('${req.body.firstName}','${req.body.lastName}','${req.body.phone}','${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
   const sql3 = `select ssn from users where email="${req.body.email}" and password ="${req.body.password}"; `;
   const sql4 = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.body.email}" ) as checked;`;
   const checkEmail = await db.execute(sql4);
@@ -194,7 +194,7 @@ const addCustomer = async (req, res) => {
 
 const check_GetDataUser = async (req, res) => {
   const sql = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.query.email}" and password='${req.query.password}') as checked;`;
-  const sql2 = `SELECT ssn,f_name,l_name,phone,address,authority FROM users u
+  const sql2 = `SELECT * FROM users u
    where email='${req.query.email}' and password='${req.query.password}';`;
   try {
     const dataCheck = await db.execute(sql);
@@ -397,8 +397,10 @@ const getAllSuppliers = async (req, res) => {
 const addProduct = async (req, res) => {
   const sql = `insert into product (product_name,price,color,count,st_id,su_id,img_link)
    values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
+  const sql2 = `update storages set currently_used = currently_used + ${req.body.count}`;
   try {
     await db.execute(sql);
+    await db.execute(sql2);
     res.json({ status: true, message: "product added" });
   } catch (error) {
     console.log(error.sqlMessage);
@@ -407,8 +409,10 @@ const addProduct = async (req, res) => {
 };
 const deleteProduct = async (req, res) => {
   const sql = `delete from product where pid = ${req.body.pid};`;
+  const sql2 = `update storages set currently_used = currently_used - ${req.body.count}`;
   try {
     await db.execute(sql);
+    await db.execute(sql2);
     res.json({ status: true, message: "product deleted" });
   } catch (error) {
     console.log(error.sqlMessage);
@@ -416,7 +420,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 const updateProduct = async (req, res) => {
-  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price}, st_id = ${req.body.st_id},
+  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price}, 
               has_offer = ${req.body.has_offer}, new_price = ${req.body.new_price}, start_date = '${req.body.start_date}', end_date = '${req.body.end_date}'
               where pid = ${req.body.pid};`;
   try {
@@ -555,9 +559,9 @@ const updateEmployee = async (req, res) => {
 };
 //-------------------------------------------------------User-----------------------------------------------------------------------
 const updateUserData = async (req, res) => {
-  const sql = `UPDATE user
-               SET phone = ${req.body.phone}, address="${req.body.address}", email=${req.body.email}, password=${req.body.password}
-               WHERE ssn = ${req.body.ssn};`;
+  const sql = `UPDATE users
+               SET phone = '${req.body.phone}', address="${req.body.address}", email='${req.body.email}', password='${req.body.password}'
+               WHERE ssn = ${req.query.ssn};`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "user updated" });
@@ -602,7 +606,39 @@ const updateSupplier = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const getCustomer = async (req, res) => {
+  const sql = `select * from users where ssn = ${req.query.ssn}  `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0][0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+//---------------------------------------------------Helper Apis---------------------------------------------------------------
+const getProductWithId = async (req, res) => {
+  const sql = `select * from product where pid = ${req.params.pid} `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getStorageWithId = async (req, res) => {
+  const sql = `select * from storages where stid = ${req.params.stid}`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 module.exports = {
+  getCustomer,
   updateSupplier,
   updateShipping,
   deleteFromStorages,
@@ -646,4 +682,6 @@ module.exports = {
   updateEmployee,
   updateStorage,
   updateUserData,
+  getProductWithId,
+  getStorageWithId,
 };

@@ -2,14 +2,32 @@ import React from "react";
 import "./Slider.css";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
+import { useEffect } from 'react'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
 const ReactCardSlider = (props) => {
   const { state } = useLocation();
+  const [favs,setFavs]=React.useState([]);
   console.log("user", state);
 
+  useEffect(() => {
+        if (state!=null)
+        {
+    const getFavs = async () => {
+      try {
+        const dataRes = await fetch(`http://localhost:1444/api/v1/getFavorite?ssn=${state.ssn}`);
+        const { data } = await dataRes.json();
+        console.log("products", data);
+        setFavs(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getFavs();
+  }
+  }, [state]);
   const his = useNavigate();
   const slideLeft = () => {
     var slider = document.getElementById("slider" + props.CategoryName);
@@ -22,6 +40,7 @@ const ReactCardSlider = (props) => {
   };
   const handleFavouriteClick=(e) => {
     e.target.style.color ='#faaf00'
+    
      }
 
   return (
@@ -58,7 +77,8 @@ const ReactCardSlider = (props) => {
               />
               
               <div style={{display:'flex',justifyContent:'space-between'}}>
-                {<FavoriteIcon color='disabled' onClick={handleFavouriteClick} />}
+                {state != null && !favs.find((elem) => elem.pid == slide.pid) && <FavoriteIcon color='disabled' onClick={handleFavouriteClick} />}
+                {state != null && favs.find((elem) => elem.pid == slide.pid) && <FavoriteIcon sx={{ color:'#faaf00'}}  onClick={handleFavouriteClick} />}
               <p className="slider-card-price">{slide.price}$</p>
               </div>
             </div>

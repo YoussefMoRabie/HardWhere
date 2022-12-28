@@ -52,3 +52,10 @@ app.listen(port, console.log(`server is listening on port ${port}`));
 // };
 
 // start();
+// const s ="[{qty:5,r:6}]";
+
+// const l= JSON.parse(s);
+
+// console.log(l[0].qty);
+
+
