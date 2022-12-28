@@ -15,12 +15,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 import InputColor from 'react-input-color';
 import { flexbox } from '@mui/system';
 import useFetch from "../useFetch";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const AddProduct = () => {
-  const [URLcolor, setURLcolor] = React.useState('primary');;
-  const [Idcolor, setIdcolor] = React.useState('primary');;
-  const [color, setColor] = React.useState();
+  const { state } = useLocation();
+  const Navigate = useNavigate()
+  const [URLcolor, setURLcolor] = React.useState('primary'); ;
+  const [Idcolor, setIdcolor] = React.useState('primary'); ;
+  const [color, setColor] = React.useState('#000000');
   const [Img, setImg] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [count, setCount] = React.useState('');
@@ -104,16 +107,18 @@ const AddProduct = () => {
       : setPrice(event.target.value);
 
 
-  const Storages = [];
-  const { data: stoData } = useFetch(
-    "http://localhost:1444/api/v1/getStorages"
-  );
-  for (const sto of stoData) {
-    Storages.push({
-      label: sto.st_address,
-      stid: sto.stid,
-    });
-  };
+    const Storages = [];
+    const { data: stoData } = useFetch(
+      "http://localhost:1444/api/v1/getStorages"
+    );
+    for (const sto of stoData) {
+      Storages.push({
+        label: sto.st_address,
+        stid: sto.stid,
+        currently_used: sto.currently_used,
+        max_capacity: sto.max_capacity
+      });
+    };
 
   const Suppliers = [];
   const { data: supData } = useFetch(
@@ -148,29 +153,34 @@ const AddProduct = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        product_name: name,
-        price: price,
-        color: color,
-        count: count,
-        st_id: selected_storage.stid,
-        su_id: selected_supplier.suid,
-        img_link: Img
+        product_name:name,
+        price:price,
+        color:color,
+        count:count,
+        selected_storage:selected_storage,
+        su_id:selected_supplier.suid,
+        img_link:Img
       }),
     });
+
     const { status } = await res.json();
     if (status === true) {
+      selected_storage.currently_used = parseInt(selected_storage.currently_used) + parseInt(count)
       setURLcolor('primary')
       setIdcolor('primary')
-      setColor()
+      setColor('#000000')
       setImg('')
-      setPrice()
-      setCount()
-      setName()
+      setPrice('')
+      setCount(1)
+      setName('')
       set_selected_storage(null)
       set_selected_supplier(null)
       document.querySelector(".successD").classList.add("active");
       setTimeout(() => {
         document.querySelector(".successD").classList.remove("active");
+      }, 3000);
+      setTimeout(() => {
+        Navigate(0)
       }, 3000);
     } else {
       document.querySelector(".FailD").classList.add("active");
@@ -375,8 +385,6 @@ const AddProduct = () => {
           <input className='colorp' type="color" value={color}
             onChange={(e) => { console.log(e.target.value); setColor(e.target.value) }}></input>
         </div>
-
-
 
         <button className='addP' type='submit' > Add Product</button>
         <div className='successD' style={{ color: 'green' }}>
