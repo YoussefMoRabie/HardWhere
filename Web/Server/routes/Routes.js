@@ -29,7 +29,6 @@ const {
   daleteEmpoyee,
   getDepartments,
   getAllProducts,
-  getAllStorages,
   getAllSuppliers,
   addProduct,
   deleteProduct,
@@ -44,7 +43,7 @@ const {
   updateStorage,
   updateShipping,
   updateSupplier,
-  UpdateUserData,
+  updateUserData,
 } = require("../controller/Controllers");
 
 //customer
@@ -86,7 +85,6 @@ router.route("/updateSupplier").patch(updateSupplier);
 
 //admin
 router.route("/getAllProducts").get(getAllProducts);
-router.route("/getAllStorages").get(getAllStorages);
 router.route("/getAllSuppliers").get(getAllSuppliers);
 router.route("/addProduct").post(addProduct);
 router.route("/deleteProduct").delete(deleteProduct);
@@ -99,5 +97,5 @@ router.route("/filterByPrice/:min_price/:max_price").get(filterByPrice);
 router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
-router.route("/updateUserData").get(UpdateUserData);
+router.route("/updateUserData").get(updateUserData);
 module.exports = router;

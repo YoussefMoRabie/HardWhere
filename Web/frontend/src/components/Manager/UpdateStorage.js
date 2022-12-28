@@ -86,7 +86,7 @@ console.log(selcted);
         onChange={handleStorageChange}
         options={storages}
         sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Stroage" />}
+        renderInput={(params) => <TextField {...params} label="Storage" />}
       />
       {selcted && (
         <form

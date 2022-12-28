@@ -303,7 +303,6 @@ const getheadphones = async (req, res) => {
 
 const addToFavorites = async (req, res) => {
   const sql = `insert into favorites values(${req.body.ssn},${req.body.pid}) ;`;
-  const sql = `insert into favorites values(${req.body.ssn},${req.body.pid}) ;`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "added to favorite" });
@@ -635,7 +634,6 @@ module.exports = {
   daleteEmpoyee,
   getDepartments,
   getAllProducts,
-  getAllStorages,
   getAllSuppliers,
   addProduct,
   deleteProduct,
@@ -646,5 +644,5 @@ module.exports = {
   searchProduct,
   updateEmployee,
   updateStorage,
-  updateUserData
+  updateUserData,
 };
