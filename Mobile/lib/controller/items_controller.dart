@@ -27,7 +27,7 @@ class ItemsControllerImp extends ItemsController{
   List headphones = [];
   List mobiles = [];
   List accessories = [];
-  List lists = [];
+  List<List> lists = [];
   List length= [];
 
 

@@ -17,64 +17,35 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { lime } from '@mui/material/colors';
 import Checkbox from '@mui/material/Checkbox';
-const products = [{
-  img: "https://picsum.photos/200/300", label: "This is a label", id: 2, price: 299, rating: 2, count: 13
+import useFetch from "../useFetch";
 
-},
-{
-  img: "https://picsum.photos/600/500", id: 8, label: "This is a second label", price: 299, rating: 3, count: 13
 
-},
-{
-  img: "https://picsum.photos/600/500", id: 12, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/600/500", id: 42, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/600/500", id: 52, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/600/500", id: 2, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/700/600", id: 3, label: "This is a third label", price: 299, rating: 1, count: 13
-
-},
-{
-  img: "https://picsum.photos/500/400", id: 4, label: "This is a fourth label", price: 299, rating: 4, count: 13
-
-},
-{
-  img: "https://picsum.photos/200/300", id: 5, label: "This is a fifth label", price: 299, rating: 5, count: 13
-
-},
-{
-  img: "https://picsum.photos/800/700", id: 6, label: "This is a sixth label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/300/400", id: 7, label: "This is a seventh label", price: 299, rating: 3, count: 13
-
-}]
 const UpdateProduct = () => {
-
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-  const [selcted, setSelected] = React.useState(null);
+  const [selected, setSelected] = React.useState(null);
   const [URLcolor, setURLcolor] = React.useState('primary');;
-  const [color, setColor] = React.useState({});
   const [Img, setImg] = React.useState('');
-  const [price, setPrice] = React.useState('');
-  const [newprice, setnewPrice] = React.useState('');
-  const [count, setCount] = React.useState('');
+  const [price, setPrice] = React.useState();
+  const [newprice, setnewPrice] = React.useState();
+  const [count, setCount] = React.useState();
   const [addOffer, setaddOffer] = React.useState(false);
   const [anyChange, setAnyChange] = React.useState(0);
   const [StartDate, setStartDate] = React.useState(new Date());
-  const [EndDate, setEndDate] = React.useState(new Date());
+  const [EndDate, setEndDate] = React.useState(new Date());  
+  const [products,setPro] =React.useState([]);
+
+  const getallPro = async () => {
+    try {
+      const Res = await fetch(
+        `http://localhost:1444/api/v1/getAllProducts`
+      );
+      const { data } = await Res.json();
+      setPro(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  getallPro();
 
   const handleImgChange = (event) => {
     setAnyChange(1);
@@ -107,11 +78,43 @@ const UpdateProduct = () => {
   }
   const handleEndDateChange = (date) => {
     setAnyChange(1);
-    setStartDate(date)
+    setEndDate(date);
     console.log(date);
   }
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    const res = await fetch(
+      `http://localhost:1444/api/v1/updateproduct`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pid: selected.pid,
+          price:price,
+          count:count,
+          img_link:Img,
+          has_offer:addOffer,
+          new_price:newprice,
+          start_date:StartDate.toISOString().slice(0, 19).replace("T", " "),
+          end_date:EndDate.toISOString().slice(0, 19).replace("T", " ")
+        }),
+      }
+    );
+    const { status } = await res.json();
 
+    if (status === true) {
+      setAnyChange(0);
+      document.querySelector(".successD").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".successD").classList.remove("active");
+      }, 3000);
+    } else {
+      document.querySelector(".FailD").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".FailD").classList.remove("active");
+      }, 3000);
+    }
   };
 
   const handleCountChange = (event) => {
@@ -123,9 +126,11 @@ const UpdateProduct = () => {
 
   const handleProductChange = (e, v) => {
     setSelected(v);
+    console.log(v);
     setPrice(v.price);
     setCount(v.count);
-    setImg(v.img);
+    setImg(v.img_link);
+    setnewPrice(v.price);
   }
 
   return (
@@ -135,20 +140,31 @@ const UpdateProduct = () => {
     <Autocomplete
       disablePortal
       id="combo-box-demo"
-      value={selcted}
+        value={selected}
       onChange={handleProductChange}
+        getOptionLabel={(option) => option.product_name ? option.product_name : ""}
       options={products}
       sx={{ width: 300 }}
+        renderOption={(props, option) => {
+          return (
+            <li {...props} data-sid={option.pid} key={option.pid}>
+              {option.product_name}
+            </li>
+          );
+        }}
       renderInput={(params) => <TextField {...params} label="Product" />}
     />
-    {selcted && <form className='formAdd' onSubmit={handleSubmit}>
+    {selected && <form className='formAdd' onSubmit={(e)=>{
+        handleSubmit(e)
+    e.preventDefault();
+     }}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <TextField
           sx={{ flex: 1 }}
           required={true}
           id="outlined-number"
           label="Count"
-          defaultValue={count}
+          value={count}
           type="number"
           onChange={handleCountChange}
           InputLabelProps={{
@@ -168,6 +184,7 @@ const UpdateProduct = () => {
           required={true}
           error={URLcolor == 'error'}
           rows={4}
+          defaultValue={Img}
           value={Img}
           onChange={handleImgChange}
         />
@@ -211,7 +228,13 @@ const UpdateProduct = () => {
           <DatePicker id='datepickerend' selected={EndDate} onChange={handleEndDateChange} />
         </div>
         </div>}
-      <button disabled={anyChange == 0} className='addP' type='submit' onSubmit={handleSubmit}> Update Product</button>
+      <button disabled={anyChange === 0} className='addP' type='submit'> Update Product</button>
+        <div className='successD' style={{ color: 'green' }}>
+          Product Updated!
+        </div>
+        <div className='FailD' style={{ color: 'red' }}>
+          Fail Update!
+        </div>
     </form>}
   </div>);
 

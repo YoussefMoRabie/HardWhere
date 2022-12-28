@@ -14,6 +14,8 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(0);
   const navigate = useNavigate();
+  const classes=props;
+  console.log(classes)
   // const [userSsn, setUserSsn] = useState(0);
   const handelSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +31,10 @@ const Login = (props) => {
       const { data,status } = await dataRes.json();
       console.log(data,status);
       if (status === true) {
+        props.setAuth(data.authority);
+        console.log('loginpage', data.authority)
+        if (data.authority=='customer')
+        {
         navigate(`/`, {
           state: {
             ssn: data.ssn,
@@ -40,7 +46,19 @@ const Login = (props) => {
             address: data.address,
             auth: data.authority
           },
-        });
+        });}
+        else{
+          navigate(`/adminpanel`, {
+            state: {
+              ssn: data.ssn,
+              f_name: data.f_name,
+              l_name: data.l_name,
+              email: userEmail,
+              address: data.address,
+              auth: data.authority
+            },
+          });
+        }
       } else {
         document.querySelector(".messErrorReg").classList.add("active");
         setTimeout(() => {

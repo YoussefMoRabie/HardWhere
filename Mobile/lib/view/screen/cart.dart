@@ -45,10 +45,11 @@ class Cart extends StatelessWidget {
                               height: 150,
                               //fit: BoxFit.fitHeight,
                             ),
+                            if(controller.items[index]["has_offer"]!=null&&controller.items[index]["has_offer"]["data"][0]==1)
                               Container(
                                 color: Colors.red,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: Text(
                                     'DISCOUNT',
                                     style: TextStyle(fontSize: 10, color: Colors.white),
@@ -64,24 +65,48 @@ class Cart extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Name',
+                                  controller.items[index]["product_name"],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
                                 Row(
                                   children: [
-                                    Text(
-                                      '5555',
-                                      style:
-                                      TextStyle(fontSize: 18, color: AppColor.secColor),
-                                    ),
-                                    Spacer(),
+                                    if(controller.items[index]["has_offer"]==null||controller.items[index]["has_offer"]["data"][0]==0)
+                                      Text(
+                                        "\$${controller.items[index]["price"]}",
+                                        style: const TextStyle(
+                                            color: AppColor.secColor, fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    if(controller.items[index]["has_offer"]!=null&&controller.items[index]["has_offer"]["data"][0]==1)
+                                      Text.rich(TextSpan(
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: '\$${controller.items[index]["price"]}',
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                              decoration: TextDecoration.lineThrough,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: ' \$${controller.items[index]["new_price"]}',
+                                            style: const TextStyle(
+                                                color: AppColor.secColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold
+                                            ),
+
+                                          ),
+                                        ],
+                                      ),
+                                      ),
+                                    const Spacer(),
                                     IconButton(
                                         onPressed: () {
                                           controller.deleteItem(controller.items[index]["pid"]);
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.delete_forever_rounded,
                                           color:
                                           Colors.red,
@@ -89,12 +114,14 @@ class Cart extends StatelessWidget {
                                   ],
                                 ),
                                 Container(
-                                  width: 110,
+                                  width: 120,
                                   height: 40,
+                                  alignment: Alignment.center,
                                   color: Colors.grey[300],
-                                  child: Row(children: [
+                                  child:
+                                  Row(children: [
                                     IconButton(onPressed: () {
-                                      cartController.decCount();
+                                      cartController.decCount(controller.items[index]["pid"],index);
                                     }, icon: const Icon(Icons.remove)),
 
                                     Padding(
@@ -102,14 +129,15 @@ class Cart extends StatelessWidget {
                                       padding: const EdgeInsets.all(1.0),
                                       child: GetBuilder<CartControllerImp>(
                                         builder: (controller){
-                                          return Text("${controller.count}",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),);
+                                          return Text("${controller.items[index]["qty"]}",
+                                            style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),);
                                         },
                                       ),
 
                                     ),
 
                                     IconButton(onPressed: () {
-                                      cartController.incCount();
+                                      cartController.incCount(controller.items[index]["pid"],index);
                                     }, icon: const Icon(Icons.add)),
 
 
@@ -147,7 +175,7 @@ class Cart extends StatelessWidget {
                           ),
                           SizedBox(height: 15,),
                           Text(
-                            '\$ 5555',
+                            '\$ ${controller.getTotal()}',
                             style:
                             TextStyle(fontSize: 18, color: AppColor.secColor),
                           ),
@@ -163,7 +191,9 @@ class Cart extends StatelessWidget {
                         child: TextButton(
                             style: flatButtonStyle,
 
-                            onPressed: (){},
+                            onPressed: (){
+                              controller.getOrder();
+                            },
 
                             child: const Text('CHECKOUT', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),)
                         ),
