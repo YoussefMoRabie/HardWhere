@@ -29,27 +29,50 @@ import DeleteCompany from "./components/Manager/DltShipping";
 import AdminPanel from "./components/EmployeeNav/AdminPanel";
 import React from "react";
 import WishList from "./components/WishlistPage/WishList";
+import PrivateRoutes from "./components/utils/PrivateRoute";
+import PublicRoutes from "./components/utils/PublicRoue";
+
+
 function App() {
   const[auth,setAuth]=React.useState('');
+  console.log('aa',auth)
+  console.log('aa',auth)
   return (
     <div className="App">
       <Router path="/">
- <Navbar />
+      <Navbar auth={auth}/>
        <Routes>
       
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/product/:id" element={<Product />}></Route>
-          <Route path="/Cart" element={<Cart />}></Route>
-          <Route path="/Signin" element={<Login setAuth={setAuth} />}></Route>
-          <Route path="/Signup" element={<Signup />}></Route>
-          <Route path="/:categoryVal" element={<ShowProducts />}></Route>
-          <Route path="search/:searchVal" element={<SearchResults />}></Route>
-          <Route path="/adminPanel" element={<AdminPanel/>}></Route>
-          <Route path="/wishlist" element={<WishList/>}></Route>
+        <Route element={<PublicRoutes auth={auth} />}>
+            <Route path="/" element={<HomePage auth={auth} />}></Route>
+        </Route>
+        <Route element={<PublicRoutes auth={auth} />}>
+            <Route path="/product/:id" element={<Product auth={auth} />}></Route>
+        </Route>
+        <Route element={<PublicRoutes auth={auth} />}>
+            <Route path="/Cart" element={<Cart auth={auth} />}></Route>
+        </Route>
+        <Route element={<PublicRoutes auth={auth} />}>
+            <Route path="/Signup" element={<Signup auth={auth} />}></Route>
+        </Route>
+        <Route element={<PublicRoutes auth={auth} />}>
+            <Route path="/:categoryVal" element={<ShowProducts auth={auth} />}></Route>
+        </Route>
+        <Route element={<PublicRoutes auth={auth} />}>
+            <Route path="search/:searchVal" element={<SearchResults auth={auth} />}></Route>
+        </Route>
+        <Route element={<PublicRoutes auth={auth} />}>
+            <Route path="/wishlist" element={<WishList auth={auth} />}></Route>
+        </Route>
+        <Route path="/Signin" element={<Login setAuth={setAuth} />}></Route>
+        <Route element={<PrivateRoutes auth={auth}/>}>
+            <Route element={<AdminPanel auth={auth} />} path="/adminpanel"></Route>
+        </Route>
+        
           
         </Routes>
 
-        <Footer />
+        <Footer auth={auth} />
 
       </Router>
     </div>
