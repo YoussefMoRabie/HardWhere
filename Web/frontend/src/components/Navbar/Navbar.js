@@ -68,7 +68,7 @@ const Navbar = (props) => {
   const navLinks = [
     {
       title: "Laptops",
-      path: "/laptops",
+      path: "/labtops",
     },
     {
       title: "Mobiles",
