@@ -103,7 +103,7 @@ router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
 router.route("/updateUserData").patch(updateUserData);
-module.exports = router;
+
 
 //helper apis
 router.route("/getProductWithId").get(getProductWithId);
