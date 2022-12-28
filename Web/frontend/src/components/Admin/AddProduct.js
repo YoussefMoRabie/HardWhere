@@ -18,8 +18,8 @@ import useFetch from "../useFetch";
 
 
 const AddProduct = () => {
-  const [URLcolor, setURLcolor] = React.useState('primary'); ;
-  const [Idcolor, setIdcolor] = React.useState('primary'); ;
+  const [URLcolor, setURLcolor] = React.useState('primary');;
+  const [Idcolor, setIdcolor] = React.useState('primary');;
   const [color, setColor] = React.useState();
   const [Img, setImg] = React.useState('');
   const [price, setPrice] = React.useState('');
@@ -37,37 +37,42 @@ const AddProduct = () => {
   const [name, setName] = React.useState('');
   const [selected_storage, set_selected_storage] = React.useState(null);
   const [selected_supplier, set_selected_supplier] = React.useState(null);
-  const categories=[{label:'Laptops'},{label:'Mobiles'},{label:'Headphones'},{label:'Screens'},{label:'Accessories'}]
+  const categories = [{ label: 'Laptops' }, { label: 'Mobiles' }, { label: 'Headphones' }, { label: 'Screens' }, { label: 'Accessories' }]
 
-  const handleCatChange=(e,v)=>{
+  const handleCatChange = (e, v) => {
     setCat(v.label);
   }
-  const handleCPUChange=(e,v)=>{
+  const handleCPUChange = (e, v) => {
     setCPU(v);
   }
-  const handleGPUChange=(e,v)=>{
+  const handleGPUChange = (e, v) => {
     setGPU(v);
   }
-  const handleRAMChange=(e,v)=>{
+  const handleRAMChange = (e, v) => {
     setRAM(v);
   }
-  const handleFreqChange=(e,v)=>{
-    setFreq(v);
+  const handleFreqChange = (event, v) => {
+    event.target.value < 1
+      ? (event.target.value = 1)
+      : setFreq(v);
+
   }
-  const handleResoChange=(e,v)=>{
+  const handleResoChange = (e, v) => {
     setReso(v);
   }
-  const handleTypeChange=(e,v)=>{
+  const handleTypeChange = (e, v) => {
     setScType(v);
   }
-  const handleisSmartChange=(e,v)=>{
+  const handleisSmartChange = (e, v) => {
     setisSmart(v);
   }
-  const handleAcTypeChange=(e,v)=>{
+  const handleAcTypeChange = (e, v) => {
     setAcType(v);
   }
-  const handleScreenChange=(e,v)=>{
-    setScreen(v);
+  const handleScreenChange = (event, v) => {
+    event.target.value < 1
+      ? (event.target.value = 1)
+      : setScreen(v);
   }
 
   const handleImgChange = (event) => {
@@ -86,10 +91,10 @@ const AddProduct = () => {
       ? (event.target.value = 1)
       : setCount(event.target.value)
 
-  const handleSupplierChange = (event,val) => {
+  const handleSupplierChange = (event, val) => {
     set_selected_supplier(val);
   };
-  const handleStorageChange = (event,val) => {
+  const handleStorageChange = (event, val) => {
     set_selected_storage(val);
   };
 
@@ -99,43 +104,43 @@ const AddProduct = () => {
       : setPrice(event.target.value);
 
 
-    const Storages = [];
-    const { data: stoData } = useFetch(
-      "http://localhost:1444/api/v1/getStorages"
-    );
-    for (const sto of stoData) {
-      Storages.push({
-        label: sto.st_address,
-        stid: sto.stid,
-      });
-    };
+  const Storages = [];
+  const { data: stoData } = useFetch(
+    "http://localhost:1444/api/v1/getStorages"
+  );
+  for (const sto of stoData) {
+    Storages.push({
+      label: sto.st_address,
+      stid: sto.stid,
+    });
+  };
 
-    const Suppliers = [];
-    const { data: supData } = useFetch(
-      "http://localhost:1444/api/v1/getAllSuppliers"
-    );
-    for (const sup of supData) {
-      Suppliers.push({
-        label: sup.su_name,
-        suid: sup.suid,
-      });
-    };
+  const Suppliers = [];
+  const { data: supData } = useFetch(
+    "http://localhost:1444/api/v1/getAllSuppliers"
+  );
+  for (const sup of supData) {
+    Suppliers.push({
+      label: sup.su_name,
+      suid: sup.suid,
+    });
+  };
 
-    const isLab=()=>{
-      return category=='Laptops'
-    }
-    const isLabMob=()=>{
-      return category == 'Laptops' || category == 'Mobiles'
-    }
-    const ishead=()=>{
-      return category == 'Headphones'
-    }
-    const isscrenn=()=>{
-      return category == 'Screens'
-    }
-    const isAc=()=>{
-      return category == 'Accessories'
-    }
+  const isLab = () => {
+    return category == 'Laptops'
+  }
+  const isLabMob = () => {
+    return category == 'Laptops' || category == 'Mobiles'
+  }
+  const ishead = () => {
+    return category == 'Headphones'
+  }
+  const isscrenn = () => {
+    return category == 'Screens'
+  }
+  const isAc = () => {
+    return category == 'Accessories'
+  }
   const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
       method: "POST",
@@ -143,13 +148,13 @@ const AddProduct = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        product_name:name,
-        price:price,
-        color:color,
-        count:count,
-        st_id:selected_storage.stid,
-        su_id:selected_supplier.suid,
-        img_link:Img
+        product_name: name,
+        price: price,
+        color: color,
+        count: count,
+        st_id: selected_storage.stid,
+        su_id: selected_supplier.suid,
+        img_link: Img
       }),
     });
     const { status } = await res.json();
@@ -179,7 +184,7 @@ const AddProduct = () => {
   return (
     <div className="New">
       <h3><span>Add New Product</span></h3>
-      <form className='formAdd' onSubmit={(e)=>{
+      <form className='formAdd' onSubmit={(e) => {
         handleSubmit(e)
         e.preventDefault();
       }}>
@@ -204,44 +209,49 @@ const AddProduct = () => {
           fullWidth
           renderInput={(params) => <TextField {...params} label="Cateogry" />}
         />
-        { isLabMob() &&
-        <TextField
-          required
-          fullWidth={false}
-          id="outlined-required"
-          value={CPU}
-          onChange={handleCPUChange}
-          label="CPU"
-        />}
-        {isLabMob() && 
-        <TextField
-          required
-          fullWidth={false}
-          id="outlined-required"
-          value={RAM}
-          onChange={handleRAMChange}
-          label="RAM"
-        />}
+        {isLabMob() &&
+          <TextField
+            required
+            fullWidth={false}
+            id="outlined-required"
+            value={CPU}
+            onChange={handleCPUChange}
+            label="CPU"
+          />}
+        {isLabMob() &&
+          <TextField
+            required
+            fullWidth={false}
+            id="outlined-required"
+            value={RAM}
+            onChange={handleRAMChange}
+            label="RAM"
+          />}
         {isLab() &&
-        <TextField
-          required
-          fullWidth={false}
-          id="outlined-required"
-          value={GPU}
-          onChange={handleGPUChange}
-          label="GPU"
-        />}
-        {isLabMob() && 
-        <TextField
-          required
-          fullWidth={false}
-          id="outlined-required"
-          value={Screen}
-          onChange={handleScreenChange}
-          label="Screen"
-        />}
-    
-        {ishead()&&
+          <TextField
+            required
+            fullWidth={false}
+            id="outlined-required"
+            value={GPU}
+            onChange={handleGPUChange}
+            label="GPU"
+          />}
+        {isLabMob() &&
+          <TextField
+            required={true}
+            id="outlined-number"
+            label="Screen Size"
+            type="number"
+            value={Screen}
+            onChange={handleScreenChange}
+            InputLabelProps={{
+              shrink: true,
+              min: 0,
+            }}
+          />
+          }
+
+        {ishead() &&
           <TextField
             required={true}
             id="outlined-number"
@@ -254,53 +264,53 @@ const AddProduct = () => {
               min: 0,
             }}
           />
-          }
+        }
         {isscrenn() &&
-        <>
-          <Autocomplete
-            disablePortal
-            required
-            clearOnEscape
-            value={ScreenType}
-            onChange={handleTypeChange}
-            id="combo-box-demo"
-            options={[{label:'LED'},{label:'LCD'},{label:'OLED'},{label:'AMOLED'}]}
-            fullWidth
-            renderInput={(params) => <TextField {...params} label="Type" />}
-          />
-          <TextField
-            required
-            fullWidth={false}
-            id="outlined-required"
-            value={Reso}
-            onChange={handleResoChange}
-            label="Resolution"
-          />
-          <Autocomplete
-            disablePortal
-            required
-            clearOnEscape
-            value={isSmart}
-            onChange={handleisSmartChange}
-            id="combo-box-demo"
-            options={[{ label: 'YES' }, { label: 'NO' }]}
-            fullWidth
-            renderInput={(params) => <TextField {...params} label="Is Smart?" />}
-          />
-        </>  
-}
-        { isAc() && 
-        <>
-          <TextField
-            required
-            fullWidth={false}
-            id="outlined-required"
-            value={AcType}
-            onChange={handleAcTypeChange}
-            label="Type"
-          />
-        </>
-      }
+          <>
+            <Autocomplete
+              disablePortal
+              required
+              clearOnEscape
+              value={ScreenType}
+              onChange={handleTypeChange}
+              id="combo-box-demo"
+              options={[{ label: 'LED' }, { label: 'LCD' }, { label: 'OLED' }, { label: 'AMOLED' }]}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label="Type" />}
+            />
+            <TextField
+              required
+              fullWidth={false}
+              id="outlined-required"
+              value={Reso}
+              onChange={handleResoChange}
+              label="Resolution"
+            />
+            <Autocomplete
+              disablePortal
+              required
+              clearOnEscape
+              value={isSmart}
+              onChange={handleisSmartChange}
+              id="combo-box-demo"
+              options={[{ label: 'YES' }, { label: 'NO' }]}
+              fullWidth
+              renderInput={(params) => <TextField {...params} label="Is Smart?" />}
+            />
+          </>
+        }
+        {isAc() &&
+          <>
+            <TextField
+              required
+              fullWidth={false}
+              id="outlined-required"
+              value={AcType}
+              onChange={handleAcTypeChange}
+              label="Type"
+            />
+          </>
+        }
 
         <Autocomplete
           disablePortal
@@ -312,7 +322,7 @@ const AddProduct = () => {
           fullWidth
           renderInput={(params) => <TextField {...params} label="Supplier" />}
         />
-       
+
         <Autocomplete
           disablePortal
           required
@@ -335,17 +345,17 @@ const AddProduct = () => {
           }}
         />
         <FormControl>
-        <TextField
-          id="outlined-multiline-static"
-          label="Image Link"
-          multiline
-          required={true}
-          error={URLcolor=='error'}
-          rows={4}
-          value={Img}
-          onChange={handleImgChange}
-        />
-         {URLcolor=="error" && <span style={{color:'red', fontSize:12,padding:5}}>*Invalid URL</span>}
+          <TextField
+            id="outlined-multiline-static"
+            label="Image Link"
+            multiline
+            required={true}
+            error={URLcolor == 'error'}
+            rows={4}
+            value={Img}
+            onChange={handleImgChange}
+          />
+          {URLcolor == "error" && <span style={{ color: 'red', fontSize: 12, padding: 5 }}>*Invalid URL</span>}
         </FormControl>
         <FormControl>
           <InputLabel required={true} htmlFor="outlined-adornment-amount">Price</InputLabel>
@@ -376,7 +386,7 @@ const AddProduct = () => {
           Fail Addition!
         </div>
       </form>
-      
+
     </div>
 
 

@@ -7,53 +7,55 @@ import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import { useLocation } from "react-router-dom";
 import React from "react";
+import { color } from "@mui/system";
 
+
+  
+ 
 const ProductsPage = () => {
   const { state } = useLocation();
   const [addfav,setaddtofav]=React.useState(null);
+  const [Favs,setFavs]=React.useState([]);
+  const [isFavs,setisFav]=React.useState(false);
   console.log("user", state);
-  // useEffect(() => {
-  //   console.log(addfav,state.ssn)
-  // const addtoFav = async () => {
-  //   try {
-  //     const dataRes = await fetch(`http://localhost:1444/api/v1/addToFavorite`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         "pid": addfav,
-  //         "ssn": state.ssn
-  //       })
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }}
-  // , [addfav,state]);
-  const addtofav = async (e) => {
-    console.log(addfav, state.ssn);
+  useEffect(()=>{
+    const getFav = async () => {
+      try {
+        const dataRes = await fetch(`http://localhost:1444/api/v1/getFavorite?ssn=${state.ssn}`);
+        const { data } = await dataRes.json();
+        setFavs(data);
+        console.log('Favs', Favs)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getFav();
+},[])
+  
+
+  const addtofav = async (id) => {
   const res = await fetch(`http://localhost:1444/api/v1/addToFavorite`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      pid: parseInt(addfav),
+      pid: parseInt(id),
       ssn: state.ssn
     }),
   });
-  console.log(res);}
+  console.log(res);
+}
 
   const handleFavouriteClick = (e) => {
     e.target.style.color = '#faaf00'
-    console.log(e.currentTarget.dataset.pid);
     setaddtofav(e.currentTarget.dataset.pid);
-    addtofav(e);
+    addtofav(e.currentTarget.dataset.pid);
   }
+ const checkFav=(product)=> Favs.find((elem) => elem.pid == product.pid) ? true :false;
 
+ 
   const { categoryVal: parm } = useParams();
-  console.log(parm);
   const his = useNavigate();
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -80,8 +82,7 @@ const ProductsPage = () => {
         {products.map((product, index) => (
           <div
             className="slider-card"
-            key={index}
-
+            key={product.pid}
           >
             <div
               className="slider-card-image"
@@ -105,7 +106,8 @@ const ProductsPage = () => {
               readOnly
             />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              {state!==null && <FavoriteIcon color='disabled' data-pid={product.pid} onClick={handleFavouriteClick} />}
+              {state !== null &&!checkFav(product) && <FavoriteIcon color='disabled'  data-pid={product.pid} onClick={handleFavouriteClick} />}
+              {state !== null && checkFav(product) && <FavoriteIcon sx={{ color:'#faaf00'}}  data-pid={product.pid} onClick={handleFavouriteClick} />}
               <p className="slider-card-price">{product.price}$</p>
             </div>
           </div>
