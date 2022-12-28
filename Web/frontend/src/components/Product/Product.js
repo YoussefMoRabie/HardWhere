@@ -46,7 +46,7 @@ const Product = () => {
 
   const navigate = useNavigate();
   const { state } = useLocation();
-
+console.log(state);
   const [has_offer, setHasOffer] = useState(0);
   const [proName, setName] = React.useState('product dummy');
   const [price, setPrice] = useState(99.99);
@@ -251,17 +251,16 @@ const Product = () => {
       <h2 style={{ paddingLeft: 17 }}>Reviews</h2>
       <CommentSection
         titleStyle={{ content: "Reviews" }}
-        currentUser={{
-          currentUserId: "01a",
+        currentUser={state == null ? null : {
+          currentUserId: state.ssn,
           currentUserImg:
-            "https://ui-avatars.com/api/name=Mahmoud&background=random",
-          currentUserProfile:
-            "https://www.linkedin.com/in/riya-negi-8879631a9/",
-          currentUserFullName: "Mahmoud Sobhy",
-        }}
+            `https://ui-avatars.com/api/name=${state.f_name}&background=random`,
+         
+          currentUserFullName: `${state.f_name} ${state.l_name}`
+}}
         logIn={{
-          loginLink: "http://localhost:3001/",
-          signupLink: "http://localhost:3001/",
+          loginLink: "http://localhost:3000/signin",
+          signupLink: "http://localhost:3000/signup",
         }}
         commentData={data}
         onSubmitAction={(data) => console.log("check submit, ", data)}

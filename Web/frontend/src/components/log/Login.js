@@ -9,7 +9,7 @@ import { BiLogIn } from "react-icons/bi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [userEmail, setuserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checked, setChecked] = useState(0);
@@ -36,6 +36,7 @@ const Login = () => {
             l_name: data.l_name,
             email: userEmail,
             address: data.address,
+            auth: data.authority
           },
         });
       } else {

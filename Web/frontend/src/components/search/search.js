@@ -28,20 +28,32 @@ const ProductsPage = () => {
   const { state } = useLocation();
   console.log("user", state);
   const [filterby, setfilterby] = React.useState(null);
-  const [priceRange, setRange] = React.useState([0, 100000]);
+  const [isOffers, setisOffer] = React.useState(false);
+  const [priceRange, setRange] = React.useState([0, 0]);
   const [supplierfilter, setSupp] = React.useState(null);
   const [suppliers, setsuppps] = React.useState([]);
   const { searchVal: parm } = useParams();
   const his = useNavigate();
   const [products, setProducts] = useState([]);
+  const [filteredproducts, setFProducts] = useState([]);
 
 
   const handleFilterSuppChange = (e, val) => {
-    
+   
+    setFProducts(products.filter((product) => {
+      return product.su_id == e.currentTarget.dataset.sid
+    }) )}
+  const handleOfferFilter = () => {
+    setFProducts(products.filter((product) => {
+      return product.new_price !=null
+    }))
   }
   const handleRangeChange = (event, newValue) => {
     setRange(newValue);
-    console.log(newValue);
+    console.log('dd')
+    setFProducts(products.filter((product) => {
+      return product.price >= newValue[0] && product.price<=newValue[1]
+    }))
   };
   const handleFavouriteClick = (e) => {
     e.target.style.color = '#faaf00'
@@ -61,69 +73,28 @@ const ProductsPage = () => {
   useEffect(() => {
    
     const getProducts = async () => {
-      
-      if (filterby == null) {
-        console.log('in')
+     
         try {
           const dataRes = await fetch(`http://localhost:1444/api/v1/searchproduct/${parm}`);
           const { data } = await dataRes.json();
           console.log("products", data);
           setProducts(data);
+          setFProducts(data);
         } catch (error) {
           console.log(error);
         }
-      }
 
-      else {
-        switch (filterby) {
-
-          case 'price': {
-            
-            try {
-              const dataRes = await fetch(`http://localhost:1444/api/v1/filterByPrice/${priceRange[0]}/&{priceRange[1]}`);
-              const { data } = await dataRes.json();
-              console.log("products", data);
-              setProducts(data);
-            } catch (error) {
-              console.log(error);
-            }
-            break;
-          }
-
-          case 'supplier': {
-            if (supplierfilter!=null)
-            try {         
-              const dataRes = await fetch(`http://localhost:1444/api/v1/filterBySupplier?su_id=${supplierfilter}`);
-              const { data } = await dataRes.json();
-              console.log("products", data);
-              setProducts(data);
-            } catch (error) {
-              console.log(error);
-            }
-            break;
-          }
-
-          case 'offer': {
-            try {
-              const dataRes = await fetch(`http://localhost:1444/api/v1/filterByoffer`);
-              const { data } = await dataRes.json();
-              console.log("products", data);
-              setProducts(data);
-            } catch (error) {
-              console.log(error);
-            }
-            break;
-          }
-          default: break;
-        }
-
-      };
     }
     getProducts();
-  }, [parm, his, filterby,priceRange,supplierfilter]);
+  }, [parm, his]);
 
   const handleFiltersChange = (e, value) => {
     setfilterby(value);
+    if (value=='offer')
+    {
+      handleOfferFilter();
+    }
+    
   }
   return (
     <div className="proPage">
@@ -142,7 +113,7 @@ const ProductsPage = () => {
                 name="Suppliers_group"
                 onChange={handleFiltersChange}
               >
-                <FormControlLabel value="offer" control={<Radio size='small' />} label="Offers" />
+                <FormControlLabel value='offer' control={<Radio size='small' />} label="Offers" />
 
                 <FormControlLabel value='supplier' control={<Radio size='small' />} label='Suppliers' />
 
@@ -156,8 +127,7 @@ const ProductsPage = () => {
                   sx={{ width: 300, padding: '5px 20px 10px 20px' }}
                   renderOption={(props, option) => {
                     return (
-                      <li {...props} id={option.suid} key={option.suid}>
-          
+                      <li {...props} data-sid={option.suid} key={option.suid}>
                         {option.su_name}
                       </li>
                     );
@@ -174,7 +144,7 @@ const ProductsPage = () => {
                   valueLabelDisplay="auto"
                   disabled={filterby != 'price'}
                   min={0}
-                  max={100000}
+                  max={1000}
                   step={100}
                   getAriaValueText={valuetext}
                 />
@@ -184,7 +154,7 @@ const ProductsPage = () => {
           </Paper>
         </div>
         <div className="showproducts">
-          {products.map((product, index) => (
+          {filteredproducts.map((product, index) => (
             <div
               className="slider-card"
               key={index}

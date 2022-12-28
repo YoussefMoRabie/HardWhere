@@ -177,7 +177,7 @@ const AddProduct = () => {
         <div className='colorpicker'>
           <label htmlFor="">Choose Color </label>
           <input className='colorp' type="color" value={color}
-            onChange={(e) => { setColor(e.target.value) }}></input>
+            onChange={(e) => { console.log(e.target.value); setColor(e.target.value) }}></input>
         </div>
 
 
