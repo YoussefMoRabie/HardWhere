@@ -192,7 +192,7 @@ class Cart extends StatelessWidget {
                             style: flatButtonStyle,
 
                             onPressed: (){
-                              controller.getOrder();
+                              controller.goToCheckOut();
                             },
 
                             child: const Text('CHECKOUT', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),)

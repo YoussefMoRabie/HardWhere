@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeService().darkTheme,
 
       themeMode: ThemeService().getThemeMode(),
-      home:CartOnePage(),
+      home:startWidget,
     );
   }
 }

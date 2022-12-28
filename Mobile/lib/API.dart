@@ -20,5 +20,8 @@ class AppLink {
   static const String addToCart = "$server//product/addtocart";
   static const String incCart = "$server/Cart/incQty/";
   static const String decCart = "$server/Cart/decQty/";
+  static const String scData = "$server/shippingCompany_Data";
+  static const String addOrder = "$server/addtoOrders";
+  static const String search = "$server/searchproduct/";
 
 }
