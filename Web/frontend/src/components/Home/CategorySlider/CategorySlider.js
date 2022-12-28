@@ -18,6 +18,7 @@ const CategorySlider = (probs) => {
       );
       const { data } = await Res.json();
       console.log(data);
+      if (data)
       setSlides(data.slice(0, 8));
     } catch (error) {
       console.log(error);

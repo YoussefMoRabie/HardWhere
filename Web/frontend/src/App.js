@@ -32,6 +32,7 @@ import WishList from "./components/WishlistPage/WishList";
 import UpdateCustomer from "./components/userPage/UpdateCustomer";
 import PrivateRoutes from "./components/utils/PrivateRoute";
 import PublicRoutes from "./components/utils/PublicRoue";
+import OrderPage from "./components/OrderPage/OrderPage";
 
 function App() {
   const [auth, setAuth] = React.useState("");
@@ -80,6 +81,8 @@ function App() {
             ></Route>
           </Route>
           <Route path="/updatecustomer" element={<UpdateCustomer />}></Route>
+          <Route path="/Orders" element={<OrderPage />}></Route>
+
         </Routes>
 
         <Footer auth={auth} />

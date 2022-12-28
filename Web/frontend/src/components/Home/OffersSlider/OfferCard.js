@@ -67,7 +67,7 @@ const OfferCard = () => {
           <span>Offers</span>
         </h2>
         <Slider {...settings}>
-          {OfferData.map((product, index) => {
+          {OfferData&& OfferData.map((product, index) => {
             return (
               <div className="productOffer" key={index}>
                 <div className="left">

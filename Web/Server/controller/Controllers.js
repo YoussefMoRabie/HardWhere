@@ -331,7 +331,7 @@ const getheadphones = async (req, res) => {
 };
 
 const addToFavorites = async (req, res) => {
-  const sql = `insert into favorites values(${req.query.ssn},${req.query.pid}) ;`;
+  const sql = `insert into favorites values(${req.body.ssn},${req.body.pid}) ;`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "added to favorite" });

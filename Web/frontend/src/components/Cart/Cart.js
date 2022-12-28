@@ -141,7 +141,7 @@ const Cart = () => {
         <div className="myproducts">
           {cartProducts.map((product, index) => {
             let totalProductPrice = 0;
-            const has_offer = product.has_offer.data[0];
+            const has_offer = product.has_offer?product.has_offer.data[0]: 0;
 
             totalProductPrice =
               Number(product.qty) *
