@@ -80,7 +80,7 @@ const AddProduct = () => {
     };
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
       method: "POST",
       headers: {
@@ -96,13 +96,37 @@ const AddProduct = () => {
         img_link:Img
       }),
     });
+    const { status } = await res.json();
+    if (status === true) {
+      setURLcolor('primary')
+      setIdcolor('primary')
+      setColor()
+      setImg('')
+      setPrice()
+      setCount()
+      setName()
+      set_selected_storage(null)
+      set_selected_supplier(null)
+      document.querySelector(".successD").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".successD").classList.remove("active");
+      }, 3000);
+    } else {
+      document.querySelector(".FailD").classList.add("active");
+      setTimeout(() => {
+        document.querySelector(".FailD").classList.remove("active");
+      }, 3000);
+    }
   };
 
 
   return (
     <div className="New">
       <h3><span>Add New Product</span></h3>
-      <form className='formAdd' onSubmit={handleSubmit}>
+      <form className='formAdd' onSubmit={(e)=>{
+        handleSubmit(e)
+        e.preventDefault();
+      }}>
         <TextField
           required
           fullWidth={false}
@@ -178,9 +202,15 @@ const AddProduct = () => {
 
 
 
-        <button className='addP' type='submit' onSubmit={handleSubmit}> Add Product</button>
+        <button className='addP' type='submit' > Add Product</button>
+        <div className='successD' style={{ color: 'green' }}>
+          Product Added!
+        </div>
+        <div className='FailD' style={{ color: 'red' }}>
+          Fail Addition!
+        </div>
       </form>
-
+      
     </div>
 
 
