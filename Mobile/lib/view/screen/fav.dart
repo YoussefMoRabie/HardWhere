@@ -11,101 +11,103 @@ class fav extends StatelessWidget {
     FavControllerImp favController=Get.put(FavControllerImp());
     return GetBuilder<FavControllerImp>(builder: ( controller) {
       return ConditionalBuilder(
-        condition: controller.statusRequest!=StatusRequest.loading&&controller.items.isNotEmpty,
+        condition: controller.statusRequest!=StatusRequest.loading&&controller.favItems.isNotEmpty,
         builder: (BuildContext context) {
           return ListView.separated(
-            itemBuilder: (BuildContext context, int index) => Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SizedBox(
-                height: 130,
-                child: Row(
-                  children: [
-                    Stack(alignment: AlignmentDirectional.topStart, children: [
-                      //Image(image: NetworkImage(model?.image??''),width: double.infinity,height: 100,),
-                      Image(
-                        image: NetworkImage(controller.items[index]["img_link"]),
-                        width: 150,
-                        height: 150,
-                        //fit: BoxFit.fitHeight,
-                      ),
-                      if(controller.items[index]["has_offer"]!=null&&controller.items[index]["has_offer"]["data"][0]==1)
-                        Container(
-                          color: Colors.red,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              'DISCOUNT',
-                              style: TextStyle(fontSize: 10, color: Colors.white),
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SizedBox(
+                  height: 130,
+                  child: Row(
+                    children: [
+                      Stack(alignment: AlignmentDirectional.topStart, children: [
+                        //Image(image: NetworkImage(model?.image??''),width: double.infinity,height: 100,),
+                        Image(
+                          image: NetworkImage(controller.favItems[index]["img_link"]),
+                          width: 150,
+                          height: 150,
+                          //fit: BoxFit.fitHeight,
+                        ),
+                        if(controller.favItems[index]["has_offer"]!=null&&controller.favItems[index]["has_offer"]["data"][0]==1)
+                          Container(
+                            color: Colors.red,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'DISCOUNT',
+                                style: TextStyle(fontSize: 10, color: Colors.white),
+                              ),
                             ),
-                          ),
-                        )
-                    ]),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            controller.items[index]["product_name"],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          Spacer(),
-                          Row(
-                            children: [
-                              if(controller.items[index]["has_offer"]==null||controller.items[index]["has_offer"]["data"][0]==0)
-                                Text(
-                                  "${controller.items[index]["price"]}\$",
-                                  style: const TextStyle(
-                                      color: Colors.red, fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              if(controller.items[index]["has_offer"]!=null&&controller.items[index]["has_offer"]["data"][0]==1)
-                                Text.rich(TextSpan(
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: '\$${controller.items[index]["price"]}',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: ' \$${controller.items[index]["new_price"]}',
-                                      style: const TextStyle(
-                                          color: Colors.red, fontSize: 20,
-                                        fontWeight: FontWeight.bold
-                                      ),
-
-                                    ),
-                                  ],
-                                ),
-                                ),
-
-
-
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {
-                                    controller.deleteItem(controller.items[index]["pid"]);
-                                  },
-                                  icon: const Icon(
-                                    Icons.favorite,
-                                    color:
-                                    Colors.red,
-                                  ))
-                            ],
-                          ),
-                        ],
+                          )
+                      ]),
+                      const SizedBox(
+                        width: 10,
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.favItems[index]["product_name"],
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            Spacer(),
+                            Row(
+                              children: [
+                                if(controller.favItems[index]["has_offer"]==null||controller.favItems[index]["has_offer"]["data"][0]==0)
+                                  Text(
+                                    "${controller.favItems[index]["price"]}\$",
+                                    style: const TextStyle(
+                                        color: Colors.red, fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                if(controller.favItems[index]["has_offer"]!=null&&controller.favItems[index]["has_offer"]["data"][0]==1)
+                                  Text.rich(TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: '\$${controller.favItems[index]["price"]}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          decoration: TextDecoration.lineThrough,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: ' \$${controller.favItems[index]["new_price"]}',
+                                        style: const TextStyle(
+                                            color: Colors.red, fontSize: 20,
+                                            fontWeight: FontWeight.bold
+                                        ),
+
+                                      ),
+                                    ],
+                                  ),
+                                  ),
+
+
+
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () {
+                                      controller.deleteItem(controller.favItems[index]["pid"]);
+                                    },
+                                    icon: const Icon(
+                                      Icons.favorite,
+                                      color:
+                                      Colors.red,
+                                    ))
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
             separatorBuilder: (BuildContext context, int index) {
               return Container(
                 width: double.infinity,
@@ -113,7 +115,7 @@ class fav extends StatelessWidget {
                 color: Colors.grey,
               );
             },
-            itemCount: controller.items.length,
+            itemCount: controller.favItems.length,
           );
         },
         fallback: (BuildContext context) {
@@ -127,3 +129,14 @@ class fav extends StatelessWidget {
   }
 }
 
+Widget lll()=>ConditionalBuilder(
+  condition: false,
+  builder: (BuildContext context) {
+    return Container();
+  },
+  fallback: (BuildContext context) {
+    return const Center(
+        child: CircularProgressIndicator(),
+    );
+  },
+);

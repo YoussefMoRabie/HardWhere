@@ -38,6 +38,7 @@ List items = [];
 
 @override
 getData() async {
+  items.clear();
   statusRequest = StatusRequest.loading;
   var response = await cartData.getData();
   print("=============================== Controller $response ");
