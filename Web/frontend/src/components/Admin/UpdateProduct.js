@@ -17,64 +17,35 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { lime } from '@mui/material/colors';
 import Checkbox from '@mui/material/Checkbox';
-const products = [{
-  img: "https://picsum.photos/200/300", label: "This is a label", id: 2, price: 299, rating: 2, count: 13
+import useFetch from "../useFetch";
 
-},
-{
-  img: "https://picsum.photos/600/500", id: 8, label: "This is a second label", price: 299, rating: 3, count: 13
 
-},
-{
-  img: "https://picsum.photos/600/500", id: 12, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/600/500", id: 42, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/600/500", id: 52, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/600/500", id: 2, label: "This is a second label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/700/600", id: 3, label: "This is a third label", price: 299, rating: 1, count: 13
-
-},
-{
-  img: "https://picsum.photos/500/400", id: 4, label: "This is a fourth label", price: 299, rating: 4, count: 13
-
-},
-{
-  img: "https://picsum.photos/200/300", id: 5, label: "This is a fifth label", price: 299, rating: 5, count: 13
-
-},
-{
-  img: "https://picsum.photos/800/700", id: 6, label: "This is a sixth label", price: 299, rating: 3, count: 13
-
-},
-{
-  img: "https://picsum.photos/300/400", id: 7, label: "This is a seventh label", price: 299, rating: 3, count: 13
-
-}]
 const UpdateProduct = () => {
-
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-  const [selcted, setSelected] = React.useState(null);
+  const [selected, setSelected] = React.useState(null);
   const [URLcolor, setURLcolor] = React.useState('primary');;
-  const [color, setColor] = React.useState({});
   const [Img, setImg] = React.useState('');
-  const [price, setPrice] = React.useState('');
-  const [newprice, setnewPrice] = React.useState('');
-  const [count, setCount] = React.useState('');
+  const [price, setPrice] = React.useState();
+  const [newprice, setnewPrice] = React.useState();
+  const [count, setCount] = React.useState();
   const [addOffer, setaddOffer] = React.useState(false);
   const [anyChange, setAnyChange] = React.useState(0);
   const [StartDate, setStartDate] = React.useState(new Date());
-  const [EndDate, setEndDate] = React.useState(new Date());
+  const [EndDate, setEndDate] = React.useState(new Date());  
+  const products = [];
+
+  const { data: Data } = useFetch(
+    "http://localhost:1444/api/v1/getAllProducts"
+  );
+  for (const item of Data) {
+    products.push({
+      label: item.product_name,
+      pid: item.pid,
+      Img: item.img_link,
+      price: item.price,
+      count: item.count
+    });
+  };
 
   const handleImgChange = (event) => {
     setAnyChange(1);
@@ -107,11 +78,29 @@ const UpdateProduct = () => {
   }
   const handleEndDateChange = (date) => {
     setAnyChange(1);
-    setStartDate(date)
+    setEndDate(date);
     console.log(date);
   }
-  const handleSubmit = () => {
-
+  const handleSubmit = async () => {
+    const res = await fetch(
+      `http://localhost:1444/api/v1/updateproduct`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          pid: selected.pid,
+          price:price,
+          count:count,
+          img_link:Img,
+          has_offer:addOffer,
+          new_price:newprice,
+          start_date:StartDate.toISOString().slice(0, 19).replace("T", " "),
+          end_date:EndDate.toISOString().slice(0, 19).replace("T", " ")
+        }),
+      }
+    );
   };
 
   const handleCountChange = (event) => {
@@ -125,7 +114,8 @@ const UpdateProduct = () => {
     setSelected(v);
     setPrice(v.price);
     setCount(v.count);
-    setImg(v.img);
+    setImg(v.Img);
+    setnewPrice(v.price);
   }
 
   return (
@@ -135,20 +125,20 @@ const UpdateProduct = () => {
     <Autocomplete
       disablePortal
       id="combo-box-demo"
-      value={selcted}
+      value={selected}
       onChange={handleProductChange}
       options={products}
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Product" />}
     />
-    {selcted && <form className='formAdd' onSubmit={handleSubmit}>
+    {selected && <form className='formAdd' onSubmit={handleSubmit}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <TextField
           sx={{ flex: 1 }}
           required={true}
           id="outlined-number"
           label="Count"
-          defaultValue={count}
+          value={count}
           type="number"
           onChange={handleCountChange}
           InputLabelProps={{
