@@ -25,6 +25,7 @@ late StatusRequest statusRequest;
     super.onInit();
   }
 List Items = [];
+List len = [];
 
 
 
@@ -42,7 +43,15 @@ getOrdersData() async {
       statusRequest = StatusRequest.failure;
     }
   }
+  func();
   update();
 }
+func(){
+  len.clear();
+  for(var i = 0; i < Items.length; i++) {
+    len.add(Items[i]["products"].length);}
+  update();
+
+  }
 
 }

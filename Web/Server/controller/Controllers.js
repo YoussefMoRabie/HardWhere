@@ -224,6 +224,8 @@ const addOrder = async (req, res) => {
   const sql4 = `delete from customer_cart where cust_ssn = ${req.body.cust_ssn}`;
   try {
     await db.execute(sql);
+    await db.execute(sql4);
+
     const cartProducts = req.body.products;
     console.log(cartProducts);
 
@@ -238,7 +240,6 @@ const addOrder = async (req, res) => {
       await db.execute(sql2);
     }
 
-    await db.execute(sql4);
     res.send({ status: true, message: "order added" });
   } catch (error) {
     console.log(error.sqlMessage);

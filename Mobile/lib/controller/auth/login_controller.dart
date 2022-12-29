@@ -10,6 +10,7 @@ import '../../core/functions/handling_data_controller.dart';
 import '../../core/services/services.dart';
 import '../../core/shared/toast.dart';
 import '../../data/data_source/remote/Auth/login_data.dart';
+import '../../main.dart';
 
 abstract class LoginController extends GetxController{
   login();
@@ -50,6 +51,7 @@ class LoginControllerImp extends LoginController{
           statusRequest = handlingData(response);
           if (StatusRequest.success == statusRequest) {
             if (response['status'] == true) {
+              id=int.parse(response['data']['ssn'].toString());
               myServices.sharedPreferences.setString("id", response['data']['ssn'].toString()) ;
               myServices.sharedPreferences.setString("fName", response['data']['f_name']) ;
               myServices.sharedPreferences.setString("lName", response['data']['l_name']) ;
