@@ -121,7 +121,13 @@ const UserPage = () => {
       >
         <Link to="/orders" state={state}>
           <button
-            style={{ fontSize: "18px", marginBottom: "13px" }}
+            style={{
+              fontSize: "18px",
+              marginBottom: "13px",
+              position: "relative",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
             className="addP"
             type="submit"
           >
