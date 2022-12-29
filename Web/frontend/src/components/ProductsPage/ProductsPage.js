@@ -16,7 +16,6 @@ const ProductsPage = () => {
   const { state } = useLocation();
   const [addfav,setaddtofav]=React.useState(null);
   const [Favs,setFavs]=React.useState([]);
-  const [isFavs,setisFav]=React.useState(false);
   console.log("user", state);
   useEffect(()=>{
     const getFav = async () => {

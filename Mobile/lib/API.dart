@@ -23,5 +23,6 @@ class AppLink {
   static const String scData = "$server/shippingCompany_Data";
   static const String addOrder = "$server/addtoOrders";
   static const String search = "$server/searchproduct/";
+  static const String updateUser = "$server/updateUserData?ssn=";
 
 }

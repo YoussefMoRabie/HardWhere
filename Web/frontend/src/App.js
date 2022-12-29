@@ -76,7 +76,7 @@ function App() {
           <Route path="/Signin" element={<Login setAuth={setAuth} />}></Route>
           <Route element={<PrivateRoutes auth={auth} />}>
             <Route
-              element={<AdminPanel auth={auth} />}
+              element={<AdminPanel auth={auth}  />}
               path="/adminpanel"
             ></Route>
           </Route>

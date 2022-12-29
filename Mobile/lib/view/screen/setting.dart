@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../controller/update_controller.dart';
 import '../../core/shared/custom_button.dart';
 
 class Setting extends StatelessWidget {
@@ -7,92 +9,98 @@ class Setting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nameController=TextEditingController();
-    var emailController=TextEditingController();
-    var phoneController=TextEditingController();
-    var passwordController=TextEditingController();
-    return Padding(
+    SettingControllerImp ordersController=Get.put(SettingControllerImp());
+    return GetBuilder<SettingControllerImp>(builder: (controller)=>Padding(
       padding: const EdgeInsets.all(20.0),
-      child: ListView(
-        children: [
-         // if(state is ShopLoadingUpdateUserDataState)
-            LinearProgressIndicator(),
-          const SizedBox(height: 20,),
-          TextFormField(
-            controller: nameController,
-            keyboardType: TextInputType.name,
-            decoration: InputDecoration(
-              label: Text('Name'),
-              prefixIcon: Icon(Icons.person),
-              border: OutlineInputBorder(),
+      child: Form(
+        key: controller.formState,
+        child: ListView(
+          children: [
+            // if(state is ShopLoadingUpdateUserDataState)
+            // LinearProgressIndicator(),
+            const SizedBox(height: 20,),
+            TextFormField(
+              controller: controller.addressController,
+              keyboardType: TextInputType.name,
+              decoration: const InputDecoration(
+                label: Text('Address'),
+                prefixIcon: Icon(Icons.location_pin),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value){
+                if(value?.isEmpty==true) {
+                  return'address must not be empty';
+                }
+                return null;
+              },
+
+
             ),
-            validator: (value){
-              if(value?.isEmpty==true)
-                return'name must not be empty';
-              return null;
-            },
+            const SizedBox(height: 20,),
+            TextFormField(
+              controller: controller.emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                label: Text('Email'),
+                prefixIcon: Icon(Icons.email),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value){
+                if(value?.isEmpty==true) {
+                  return'email must not be empty';
+                }
+                return null;
+              },
 
 
-          ),
-          const SizedBox(height: 20,),
-          TextFormField(
-            controller: emailController,
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              label: Text('Email'),
-              prefixIcon: Icon(Icons.email),
-              border: OutlineInputBorder(),
             ),
-            validator: (value){
-              if(value?.isEmpty==true)
-                return'email must not be empty';
-              return null;
-            },
+            const SizedBox(height: 20,),
+            TextFormField(
+              controller: controller.phoneController,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                label: Text('Phone'),
+                prefixIcon: Icon(Icons.phone),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value){
+                if(value?.isEmpty==true) {
+                  return'phone must not be empty';
+                }
+                return null;
+              },
 
 
-          ),
-          const SizedBox(height: 20,),
-          TextFormField(
-            controller: phoneController,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              label: Text('Phone'),
-              prefixIcon: Icon(Icons.phone),
-              border: OutlineInputBorder(),
             ),
-            validator: (value){
-              if(value?.isEmpty==true)
-                return'phone must not be empty';
-              return null;
-            },
+            const SizedBox(height: 20,),
+            TextFormField(
+              controller: controller.passwordController,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                label: Text('Password'),
+                prefixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value){
+                if(value?.isEmpty==true) {
+                  return'Password must not be empty';
+                }
+                return null;
+              },
 
 
-          ),
-          const SizedBox(height: 20,),
-          TextFormField(
-            controller: phoneController,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              label: Text('Password'),
-              prefixIcon: Icon(Icons.phone),
-              border: OutlineInputBorder(),
             ),
-            validator: (value){
-              if(value?.isEmpty==true)
-                return'phone must not be empty';
-              return null;
-            },
-
-
-          ),
-          const SizedBox(height: 20,),
-          customButton(onPressed: () {
-          }, text: 'UPDATE'),
-          const SizedBox(height: 20,),
-          customButton(onPressed: () {
-          }, text: 'LOGOUT'),
-        ],
+            const SizedBox(height: 20,),
+            customButton(onPressed: () {
+              controller.update_Data();
+            }, text: 'UPDATE'),
+            const SizedBox(height: 20,),
+            customButton(onPressed: () {
+              controller.logOut();
+            }, text: 'LOGOUT'),
+          ],
+        ),
       ),
-    );
+    ));
   }
 }

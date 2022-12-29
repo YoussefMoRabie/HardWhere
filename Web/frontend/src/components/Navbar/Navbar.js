@@ -93,7 +93,7 @@ const Navbar = (props) => {
   const his = useNavigate();
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      his("/search/" + e.target.value);
+      his("/search/" + e.target.value, { state: state });
     }
   };
   const handleCategoryClick = (lin) => {
