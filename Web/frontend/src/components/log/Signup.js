@@ -111,7 +111,7 @@ const Signup = () => {
       });
       const res5 = await res.json();
       console.log(res5);
-      if (res5.status === false) {
+      if (res5.status === false && res5.message === "email_signed_before") {
         document
           .getElementById("emailSignedBeforeMess")
           .classList.add("active");
@@ -119,6 +119,14 @@ const Signup = () => {
           document
             .getElementById("emailSignedBeforeMess")
             .classList.remove("active");
+        }, 3000);
+        console.log(4444);
+        return;
+      }
+      if (res5.status === false && res5.message === "wrong_phone_number") {
+        document.getElementById("phoneDupMess").classList.add("active");
+        setTimeout(() => {
+          document.getElementById("phoneDupMess").classList.remove("active");
         }, 3000);
         console.log(4444);
         return;
@@ -186,6 +194,7 @@ const Signup = () => {
           <label htmlFor="phone">
             <p> Phone</p>
           </label>
+
           <input
             required
             // value={phone}
@@ -196,6 +205,7 @@ const Signup = () => {
               setPhone(e.target.value);
             }}
           />
+          <div id="phoneDupMess">Wrong phone Number</div>
           <label htmlFor="addr">
             <p> Address</p>
           </label>

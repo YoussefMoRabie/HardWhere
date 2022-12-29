@@ -93,7 +93,7 @@ const Navbar = (props) => {
   const his = useNavigate();
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      his("/search/" + e.target.value);
+      his("/search/" + e.target.value, { state: state });
     }
   };
   const handleCategoryClick = (lin) => {
@@ -219,11 +219,7 @@ const Navbar = (props) => {
                           </Link>
                           <BiCaretLeft />
 
-                          <Link
-                            to="/updatecustomer"
-                            className="Link"
-                            state={state}
-                          >
+                          <Link to="/userpage" className="Link" state={state}>
                             <div>
                               {
                                 <Avatar
@@ -244,7 +240,7 @@ const Navbar = (props) => {
                           <Button
                             variant="contained"
                             color="primary"
-                            startIcon={<LogoutIcon />}
+                            endIcon={<LogoutIcon />}
                             onClick={(e) => {
                               window.localStorage.clear();
                               window.history.replaceState(null, null, "/");
@@ -307,15 +303,11 @@ const Navbar = (props) => {
               </Link>
             </Grid>
             <div>
-              
-                <div style={{ display: 'flex', gap: '10px',alignItems:'center' }}>
+              <div
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
                 <div>
-                <Link
-                  to="/updatecustomer"
-                  className="Link"
-                  state={state}
-                >
-                 
+                  <Link to="/updatecustomer" className="Link" state={state}>
                     <div>
                       {
                         <Avatar
@@ -332,37 +324,34 @@ const Navbar = (props) => {
                         {state.f_name} {state.l_name}
                       </span>
                     </div>
-                </Link>
-              </div>
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<LogoutIcon />}
-                  onClick={(e) => {
-                    window.localStorage.clear();
-                    window.history.replaceState(null, null, "/");
-                    his("/Signin");
-                  }}
-                  sx={{
-                    color: "#251c57",
-                    fontWeight: "bold",
-                    minWidth: 90,
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  Log out
-                </Button>
+                  </Link>
+                </div>
+                <div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<LogoutIcon />}
+                    onClick={(e) => {
+                      window.localStorage.clear();
+                      window.history.replaceState(null, null, "/");
+                      his("/Signin");
+                    }}
+                    sx={{
+                      color: "#251c57",
+                      fontWeight: "bold",
+                      minWidth: 90,
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    Log out
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-
         </div>
-          
-        </div>
-  )
-}
-    </ThemeProvider >
+      )}
+    </ThemeProvider>
   );
 };
 

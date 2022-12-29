@@ -29,7 +29,7 @@ import DeleteCompany from "./components/Manager/DltShipping";
 import AdminPanel from "./components/EmployeeNav/AdminPanel";
 import React from "react";
 import WishList from "./components/WishlistPage/WishList";
-import UpdateCustomer from "./components/userPage/UpdateCustomer";
+import UserPage from "./components/userPage/UserPage";
 import PrivateRoutes from "./components/utils/PrivateRoute";
 import PublicRoutes from "./components/utils/PublicRoue";
 import OrderPage from "./components/OrderPage/OrderPage";
@@ -76,13 +76,12 @@ function App() {
           <Route path="/Signin" element={<Login setAuth={setAuth} />}></Route>
           <Route element={<PrivateRoutes auth={auth} />}>
             <Route
-              element={<AdminPanel auth={auth} />}
+              element={<AdminPanel auth={auth}  />}
               path="/adminpanel"
             ></Route>
           </Route>
-          <Route path="/updatecustomer" element={<UpdateCustomer />}></Route>
-          <Route path="/Orders" element={<OrderPage />}></Route>
-
+          <Route path="/userpage" element={<UserPage />}></Route>
+          <Route path="/orders" element={<OrderPage />}></Route>
         </Routes>
 
         <Footer auth={auth} />

@@ -117,7 +117,7 @@ const Cart = () => {
       const resRes = await res.json();
       if (resRes.status === true) {
         setShippingCost(0);
-        setShippingName('');
+        setShippingName("");
         setShippingTime(0);
         document.getElementById("messageOrderSuccess").classList.add("active");
         setTimeout(() => {
@@ -141,7 +141,7 @@ const Cart = () => {
         <div className="myproducts">
           {cartProducts.map((product, index) => {
             let totalProductPrice = 0;
-            const has_offer = product.has_offer?product.has_offer.data[0]: 0;
+            const has_offer = product.has_offer ? product.has_offer.data[0] : 0;
 
             totalProductPrice =
               Number(product.qty) *
@@ -232,7 +232,7 @@ const Cart = () => {
         </div>
         <div className="summary">
           <h4>Cart Summary</h4>
-          <hr />
+          <span></span>
           <br />
           <span
             style={{ fontWeight: "900", fontSize: "22px", color: "cadetblue" }}
@@ -247,7 +247,7 @@ const Cart = () => {
           </span>
           <br />
           <br />
-          <hr />
+          
           <br />
           <h4>Shipping Company</h4>
           <div>

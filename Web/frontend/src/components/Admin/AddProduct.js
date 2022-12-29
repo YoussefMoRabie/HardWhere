@@ -71,10 +71,10 @@ const AddProduct = () => {
   }
   const handleTypeChange = (e, v) => {
     
-    setScType(e.target.value);
+    setScType(v.label);
   }
   const handleisSmartChange = (e, v) => {
-    setisSmart(e.target.value);
+    setisSmart(v.label);
   }
   const handleAcTypeChange = (e, v) => {
     setAcType(e.target.value);
