@@ -46,6 +46,9 @@ const {
   updateSupplier,
   updateUserData,
   getCustomer,
+  getProductWithId,
+  getStorageWithId,
+  getOrders,
   addLaptop,
   addMobile,
   addAccessory,
@@ -76,6 +79,7 @@ router.route("/removeFromFavorite").get(removeFromFavorites);
 router.route("/getFavorite").get(getFavorites);
 router.route("/getCustomer").get(getCustomer);
 router.route("/addOrder_fluter").post(addOrder_fluter);
+router.route("/getOrders").get(getOrders);
 
 //manager
 router.route("/addSupplier").post(addSupplier);
@@ -108,6 +112,10 @@ router.route("/searchProduct/:search_text").get(searchProduct);
 
 //General user
 router.route("/updateUserData").patch(updateUserData);
+
+//helper apis
+router.route("/getProductWithId").get(getProductWithId);
+router.route("/getStorageWithId").get(getStorageWithId);
 
 //Categories
 router.route("/addLaptop").post(addLaptop);

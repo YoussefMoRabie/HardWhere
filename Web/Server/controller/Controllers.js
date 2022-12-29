@@ -73,12 +73,12 @@ const deleteProductFromCart = async (req, res) => {
 
 const getProductData = async (req, res) => {
   const sql = `select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 1 as favorite
-              from product p,suppliers s,favorites fv,customer c
-              where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
-              union all
-              select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 0 as favorite
-              from product p,suppliers s,customer c
-              where p.su_id=s.suid  and p.pid=${req.params.id};`;
+from product p,suppliers s,favorites fv,customer c
+where p.su_id=s.suid and  fv.p_id=p.pid and fv.cust_ssn=c.ssn  and p.pid=${req.params.id}
+union all
+select distinct pid,has_offer,p.img_link,new_price,product_name,price,color,count, su_name,p.p_value, 0 as favorite
+from product p,suppliers s,customer c
+where p.su_id=s.suid  and p.pid=${req.params.id};`;
 
   const sql1 = `select count(*) as found, ram,processor,gpu,screen from labtops where pid = ${req.params.id};  `;
   const sql2 = `select count(*) as found, ram,processor,screen from mobiles where pid = ${req.params.id};`;
@@ -126,7 +126,6 @@ const getProductData = async (req, res) => {
 
 const addToCart = async (req, res) => {
   const sql = `insert into customer_cart values(${req.body.cust_ssn},${req.body.pid},${req.body.qty});`;
-  console.log(req.body);
   // const sql2 = `update product set count=count-${req.body.qty} where pid=${req.body.pid};`;
   try {
     await db.execute(sql);
@@ -144,7 +143,7 @@ const addToCart = async (req, res) => {
       //   console.log(error.sqlMessage);
       //   res.json({ status: false, message: error.sqlMessage });
       // }
-      res.json({ status: false, message: "product already in your cart" });
+      res.json({ status: false, message: "product allready in your cart" });
     } else {
       res.json({ status: false, message: error.sqlMessage });
     }
@@ -213,8 +212,7 @@ const addOrder = async (req, res) => {
    values(${req.body.total},'${req.body.date}',${req.body.cust_ssn},${req.body.scid});`;
 
   const sql3 = `   select max(oid) as maxOrderId from orders `;
-  console.log(req.body);
-  const sql4 = `delete from customer_cart where cust_ssn = ${Number(req.body.cust_ssn)}`;
+  const sql4 = `delete from customer_cart where cust_ssn = ${req.body.cust_ssn}`;
   try {
     await db.execute(sql);
     const cartProducts = req.body.products;
@@ -222,15 +220,16 @@ const addOrder = async (req, res) => {
 
     const data = await db.execute(sql3);
     const oid = data[0][0].maxOrderId;
-    await db.execute(sql4);
-    for (const product of cartProducts) {
 
+    console.log(oid);
+    for (const product of cartProducts) {
       const sql2 = `insert into contains values (${oid},${product.pid},${product.qty})`;
       const sql6 = `update product set count=count-${product.qty} where pid=${product.pid};`;
       await db.execute(sql6);
       await db.execute(sql2);
     }
 
+    await db.execute(sql4);
     res.send({ status: true, message: "order added" });
   } catch (error) {
     console.log(error.sqlMessage);
@@ -444,7 +443,6 @@ const deleteProduct = async (req, res) => {
   const sql2 = `update storages set currently_used = currently_used - ${req.body.count} where stid = ${req.body.st_id}`;
   try {
     await db.execute(sql);
-    await db.execute(sql2);
     res.json({ status: true, message: "product deleted" });
   } catch (error) {
     console.log(error.sqlMessage);
@@ -452,7 +450,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 const updateProduct = async (req, res) => {
-  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price}, 
+  const sql = `update product set count = ${req.body.count},img_link = '${req.body.img_link}', price = ${req.body.price},
               has_offer = ${req.body.has_offer}, new_price = ${req.body.new_price}, start_date = '${req.body.start_date}', end_date = '${req.body.end_date}'
               where pid = ${req.body.pid};`;
   try {
@@ -648,6 +646,46 @@ const getCustomer = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const getOrders = async (req, res) => {
+  const sql = `select  oid,date,price from orders where cust_ssn = ${req.query.ssn}  `;
+  try {
+    const data1 = await db.execute(sql);
+    const orders = data1[0];
+
+    for (const order of orders) {
+      const sql2 = ` select product_name,price,color,p.count,has_offer,new_price,su_id,st_id,start_date,end_date,p_value,img_link
+                from contains co,product p where p.pid=co.p_id and o_id =${order.oid}`;
+
+      const products = await db.execute(sql2);
+      order.products = products[0];
+    }
+    res.json({ status: true, data: orders });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+//---------------------------------------------------Helper Apis---------------------------------------------------------------
+const getProductWithId = async (req, res) => {
+  const sql = `select * from product where pid = ${req.params.pid} `;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const getStorageWithId = async (req, res) => {
+  const sql = `select * from storages where stid = ${req.params.stid}`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0] });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 //---------------------------------------------------Categories---------------------------------------------------------------
 const addLaptop = async (req, res) => {
   const sql = `insert into labtops values (${req.body.pid},'${req.body.processor}',${req.body.ram},'${req.body.gpu}',${req.body.screen});`;
@@ -718,6 +756,7 @@ const getLastInserted = async (req, res) => {
 };
 
 module.exports = {
+  getOrders,
   getCustomer,
   updateSupplier,
   updateShipping,
@@ -763,6 +802,8 @@ module.exports = {
   updateStorage,
   updateUserData,
   addOrder_fluter,
+  getProductWithId,
+  getStorageWithId,
   addLaptop,
   addMobile,
   addAccessory,
