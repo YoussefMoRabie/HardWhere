@@ -25,7 +25,6 @@ const DeleteProduct = () => {
   }
 
   const handleSubmit = async () => {
-    console.log('1')
     const res = await fetch(
       `http://localhost:1444/api/v1/deleteproduct`,
       {
@@ -35,6 +34,8 @@ const DeleteProduct = () => {
         },
         body: JSON.stringify({
           pid: selected.pid,
+          st_id: selected.st_id,
+          count: selected.count
         }),
       }
     );

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  addOrder_fluter,
   getStorages,
   addNewEmployee,
   getCartProducts,
@@ -46,7 +47,14 @@ const {
   updateUserData,
   getCustomer,
   getProductWithId,
-  getStorageWithId
+  getStorageWithId,
+  getOrders,
+  addLaptop,
+  addMobile,
+  addAccessory,
+  addHeadphone,
+  addScreen,
+  getLastInserted,
 } = require("../controller/Controllers");
 
 //customer
@@ -66,10 +74,12 @@ router.route("/mobiles").get(getmobiles);
 router.route("/headphones").get(getheadphones);
 router.route("/screens").get(getscreens);
 router.route("/accessories").get(getaccessories);
-router.route("/addToFavorite").get(addToFavorites);
+router.route("/addToFavorite").post(addToFavorites);
 router.route("/removeFromFavorite").get(removeFromFavorites);
 router.route("/getFavorite").get(getFavorites);
 router.route("/getCustomer").get(getCustomer);
+router.route("/addOrder_fluter").post(addOrder_fluter);
+router.route("/getOrders").get(getOrders);
 
 //manager
 router.route("/addSupplier").post(addSupplier);
@@ -106,4 +116,12 @@ router.route("/updateUserData").patch(updateUserData);
 //helper apis
 router.route("/getProductWithId").get(getProductWithId);
 router.route("/getStorageWithId").get(getStorageWithId);
+
+//Categories
+router.route("/addLaptop").post(addLaptop);
+router.route("/addMobile").post(addMobile);
+router.route("/addScreen").post(addScreen);
+router.route("/addAccessory").post(addAccessory);
+router.route("/addHeadphone").post(addHeadphone);
+router.route("/getLastInserted").get(getLastInserted);
 module.exports = router;

@@ -4,10 +4,11 @@ import Slider from "../../Slider/Slider";
 import { useEffect } from "react";
 import "./CategorySlider.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CategorySlider = (probs) => {
   const [slides, setSlides] = useState([]);
-
+  const his=useNavigate();
   console.log(probs.category.name);
 
   const getCategories = async () => {
@@ -17,6 +18,7 @@ const CategorySlider = (probs) => {
       );
       const { data } = await Res.json();
       console.log(data);
+      if (data)
       setSlides(data.slice(0, 8));
     } catch (error) {
       console.log(error);
@@ -25,7 +27,7 @@ const CategorySlider = (probs) => {
 
   useEffect(() => {
     getCategories();
-  }, []);
+  }, [his]);
 
   return (
     <div className="CategoryMain">
