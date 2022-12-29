@@ -28,6 +28,7 @@ const AddProduct = () => {
   const [price, setPrice] = React.useState('');
   const [count, setCount] = React.useState('');
   const [category, setCat] = React.useState('');
+  const [tempCat, setTCat] = React.useState('');
   const [CPU, setCPU] = React.useState('');
   const [GPU, setGPU] = React.useState('');
   const [RAM, setRAM] = React.useState('');
@@ -45,6 +46,7 @@ const AddProduct = () => {
 
   const handleCatChange = (e, v) => {
     setCat(v.label);
+    setTCat(v.label)
    
   }
   const handleCPUChange = (e, v) => {
@@ -53,8 +55,10 @@ const AddProduct = () => {
   const handleGPUChange = (e, v) => {
     setGPU(e.target.value);
   }
-  const handleRAMChange = (e, v) => {
-    setRAM(e.target.value);
+  const handleRAMChange = (event, v) => {
+    event.target.value < 1
+      ? (event.target.value = 1)
+      :  setRAM(event.target.value);
   }
   const handleFreqChange = (event, v) => {
     event.target.value < 1
@@ -162,11 +166,13 @@ const AddProduct = () => {
         }
     } 
   useEffect(() => {
+    console.log(pid)
+    console.log(tempCat)
     const PostReq = async () => {
       //after adding the product we add its details to the according table
       console.log(pid)
-      console.log(category)
-      if (category == "Laptops") {
+      console.log(tempCat)
+      if (tempCat == "Laptops") {
         const res2 = await fetch(`http://localhost:1444/api/v1/addlaptop`, {
           method: "POST",
           headers: {
@@ -181,7 +187,7 @@ const AddProduct = () => {
           }),
         });
       }
-      else if (category == "Mobiles") {
+      else if (tempCat == "Mobiles") {
         const res2 = await fetch(`http://localhost:1444/api/v1/addmobile`, {
           method: "POST",
           headers: {
@@ -196,7 +202,7 @@ const AddProduct = () => {
         });
       }
 
-      else if (category == "Screens") {
+      else if (tempCat == "Screens") {
         const res2 = await fetch(`http://localhost:1444/api/v1/addscreen`, {
           method: "POST",
           headers: {
@@ -211,7 +217,7 @@ const AddProduct = () => {
         });
       }
 
-      else if (category == "Headphones") {
+      else if (tempCat == "Headphones") {
         const res2 = await fetch(`http://localhost:1444/api/v1/addheadphone`, {
           method: "POST",
           headers: {
@@ -224,7 +230,7 @@ const AddProduct = () => {
         });
       }
 
-      else if (category == "Accessories") {
+      else if (tempCat == "Accessories") {
         console.log(pid)
         console.log(AcType)
         const res2 = await fetch(`http://localhost:1444/api/v1/addaccessory`, {
@@ -240,8 +246,7 @@ const AddProduct = () => {
       }
     }
     PostReq();
-},[pid])
-
+},[pid,Navigate])
   const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
       method: "POST",
@@ -258,31 +263,29 @@ const AddProduct = () => {
         img_link:Img
       }),
     });
-
+   
  
   const { status } = await res.json();
   console.log(res)
   if (status === true) {
-    getLast()
+    getLast();
 
       selected_storage.currently_used = parseInt(selected_storage.currently_used) + parseInt(count)
-      // setURLcolor('primary')
-      // setIdcolor('primary')
-      // setColor('#000000')
-      // setImg('')
-      // setPrice('')
-      // setCount('')
-      // setCat('')
-      // setName('')
-      // set_selected_storage(null)
-      // set_selected_supplier(null)
+      setURLcolor('primary')
+      setIdcolor('primary')
+      setColor('#000000')
+      setImg('')
+      setPrice('')
+      setCount(1)
+      setCat('')
+      setName('')
+      set_selected_storage(null)
+      set_selected_supplier(null)
       document.querySelector(".successD").classList.add("active");
       setTimeout(() => {
         document.querySelector(".successD").classList.remove("active");
       }, 3000);
-      setTimeout(() => {
-        //Navigate(0)
-      }, 3000);
+
     } else {
       document.querySelector(".FailD").classList.add("active");
       setTimeout(() => {
@@ -331,12 +334,16 @@ const AddProduct = () => {
           />}
         {isLabMob() &&
           <TextField
-            required
-            fullWidth={false}
-            id="outlined-required"
+            required={true}
+            id="outlined-number"
+            label="RAM"
+            type="number"
             value={RAM}
             onChange={handleRAMChange}
-            label="RAM"
+            InputLabelProps={{
+              shrink: true,
+              min: 0,
+            }}
           />}
         {isLab() &&
           <TextField
