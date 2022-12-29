@@ -8,9 +8,7 @@
   justify-content: space-between;
   gap:20px;
 }
- body{
-  min-height: 1200px;
- }
+
 .addP{
   min-width: 150px;
   padding: 10px;
