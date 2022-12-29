@@ -101,15 +101,13 @@ const getProductData = async (req, res) => {
       const desc = ` this mobile has ram: ${mobData[0][0].ram}, processor: ${mobData[0][0].processor}, screen: ${mobData[0][0].screen}`;
       data[0][0].desc = desc;
     } else if (screensData[0][0].found == 1) {
-      const desc = `screen type: ${screensData[0][0].type}, resolution: ${
-        screensData[0][0].resolution
-      }${
-        screensData[0][0].is_smart == null
+      const desc = `screen type: ${screensData[0][0].type}, resolution: ${screensData[0][0].resolution
+        }${screensData[0][0].is_smart == null
           ? ""
           : screensData[0][0].is_smart == 1
-          ? ", smart"
-          : ", not smart"
-      }`;
+            ? ", smart"
+            : ", not smart"
+        }`;
       data[0][0].desc = desc;
     } else if (headphonesData[0][0].found == 1) {
       const desc = `frequency of this headphone is ${headphonesData[0][0].frequency} HZ`;
@@ -426,16 +424,15 @@ const addProduct = async (req, res) => {
   const sql = `insert into product (product_name,price,color,count,st_id,su_id,img_link)
    values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.selected_storage.stid},${req.body.su_id},"${req.body.img_link}");`;
   const sql2 = `update storages set currently_used = currently_used + ${req.body.count} where stid = ${req.body.selected_storage.stid}`;
- 
+
   try {
-    if(req.body.selected_storage.currently_used + parseInt(req.body.count) > req.body.selected_storage.max_capacity)
-    {
+    if (req.body.selected_storage.currently_used + parseInt(req.body.count) > req.body.selected_storage.max_capacity) {
       throw new Error("max capacity reached");
     }
     await db.execute(sql);
     await db.execute(sql2);
-    
-    res.json({ status: true, message: "product added"});
+
+    res.json({ status: true, message: "product added" });
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
@@ -654,7 +651,7 @@ const getCustomer = async (req, res) => {
 //---------------------------------------------------Categories---------------------------------------------------------------
 const addLaptop = async (req, res) => {
   const sql = `insert into labtops values (${req.body.pid},'${req.body.processor}',${req.body.ram},'${req.body.gpu}',${req.body.screen});`;
-  
+
   try {
     await db.execute(sql);
     res.json({ status: true, message: "details added" });
@@ -665,7 +662,7 @@ const addLaptop = async (req, res) => {
 };
 const addMobile = async (req, res) => {
   const sql = `insert into mobiles values (${req.body.pid},'${req.body.processor}',${req.body.ram},${req.body.screen});`;
-  
+
   try {
     await db.execute(sql);
     res.json({ status: true, message: "details added" });
@@ -676,7 +673,7 @@ const addMobile = async (req, res) => {
 };
 const addHeadphone = async (req, res) => {
   const sql = `insert into headphones values (${req.body.pid},${req.body.frequency});`;
-  
+
   try {
     await db.execute(sql);
     res.json({ status: true, message: "details added" });
@@ -688,7 +685,7 @@ const addHeadphone = async (req, res) => {
 const addAccessory = async (req, res) => {
   console.log('accessory')
   const sql = `insert into accessories values (${req.body.pid},'${req.body.type}');`;
-  
+
   try {
     await db.execute(sql);
     res.json({ status: true, message: "details added" });
@@ -699,7 +696,7 @@ const addAccessory = async (req, res) => {
 };
 const addScreen = async (req, res) => {
   const sql = `insert into screens values (${req.body.pid},'${req.body.type}','${req.body.resolution}','${req.body.is_smart});`;
-  
+
   try {
     await db.execute(sql);
     res.json({ status: true, message: "details added" });
@@ -713,7 +710,7 @@ const getLastInserted = async (req, res) => {
   const sql = `select LAST_INSERT_ID()`;
   try {
     const data = await db.execute(sql);
-    res.json({ status: true, data: data[0]});
+    res.json({ status: true, data: data[0] });
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });

@@ -45,38 +45,41 @@ const AddProduct = () => {
 
   const handleCatChange = (e, v) => {
     setCat(v.label);
+   
   }
   const handleCPUChange = (e, v) => {
-    setCPU(v);
+    setCPU(e.target.value);
   }
   const handleGPUChange = (e, v) => {
-    setGPU(v);
+    setGPU(e.target.value);
   }
   const handleRAMChange = (e, v) => {
-    setRAM(v);
+    setRAM(e.target.value);
   }
   const handleFreqChange = (event, v) => {
     event.target.value < 1
       ? (event.target.value = 1)
-      : setFreq(v);
+      : setFreq(event.target.value);
 
   }
   const handleResoChange = (e, v) => {
-    setReso(v);
+    setReso(e.target.value);
   }
   const handleTypeChange = (e, v) => {
-    setScType(v);
+    
+    setScType(e.target.value);
   }
   const handleisSmartChange = (e, v) => {
-    setisSmart(v);
+    setisSmart(e.target.value);
   }
   const handleAcTypeChange = (e, v) => {
-    setAcType(v);
+    setAcType(e.target.value);
+
   }
   const handleScreenChange = (event, v) => {
     event.target.value < 1
       ? (event.target.value = 1)
-      : setScreen(v);
+      : setScreen(event.target.value);
   }
 
   const handleImgChange = (event) => {
@@ -148,20 +151,96 @@ const AddProduct = () => {
     return category == 'Accessories'
   }
 
-  useEffect(() => {
-   
-    const getLast = async () => {
+ 
+    const getLast = async (e) => {
         try {
           const dataRes = await fetch(`http://localhost:1444/api/v1/getlastinserted`);
           const { data } = await dataRes.json();
           setPid(data[0]["LAST_INSERT_ID()"])
-          setTimeout(() => {}, 300);
         } catch (error) {
           console.log(error);
         }
     } 
-    getLast();
-  }, [Navigate]);
+  useEffect(() => {
+    const PostReq = async () => {
+      //after adding the product we add its details to the according table
+      console.log(pid)
+      console.log(category)
+      if (category == "Laptops") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addlaptop`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            gpu: GPU,
+            ram: RAM,
+            processor: CPU,
+            screen: Screen,
+          }),
+        });
+      }
+      else if (category == "Mobiles") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addmobile`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            ram: RAM,
+            processor: CPU,
+            screen: Screen,
+          }),
+        });
+      }
+
+      else if (category == "Screens") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addscreen`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            type: ScreenType,
+            resolution: Reso,
+            is_smart: isSmart
+          }),
+        });
+      }
+
+      else if (category == "Headphones") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addheadphone`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            frequency: Freq,
+          }),
+        });
+      }
+
+      else if (category == "Accessories") {
+        console.log(pid)
+        console.log(AcType)
+        const res2 = await fetch(`http://localhost:1444/api/v1/addaccessory`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            type: AcType,
+          }),
+        });
+      }
+    }
+    PostReq();
+},[pid])
 
   const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
@@ -182,97 +261,21 @@ const AddProduct = () => {
 
  
   const { status } = await res.json();
+  console.log(res)
   if (status === true) {
     getLast()
-    console.log(pid)
-    //after adding the product we add its details to the according table
-  if (category == "Laptops")
-    {
-    const res2 = await fetch(`http://localhost:1444/api/v1/addlaptop`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        pid:pid,
-        gpu:GPU,
-        ram:RAM,
-        processor:CPU,
-        screen:Screen,
-      }),
-    });
-  }
-  else if(category == "Mobiles")
-  {
-    const res2 = await fetch(`http://localhost:1444/api/v1/addmobile`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        pid:pid,
-        ram:RAM,
-        processor:CPU,
-        screen:Screen,
-      }),
-    });
-  }
-
-  else if(category == "Screens")
-  {
-    const res2 = await fetch(`http://localhost:1444/api/v1/addscreen`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        pid:pid,
-        type:ScreenType,
-        resolution:Reso,
-        is_smart:isSmart
-      }),
-    });
-  }
-
-  else if(category == "Headphones")
-  {
-    const res2 = await fetch(`http://localhost:1444/api/v1/addheadphone`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        pid:pid,
-        frequency:Freq,      
-      }),
-    });
-  }
-
-  else if(category == "Accessories")
-  {
-    const res2 = await fetch(`http://localhost:1444/api/v1/addaccessory`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        pid:pid,
-        type:AcType,
-      }),
-    });
-  }
 
       selected_storage.currently_used = parseInt(selected_storage.currently_used) + parseInt(count)
-      setURLcolor('primary')
-      setIdcolor('primary')
-      setColor('#000000')
-      setImg('')
-      setPrice('')
-      setCount('')
-      setCat('')
-      setName('')
-      set_selected_storage(null)
-      set_selected_supplier(null)
+      // setURLcolor('primary')
+      // setIdcolor('primary')
+      // setColor('#000000')
+      // setImg('')
+      // setPrice('')
+      // setCount('')
+      // setCat('')
+      // setName('')
+      // set_selected_storage(null)
+      // set_selected_supplier(null)
       document.querySelector(".successD").classList.add("active");
       setTimeout(() => {
         document.querySelector(".successD").classList.remove("active");
