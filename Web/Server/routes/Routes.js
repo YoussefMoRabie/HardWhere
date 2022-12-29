@@ -55,6 +55,9 @@ const {
   addHeadphone,
   addScreen,
   getLastInserted,
+  updateFeedback,
+  deleteFeedback,
+  addFeedback,
 } = require("../controller/Controllers");
 
 //customer
@@ -80,6 +83,10 @@ router.route("/getFavorite").get(getFavorites);
 router.route("/getCustomer").get(getCustomer);
 router.route("/addOrder_fluter").post(addOrder_fluter);
 router.route("/getOrders").get(getOrders);
+router.route("/addFeedback").post(addFeedback);
+router.route("/updateFeedback").patch(updateFeedback);
+router.route("/deleteFeedback").delete(deleteFeedback);
+
 
 //manager
 router.route("/addSupplier").post(addSupplier);

@@ -765,8 +765,41 @@ const getLastInserted = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+const addFeedback = async (req, res) => {
+  const sql = `insert into feedback  values  (${req.body.ssn},${req.body.pid},${req.body.rating},"${req.body.comment}");`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, message: "inserted" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const deleteFeedback = async (req, res) => {
+  const sql = `delete from feedback where cust_ssn= ${req.body.ssn} and p_id=${req.body.pid};`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, message: "deleted" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
+const updateFeedback = async (req, res) => {
+  const sql = `update  feedback set comment='${req.body.comment}', rating =${req.body.rating} where cust_ssn= ${req.body.ssn} and p_id=${req.body.pid};`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, message: "updated" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 
 module.exports = {
+  updateFeedback,
+  deleteFeedback,
+  addFeedback,
   getOrders,
   getCustomer,
   updateSupplier,
