@@ -38,7 +38,7 @@ const OrderPage = () => {
               <p className="orderDate">
                 Order at{" "}
                 <span style={{ color: "#fc2a5c" }}>
-                  {order.date.slice(0, 10).replace("T", " ")}
+                  {order.date.slice(0, 10)}
                 </span>
               </p>
               {order.products &&
