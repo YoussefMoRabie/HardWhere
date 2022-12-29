@@ -84,7 +84,7 @@ const AdminPanel = (props) => {
           <Tab disabled={state.auth!='employee'} label="Add Product" {...a11yProps(0)} />
           <Tab disabled={state.auth != 'employee'} label="Update Product" {...a11yProps(1)} />
           <Tab disabled={state.auth != 'employee'} label="Delete Product" {...a11yProps(2)} />
-          <Tab disabled={state.auth != 'manager'} label="Add Employee" {...a11yProps(3)} />
+          <Tab disabled={state.auth != 'manager'} label="Add Employee" {...a11yProps(1)} />
           <Tab disabled={state.auth != 'manager'} label="Update Employee" {...a11yProps(4)} />
           <Tab disabled={state.auth != 'manager'} label="Delete Employee" {...a11yProps(5)} />
           <Tab disabled={state.auth != 'manager'} label="Update Shipping Company" {...a11yProps(7)} />
@@ -103,15 +103,15 @@ const AdminPanel = (props) => {
         onChangeIndex={handleChangeIndex}
       >
 
-        <TabPanel disabled value={value} index={0} dir={theme.direction}>
+{state.auth=='employee'&& <TabPanel disabled value={value} index={0} dir={theme.direction}>
           <AddProduct />
-        </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
+        </TabPanel>}
+        {state.auth=='employee'&&<TabPanel value={value} index={1} dir={theme.direction}>
           <UpdateProduct />
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
+        </TabPanel>}
+        {state.auth=='employee'&&<TabPanel value={value} index={2} dir={theme.direction}>
           <Delete />
-        </TabPanel>
+        </TabPanel>}
         <TabPanel value={value} index={3} dir={theme.direction}>
           <AddAdmin />
         </TabPanel>

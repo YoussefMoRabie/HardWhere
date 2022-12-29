@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -112,21 +113,25 @@ class Items extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Rating ${controller.lists[controller.selectedCat!][index]["p_value"]} ", textAlign: TextAlign.center),
-                                        Container(
-                                          alignment: Alignment.bottomCenter,
-                                          height: 22,
-                                          child: Row(
-                                            children: [
-                                              ...List.generate(
-                                                  5,
-                                                      (index) => Icon(
-                                                    //Icons.star,
-                                                    CupertinoIcons.star_fill,
-                                                    size: 15,
-                                                  ))
-                                            ],
-                                          ),
-                                        )
+                                                                                   RatingBarIndicator(
+
+                                                                                        rating: double.parse(controller.lists[controller.selectedCat!][index]["p_value"]),
+
+                                                                                        itemBuilder: (context, index) => const Icon(
+
+                                                                                          Icons.star,
+
+                                                                                          color: Colors.amber,
+
+                                                                                        ),
+
+                                                                                        itemCount: 5,
+
+                                                                                        itemSize: 15.0,
+
+                                                                                        direction: Axis.horizontal,
+
+                                                                                      ),
                                       ],
                                     ),
                                     Row(

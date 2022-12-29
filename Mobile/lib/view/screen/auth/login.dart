@@ -60,7 +60,7 @@ class Login extends StatelessWidget {
               GetBuilder<LoginControllerImp>(builder: (controller)=>AuthTextField(
                 controller: loginController.password,
                   valid: (val){
-                    return validInput(val!, 8, 100, "password");
+                    return validInput(val!, 4, 100, "password");
                   },
                   hide: loginController.isShowPass,
                   labelText: 'Password',

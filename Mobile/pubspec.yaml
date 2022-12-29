@@ -80,6 +80,7 @@ dependencies:
   custom_radio_grouped_button: ^2.1.2+2
   modal_bottom_sheet: ^2.1.2
   syncfusion_flutter_sliders: ^20.4.38
+  intl: ^0.18.0
 
 
 #  path: ^1.8.0
