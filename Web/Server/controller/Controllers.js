@@ -721,7 +721,6 @@ const addHeadphone = async (req, res) => {
   };
 };
 const addAccessory = async (req, res) => {
-  console.log('accessory')
   const sql = `insert into accessories values (${req.body.pid},'${req.body.type}');`;
 
   try {
@@ -733,7 +732,7 @@ const addAccessory = async (req, res) => {
   };
 };
 const addScreen = async (req, res) => {
-  const sql = `insert into screens values (${req.body.pid},'${req.body.type}','${req.body.resolution}','${req.body.is_smart});`;
+  const sql = `insert into screens values (${req.body.pid},'${req.body.type}','${req.body.resolution}','${req.body.is_smart}');`;
 
   try {
     await db.execute(sql);
@@ -744,7 +743,6 @@ const addScreen = async (req, res) => {
   };
 };
 const getLastInserted = async (req, res) => {
-  console.log('id')
   const sql = `select LAST_INSERT_ID()`;
   try {
     const data = await db.execute(sql);
