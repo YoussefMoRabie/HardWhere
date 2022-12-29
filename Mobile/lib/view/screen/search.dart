@@ -147,7 +147,7 @@ class Search extends StatelessWidget {
                     itemCount: controller.Items.length,
                   ),
                 ),
-              // if(controller.Items.isNotEmpty)
+              //if(controller.Items.isNotEmpty)
               GetBuilder<SearchControllerImp>(builder: (controller_)=>FloatingActionButton(
                 backgroundColor: AppColor.secColor,
                 onPressed: () {
@@ -171,6 +171,10 @@ class Search extends StatelessWidget {
                               },
                               controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
                             ),
+                            // Row(children: [
+                            //   TextFormField(),
+                            //   //TextFormField(),
+                            // ],),
                             Text("LOL",style: TextStyle(fontSize: 25),),
                             Text("LOL",style: TextStyle(fontSize: 25),),
                             Text("LOL",style: TextStyle(fontSize: 25),),
