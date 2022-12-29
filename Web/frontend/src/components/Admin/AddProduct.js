@@ -166,8 +166,12 @@ const AddProduct = () => {
         }
     } 
   useEffect(() => {
-    console.log(pid)
-    console.log(tempCat)
+    if (pid==0)
+    {
+      getLast();
+      return
+    }
+    
     const PostReq = async () => {
       //after adding the product we add its details to the according table
       console.log(pid)
@@ -276,7 +280,7 @@ const AddProduct = () => {
       setColor('#000000')
       setImg('')
       setPrice('')
-      setCount(1)
+      setCount('')
       setCat('')
       setName('')
       set_selected_storage(null)
@@ -292,6 +296,9 @@ const AddProduct = () => {
         document.querySelector(".FailD").classList.remove("active");
       }, 3000);
     }
+    setTimeout(() => {
+      Navigate(0)
+    }, 3000);
   };
 
 
