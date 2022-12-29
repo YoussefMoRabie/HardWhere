@@ -140,6 +140,7 @@ const AdminPanel = (props) => {
           <DeleteStorage />        </TabPanel>
         <TabPanel value={value} index={12} dir={theme.direction}>
           <AddSupplier />
+          
         </TabPanel>
         <TabPanel value={value} index={13} dir={theme.direction}>
           <UpdateSupplier />

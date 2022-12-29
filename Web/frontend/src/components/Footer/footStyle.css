@@ -1,21 +1,22 @@
-*{
-  box-sizing: border-box
+* {
+  box-sizing: border-box;
 }
-.footer{
+.footer {
   width: 100%;
   height: 100%;
 }
-.head{
+.head {
   padding: 20px;
   background-color: #f2f2f2;
   display: flex;
   justify-content: space-evenly;
   align-items: flex-start;
 }
-img{
+.footer img {
   width: 100px;
   height: 100px;
   display: block;
+  border: 2px solid #c8c20e;
 }
 .head .category {
   list-style: none;
@@ -24,24 +25,25 @@ img{
   align-items: center;
   justify-content: center;
 }
-.tail{
+.tail {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 25px;
   background-color: #e9e9e9;
 }
-.tail ul,.head .contact ul{
+.tail ul,
+.head .contact ul {
   display: flex;
   justify-content: space-between;
-  gap:20px;
+  gap: 20px;
   list-style: none;
   padding: 0;
 }
-a{
+a {
   text-decoration: none;
   color: inherit;
 }
-li:hover a{
+li:hover a {
   font-weight: bold;
 }

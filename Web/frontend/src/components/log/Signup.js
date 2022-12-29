@@ -1,11 +1,28 @@
 import "./Log.css";
+import * as React from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const Signup = () => {
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const [firstName, setFirstName] = useState("Mahmoud");
   const [lastName, setLastName] = useState("Yahia");
   const [password, setPassword] = useState(0);
@@ -13,6 +30,7 @@ const Signup = () => {
   const [email, setEmail] = useState("myehia162@gmail.com");
   const [phone, setPhone] = useState("01555952221");
   const [address, setAddress] = useState("555ggg555");
+  const [mess, setMess] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,10 +71,12 @@ const Signup = () => {
     const email_pattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
     const Name_pattern = /^[a-z ,.'-]+$/i;
 
-    if (firstName === "") {
-      alert("Enter your first name");
-      return;
-    }
+    // if (firstName === "") {
+    //   // alert("Enter your first name");
+    //   setOpen(true);
+    //   setMess("Enter your first name");
+    //   return;
+    // }
     if (lastName === "") {
       alert("Enter your last name");
       return;
@@ -274,6 +294,16 @@ const Signup = () => {
             SIGN UP
           </Button>
         </form>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {mess}
+          </Alert>
+        </Snackbar>
+        
       </div>
     </div>
   );

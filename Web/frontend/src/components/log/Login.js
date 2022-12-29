@@ -33,7 +33,7 @@ const Login = (props) => {
         localStorage.setItem("state", data);
         props.setAuth(data.authority);
         console.log("loginpage", data.authority);
-        if (data.authority == "customer") {
+        if (data.authority === "customer") {
           navigate(`/`, {
             state: {
               ssn: data.ssn,
