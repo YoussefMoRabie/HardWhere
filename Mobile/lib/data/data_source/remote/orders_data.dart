@@ -7,7 +7,7 @@ class OrdersData {
   Crud crud;
   OrdersData(this.crud);
   getData() async {
-    var response = await crud.getData("${AppLink.fav}$id");
+    var response = await crud.getData("${AppLink.getOrders}$id");
     return response.fold((l) => l, (r) => r);
   }
 }

@@ -105,25 +105,20 @@ class Product extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Row(
-                    children: [
-                      Text("${proController.productDetails["product_name"]}",
-                          style: Theme.of(context).textTheme.headline1!.copyWith(
-                            fontSize: 30,
-                            color: AppColor.darkBackGroundColor,
-                          )),
-                      const Spacer(),
-                      RatingBarIndicator(
-                        rating: double.parse(proController.productDetails["p_value"]??"0"),
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        itemCount: 5,
-                        itemSize: 30.0,
-                        direction: Axis.horizontal,
-                      ),
-                    ],
+                  Text("${proController.productDetails["product_name"]}",
+                      style: Theme.of(context).textTheme.headline1!.copyWith(
+                        fontSize: 30,
+                        color: AppColor.darkBackGroundColor,
+                      )),
+                  RatingBarIndicator(
+                    rating: double.parse(proController.productDetails["p_value"]??"0"),
+                    itemBuilder: (context, index) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    itemCount: 5,
+                    itemSize: 30.0,
+                    direction: Axis.horizontal,
                   ),
                   const SizedBox(height: 10),
                   Row(

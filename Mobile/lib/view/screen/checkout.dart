@@ -172,7 +172,7 @@ class CheckOut extends StatelessWidget {
                                       color: AppColor.lightBackGroundColor,
                                       borderRadius: BorderRadius.circular(20)),
                                   height: 120,
-                                  width: 120,
+                                  width: 200,
                                   child: Column(
 
                                     mainAxisAlignment: MainAxisAlignment.center,

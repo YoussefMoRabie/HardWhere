@@ -24,5 +24,6 @@ class AppLink {
   static const String addOrder = "$server/addtoOrders";
   static const String search = "$server/searchproduct/";
   static const String updateUser = "$server/updateUserData?ssn=";
+  static const String getOrders = "$server/getOrders?ssn=";
 
 }

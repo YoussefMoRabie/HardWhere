@@ -53,86 +53,91 @@ class Search extends StatelessWidget {
                 Expanded(
                   child: ListView.separated(
                     itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: SizedBox(
-                          height: 130,
-                          child: Row(
-                            children: [
-                              Stack(alignment: AlignmentDirectional.topStart, children: [
-                                //Image(image: NetworkImage(model?.image??''),width: double.infinity,height: 100,),
-                                Image(
-                                  image: NetworkImage(controller.Items[index]["img_link"]),
-                                  width: 150,
-                                  height: 150,
-                                  //fit: BoxFit.fitHeight,
-                                ),
-                                if(controller.Items[index]["has_offer"]!=null&&controller.Items[index]["has_offer"]["data"][0]==1)
-                                  Container(
-                                    color: Colors.red,
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 10),
-                                      child: Text(
-                                        'DISCOUNT',
-                                        style: TextStyle(fontSize: 10, color: Colors.white),
+                      return InkWell(
+                        onTap: (){
+                                  controller.goToProduct(controller.Items[index]["pid"]);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: SizedBox(
+                            height: 130,
+                            child: Row(
+                              children: [
+                                Stack(alignment: AlignmentDirectional.topStart, children: [
+                                  //Image(image: NetworkImage(model?.image??''),width: double.infinity,height: 100,),
+                                  Image(
+                                    image: NetworkImage(controller.Items[index]["img_link"]),
+                                    width: 150,
+                                    height: 150,
+                                    //fit: BoxFit.fitHeight,
+                                  ),
+                                  if(controller.Items[index]["has_offer"]!=null&&controller.Items[index]["has_offer"]["data"][0]==1)
+                                    Container(
+                                      color: Colors.red,
+                                      child: const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          'DISCOUNT',
+                                          style: TextStyle(fontSize: 10, color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                  )
-                              ]),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      controller.Items[index]["product_name"],
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                    ),
-                                    Spacer(),
-                                    Row(
-                                      children: [
-                                        if(controller.Items[index]["has_offer"]==null||controller.Items[index]["has_offer"]["data"][0]==0)
-                                          Text(
-                                            "${controller.Items[index]["price"]}\$",
-                                            style: const TextStyle(
-                                                color: Colors.red, fontSize: 20,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        if(controller.Items[index]["has_offer"]!=null&&controller.Items[index]["has_offer"]["data"][0]==1)
-                                          Text.rich(TextSpan(
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: '\$${controller.Items[index]["price"]}',
-                                                style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  decoration: TextDecoration.lineThrough,
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text: ' \$${controller.Items[index]["new_price"]}',
-                                                style: const TextStyle(
-                                                    color: Colors.red, fontSize: 20,
-                                                    fontWeight: FontWeight.bold
-                                                ),
-
-                                              ),
-                                            ],
-                                          ),
-                                          ),
-
-
-
-                                        const Spacer(),
-                                      ],
-                                    ),
-                                  ],
+                                    )
+                                ]),
+                                const SizedBox(
+                                  width: 10,
                                 ),
-                              )
-                            ],
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        controller.Items[index]["product_name"],
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                      ),
+                                      Spacer(),
+                                      Row(
+                                        children: [
+                                          if(controller.Items[index]["has_offer"]==null||controller.Items[index]["has_offer"]["data"][0]==0)
+                                            Text(
+                                              "${controller.Items[index]["price"]}\$",
+                                              style: const TextStyle(
+                                                  color: Colors.red, fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          if(controller.Items[index]["has_offer"]!=null&&controller.Items[index]["has_offer"]["data"][0]==1)
+                                            Text.rich(TextSpan(
+                                              children: <TextSpan>[
+                                                TextSpan(
+                                                  text: '\$${controller.Items[index]["price"]}',
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    decoration: TextDecoration.lineThrough,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: ' \$${controller.Items[index]["new_price"]}',
+                                                  style: const TextStyle(
+                                                      color: Colors.red, fontSize: 20,
+                                                      fontWeight: FontWeight.bold
+                                                  ),
+
+                                                ),
+                                              ],
+                                            ),
+                                            ),
+
+
+
+                                          const Spacer(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -148,44 +153,41 @@ class Search extends StatelessWidget {
                   ),
                 ),
               //if(controller.Items.isNotEmpty)
-              GetBuilder<SearchControllerImp>(builder: (controller_)=>FloatingActionButton(
-                backgroundColor: AppColor.secColor,
-                onPressed: () {
-
-                  showMaterialModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(30))
-                    ),
-                    context: context,
-                    builder: (context) => SingleChildScrollView(
-                      controller: ModalScrollController.of(context),
-                      child: Container(
-                        child: Column(
-                          children: [
-                            CheckboxListTile(
-                              title: Text("title text"),
-                              value: controller_.checkedValue,
-                              onChanged: (newValue) {
-                                print(newValue);
-                                controller_.changeCheckBox();
-                              },
-                              controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                            ),
-                            // Row(children: [
-                            //   TextFormField(),
-                            //   //TextFormField(),
-                            // ],),
-                            Text("LOL",style: TextStyle(fontSize: 25),),
-                            Text("LOL",style: TextStyle(fontSize: 25),),
-                            Text("LOL",style: TextStyle(fontSize: 25),),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: Icon(Icons.filter_alt_outlined),
-              )),
+              // GetBuilder<SearchControllerImp>(builder: (controller_)=>FloatingActionButton(
+              //   backgroundColor: AppColor.secColor,
+              //   onPressed: () {
+              //
+              //     showMaterialModalBottomSheet(
+              //       shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.vertical(top: Radius.circular(30))
+              //       ),
+              //       context: context,
+              //       builder: (context) => SingleChildScrollView(
+              //         controller: ModalScrollController.of(context),
+              //         child: Container(
+              //           child: Column(
+              //             children: [
+              //               CheckboxListTile(
+              //                 title: Text("title text"),
+              //                 value: controller_.checkedValue,
+              //                 onChanged: (newValue) {
+              //                   print(newValue);
+              //                   controller_.changeCheckBox();
+              //                 },
+              //                 controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+              //               ),
+              //
+              //               Text("LOL",style: TextStyle(fontSize: 25),),
+              //               Text("LOL",style: TextStyle(fontSize: 25),),
+              //               Text("LOL",style: TextStyle(fontSize: 25),),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     );
+              //   },
+              //   child: Icon(Icons.filter_alt_outlined),
+              // )),
             ],
           ),
         ));

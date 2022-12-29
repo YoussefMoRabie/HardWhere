@@ -10,11 +10,13 @@ import '../core/class/status_request.dart';
 import '../core/functions/handling_data_controller.dart';
 import '../data/data_source/remote/fav_data.dart';
 import '../data/data_source/remote/orders_data.dart';
+import '../view/screen/product.dart';
 import 'layout_controller.dart';
 
 abstract class SearchController extends GetxController {
   getSearchData(txt);
   changeCheckBox();
+  goToProduct(int selectedPro);
 }
 
 class SearchControllerImp extends SearchController {
@@ -29,7 +31,12 @@ bool checkedValue=false;
     super.onInit();
   }
 List Items = [];
-
+@override
+goToProduct(int selectedPro) {
+  Get.to(()=> const Product() ,arguments: {
+    "selectedPro": selectedPro,
+  });
+}
 
 
 @override
