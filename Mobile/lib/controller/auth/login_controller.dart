@@ -54,9 +54,9 @@ class LoginControllerImp extends LoginController{
               myServices.sharedPreferences.setString("fName", response['data']['f_name']) ;
               myServices.sharedPreferences.setString("lName", response['data']['l_name']) ;
               myServices.sharedPreferences.setString("email", email.text) ;
+              myServices.sharedPreferences.setString("password", password.text) ;
               myServices.sharedPreferences.setString("phone", response['data']['phone'].toString()) ;
               myServices.sharedPreferences.setString("address", response['data']['address']) ;
-              myServices.sharedPreferences.setString("step","2") ;
               toast("Welcome,${response['data']['f_name']}",Colors.green);
               Get.offAll(const Layout());
             } else {

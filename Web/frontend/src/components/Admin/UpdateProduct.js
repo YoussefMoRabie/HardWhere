@@ -30,9 +30,10 @@ const UpdateProduct = () => {
   const [count, setCount] = React.useState();
   const [addOffer, setaddOffer] = React.useState(false);
   const [anyChange, setAnyChange] = React.useState(0);
+  const [anyErr, setErr] = React.useState(0);
   const [StartDate, setStartDate] = React.useState(new Date());
-  const [EndDate, setEndDate] = React.useState(new Date());  
-  const [products,setPro] =React.useState([]);
+  const [EndDate, setEndDate] = React.useState(new Date());
+  const [products, setPro] = React.useState([]);
 
   const getallPro = async () => {
     try {
@@ -66,9 +67,20 @@ const UpdateProduct = () => {
   }
   const handleNewPriceChange = (event) => {
     setAnyChange(1);
-    event.target.value < 1
-      ? (event.target.value = 1)
-      : setnewPrice(event.target.value);
+    if (event.target.value < 1) { 
+      (event.target.value = 1)
+     
+     }
+    else { 
+      
+      setnewPrice(event.target.value);
+      if (event.target.value>price)
+      {
+        setErr(1);
+      }
+      else { setErr(0); }
+     }
+
 
   }
   const handleStartDateChange = (date) => {
@@ -91,13 +103,13 @@ const UpdateProduct = () => {
         },
         body: JSON.stringify({
           pid: selected.pid,
-          price:price,
-          count:count,
-          img_link:Img,
-          has_offer:addOffer,
-          new_price:newprice,
-          start_date:StartDate.toISOString().slice(0, 19).replace("T", " "),
-          end_date:EndDate.toISOString().slice(0, 19).replace("T", " ")
+          price: price,
+          count: count,
+          img_link: Img,
+          has_offer: addOffer,
+          new_price: newprice,
+          start_date: StartDate.toISOString().slice(0, 19).replace("T", " "),
+          end_date: EndDate.toISOString().slice(0, 19).replace("T", " ")
         }),
       }
     );
@@ -134,17 +146,17 @@ const UpdateProduct = () => {
   }
 
   return (
-  <div className='UpdateP' >
+    <div style={{ minHeight: '800px' }} className='UpdateP' >
       <h3><span>Update Product</span></h3>
 
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
         value={selected}
-      onChange={handleProductChange}
+        onChange={handleProductChange}
         getOptionLabel={(option) => option.product_name ? option.product_name : ""}
-      options={products}
-      sx={{ width: 300 }}
+        options={products}
+        sx={{ width: 300 }}
         renderOption={(props, option) => {
           return (
             <li {...props} data-sid={option.pid} key={option.pid}>
@@ -152,91 +164,92 @@ const UpdateProduct = () => {
             </li>
           );
         }}
-      renderInput={(params) => <TextField {...params} label="Product" />}
-    />
-    {selected && <form className='formAdd' onSubmit={(e)=>{
+        renderInput={(params) => <TextField {...params} label="Product" />}
+      />
+      {selected && <form className='formAdd' onSubmit={(e) => {
         handleSubmit(e)
-    e.preventDefault();
-     }}>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <TextField
-          sx={{ flex: 1 }}
-          required={true}
-          id="outlined-number"
-          label="Count"
-          value={count}
-          type="number"
-          onChange={handleCountChange}
-          InputLabelProps={{
-            shrink: true,
-            min: 0,
-          }}
-        />
-      </div>
-
-
-      <FormControl sx={{ flex: 1 }}>
-        <TextField
-          sx={{ flex: 1 }}
-          id="outlined-multiline-static"
-          label="Image Link"
-          multiline
-          required={true}
-          error={URLcolor == 'error'}
-          rows={4}
-          defaultValue={Img}
-          value={Img}
-          onChange={handleImgChange}
-        />
-        {URLcolor == "error" && <span style={{ color: 'red', fontSize: 12, padding: 5 }}>*Invalid URL</span>}
-      </FormControl>
-
-      <FormControl sx={{ flex: 1 }}>
-        <InputLabel required={true} htmlFor="outlined-adornment-amount">Price</InputLabel>
-        <OutlinedInput
-          required={true}
-          type="number"
-          id="outlined-adornment-amount"
-          defaultValue={price}
-          value={price}
-          onChange={handlePriceChange}
-          startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          label="Amount"
-        />
-      </FormControl>
-      <FormControlLabel control={<Checkbox onChange={(e) => { setaddOffer(e.target.checked) }}
-        {...label} />} label="Add Offer" />
-      {addOffer && <div className='offerMenu'> <FormControl sx={{ flex: 1 }}>
-        <InputLabel required={true} htmlFor="outlined-adornment-amount">New Price</InputLabel>
-        <OutlinedInput
-          required={true}
-          type="number"
-          id="outlined-adornment-amount"
-          defaultValue={newprice}
-          value={newprice}
-          onChange={handleNewPriceChange}
-          startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          label="Amount"
-        />
-      </FormControl>
-        <div >
-          <label htmlFor="datepickerstart">Start Date</label>
-          <DatePicker id='datepickerstart' selected={StartDate} onChange={handleStartDateChange} />
+        e.preventDefault();
+      }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <TextField
+            sx={{ flex: 1 }}
+            required={true}
+            id="outlined-number"
+            label="Count"
+            value={count}
+            type="number"
+            onChange={handleCountChange}
+            InputLabelProps={{
+              shrink: true,
+              min: 0,
+            }}
+          />
         </div>
-        <div >
-          <label htmlFor="datepickerend">End Date</label>
-          <DatePicker id='datepickerend' selected={EndDate} onChange={handleEndDateChange} />
-        </div>
+
+
+        <FormControl sx={{ flex: 1 }}>
+          <TextField
+            sx={{ flex: 1 }}
+            id="outlined-multiline-static"
+            label="Image Link"
+            multiline
+            required={true}
+            error={URLcolor == 'error'}
+            rows={4}
+            defaultValue={Img}
+            value={Img}
+            onChange={handleImgChange}
+          />
+          {URLcolor == "error" && <span style={{ color: 'red', fontSize: 12, padding: 5 }}>*Invalid URL</span>}
+        </FormControl>
+
+        <FormControl sx={{ flex: 1 }}>
+          <InputLabel required={true} htmlFor="outlined-adornment-amount">Price</InputLabel>
+          <OutlinedInput
+            required={true}
+            type="number"
+            id="outlined-adornment-amount"
+            defaultValue={price}
+            value={price}
+            onChange={handlePriceChange}
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            label="Amount"
+          />
+        </FormControl>
+        <FormControlLabel control={<Checkbox onChange={(e) => { setaddOffer(e.target.checked) }}
+          {...label} />} label="Add Offer" />
+        {addOffer && <div className='offerMenu'> <FormControl sx={{ flex: 1 }}>
+          <InputLabel required={true} htmlFor="outlined-adornment-amount">New Price</InputLabel>
+          <OutlinedInput
+            required={true}
+            type="number"
+            id="outlined-adornment-amount"
+            defaultValue={newprice}
+            value={newprice}
+            onChange={handleNewPriceChange}
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            label="Amount"
+          />
+        </FormControl>
+          <div >
+            <label htmlFor="datepickerstart">Start Date</label>
+            <DatePicker id='datepickerstart' selected={StartDate} onChange={handleStartDateChange} />
+          </div>
+          <div >
+            <label htmlFor="datepickerend">End Date</label>
+            <DatePicker id='datepickerend' selected={EndDate} onChange={handleEndDateChange} />
+          </div>
         </div>}
-      <button disabled={anyChange === 0} className='addP' type='submit'> Update Product</button>
+        <button disabled={anyChange === 0 || anyErr==1} className='addP' type='submit'> Update Product</button>
+        {anyErr == 1 && <span style={{ maxWidth:'250px',color: 'red' }}>New Price Can Not be More than Old Price!</span>}
         <div className='successD' style={{ color: 'green' }}>
           Product Updated!
         </div>
         <div className='FailD' style={{ color: 'red' }}>
           Fail Update!
         </div>
-    </form>}
-  </div>);
+      </form>}
+    </div>);
 
 }
 export default UpdateProduct;

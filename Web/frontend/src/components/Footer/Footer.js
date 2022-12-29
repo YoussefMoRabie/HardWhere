@@ -13,11 +13,6 @@ const Footer = (props) => {
   const date = new Date();
   const { state } = useLocation();
 
-  const laptopsBrands = [{ title: "Apple", path: "/" }, { title: "Dell", path: "/" }, { title: "Acer", path: "/" }, { title: "Lenovo", path: "/" }, { title: "Asus", path: "/" }]
-  const mobileBrands = [{ title: "Iphone", path: "/" }, { title: "Samsung", path: "/" }, { title: "OnePlus", path: "/" }, { title: "Oppo", path: "/" }, { title: "Xioami", path: "/" }]
-  const headphonesBrands = [{ title: "Sony", path: "/" }, { title: "JPL", path: "/" }, { title: "Apple", path: "/" }, { title: "Beats", path: "/" }, { title: "Razer", path: "/" }]
-  const screenBrands = [{ title: "Samsung", path: "/" }, { title: "LG", path: "/" }, { title: "Toshiba", path: "/" }]
-  const accessoryBrands = [{ title: "Apple", path: "/" }, { title: "Dell", path: "/" }, { title: "Acer", path: "/" }, { title: "Lenovo", path: "/" }, { title: "Asus", path: "/" }]
   const iscust = () => { return state == null || state.auth === 'customer' }
   const isemp = () => { return state != null && state.auth !== 'customer' }
   return (
@@ -27,48 +22,22 @@ const Footer = (props) => {
     <div className="footer">
       <div className="head">
         <div className="Laptop category">
-          <h4>Laptops</h4>
-          <ul>
-            {laptopsBrands.map((laptop) => (<li key={laptop.title}>
-              <Link to={laptop.path}>{laptop.title}</Link>
-            </li>))}
-          </ul>
+          <h3>Mahmoud Sobhy</h3>
+          <img src="./Sobhy.jpeg" alt="Sobhy" />
         </div>
         <div className="Mobile category">
-          <h4>Mobile</h4>
-          <ul>
-            {mobileBrands.map((mobile) => (<li key={mobile.title}>
-              <Link to={mobile.path}>{mobile.title}</Link>
-            </li>))}
-          </ul>
-
+          <h3 style={{textAlign:'center'}}>Youssef Haggag</h3>
+              <img src="./haggag.jpeg" alt="Haggag" />
         </div>
         <div className="Headphone category">
-          <h4>Headphones</h4>
-          <ul>
-            {headphonesBrands.map((headphones) => (<li key={headphones.title}>
-              <Link to={headphones.path}>{headphones.title}</Link>
-            </li>))}
-          </ul>
-
+          <h3>Mahmoud Yehia</h3>
+              <img src="./Yehia.jpeg" alt="Yehia" />
         </div>
         <div className="screens category">
-          <h4>Screens</h4>
-          <ul>
-            {screenBrands.map((screen) => (<li key={screen.title}>
-              <Link to={screen.path}>{screen.title}</Link>
-            </li>))}
-          </ul>
-
+          <h3>Youssef Rabia</h3>
+              <img src="./Rabia.jpeg" alt="Rabia" />
         </div>
-        <div className="Accessories category">
-          <h4>Accessories</h4>
-          <ul>
-            {accessoryBrands.map((accessory) => (<li key={accessory.title}>
-              <Link to={accessory.path}>{accessory.title}</Link>
-            </li>))}
-          </ul>
-        </div>
+        
         <div className="contact">
           <h4 style={{ textAlign: 'center', padding: '10px', alignSelf: "flex-end" }}>Contact us</h4>
           <ul>

@@ -101,13 +101,15 @@ where p.su_id=s.suid  and p.pid=${req.params.id};`;
       const desc = ` this mobile has ram: ${mobData[0][0].ram}, processor: ${mobData[0][0].processor}, screen: ${mobData[0][0].screen}`;
       data[0][0].desc = desc;
     } else if (screensData[0][0].found == 1) {
-      const desc = `screen type: ${screensData[0][0].type}, resolution: ${screensData[0][0].resolution
-        }${screensData[0][0].is_smart == null
+      const desc = `screen type: ${screensData[0][0].type}, resolution: ${
+        screensData[0][0].resolution
+      }${
+        screensData[0][0].is_smart == null
           ? ""
           : screensData[0][0].is_smart == 1
-            ? ", smart"
-            : ", not smart"
-        }`;
+          ? ", smart"
+          : ", not smart"
+      }`;
       data[0][0].desc = desc;
     } else if (headphonesData[0][0].found == 1) {
       const desc = `frequency of this headphone is ${headphonesData[0][0].frequency} HZ`;
@@ -165,23 +167,30 @@ const addCustomer = async (req, res) => {
    values('${req.body.firstName}','${req.body.lastName}','${req.body.phone}','${req.body.address}','${req.body.email}',"customer",'${req.body.password}');`;
   const sql3 = `select ssn from users where email="${req.body.email}" and password ="${req.body.password}"; `;
   const sql4 = `SELECT EXISTS(SELECT 1 FROM users WHERE email="${req.body.email}" ) as checked;`;
+  const sql5 = `SELECT EXISTS(SELECT 1 FROM users WHERE phone="${req.body.phone}" ) as checked;`;
   const checkEmail = await db.execute(sql4);
   const checked = checkEmail[0][0].checked;
+  const checkPhone = await db.execute(sql5);
+  const phoneCheched = checkPhone[0][0].checked;
 
   if (checked === 0) {
-    try {
-      await db.execute(sql1);
-      const data = await db.execute(sql3);
-      const ssn = data[0][0].ssn;
-      console.log("userid", ssn);
+    if (phoneCheched === 0) {
+      try {
+        await db.execute(sql1);
+        const data = await db.execute(sql3);
+        const ssn = data[0][0].ssn;
+        console.log("userid", ssn);
 
-      const sql2 = `insert into customer(ssn) values(${ssn})`;
-      await db.execute(sql2);
-      res.json({ status: true, message: "Customer added successfully" });
-      console.log("done");
-    } catch (error) {
-      console.log(error.sqlMessage);
-      res.json({ status: false, message: error.sqlMessage });
+        const sql2 = `insert into customer(ssn) values(${ssn})`;
+        await db.execute(sql2);
+        res.json({ status: true, message: "Customer added successfully" });
+        console.log("done");
+      } catch (error) {
+        console.log(error.sqlMessage);
+        res.json({ status: false, message: error.sqlMessage });
+      }
+    } else {
+      res.json({ status: false, message: "wrong_phone_number" });
     }
   } else {
     res.json({ status: false, message: "email_signed_before" });
@@ -425,7 +434,10 @@ const addProduct = async (req, res) => {
   const sql2 = `update storages set currently_used = currently_used + ${req.body.count} where stid = ${req.body.selected_storage.stid}`;
 
   try {
-    if (req.body.selected_storage.currently_used + parseInt(req.body.count) > req.body.selected_storage.max_capacity) {
+    if (
+      req.body.selected_storage.currently_used + parseInt(req.body.count) >
+      req.body.selected_storage.max_capacity
+    ) {
       throw new Error("max capacity reached");
     }
     await db.execute(sql);
@@ -435,7 +447,7 @@ const addProduct = async (req, res) => {
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
-  };
+  }
 };
 
 const deleteProduct = async (req, res) => {
@@ -653,7 +665,7 @@ const getOrders = async (req, res) => {
     const orders = data1[0];
 
     for (const order of orders) {
-      const sql2 = ` select product_name,price,color,p.count,has_offer,new_price,su_id,st_id,start_date,end_date,p_value,img_link
+      const sql2 = ` select pid, product_name,price,color,p.count,has_offer,new_price,su_id,st_id,start_date,end_date,p_value,img_link
                 from contains co,product p where p.pid=co.p_id and o_id =${order.oid}`;
 
       const products = await db.execute(sql2);
@@ -696,7 +708,7 @@ const addLaptop = async (req, res) => {
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
-  };
+  }
 };
 const addMobile = async (req, res) => {
   const sql = `insert into mobiles values (${req.body.pid},'${req.body.processor}',${req.body.ram},${req.body.screen});`;
@@ -707,7 +719,7 @@ const addMobile = async (req, res) => {
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
-  };
+  }
 };
 const addHeadphone = async (req, res) => {
   const sql = `insert into headphones values (${req.body.pid},${req.body.frequency});`;
@@ -718,7 +730,7 @@ const addHeadphone = async (req, res) => {
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
-  };
+  }
 };
 const addAccessory = async (req, res) => {
   const sql = `insert into accessories values (${req.body.pid},'${req.body.type}');`;
@@ -729,7 +741,7 @@ const addAccessory = async (req, res) => {
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
-  };
+  }
 };
 const addScreen = async (req, res) => {
   const sql = `insert into screens values (${req.body.pid},'${req.body.type}','${req.body.resolution}','${req.body.is_smart}');`;
@@ -740,7 +752,7 @@ const addScreen = async (req, res) => {
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
-  };
+  }
 };
 const getLastInserted = async (req, res) => {
   const sql = `select LAST_INSERT_ID()`;

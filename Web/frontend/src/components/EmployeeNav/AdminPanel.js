@@ -22,9 +22,10 @@ import DeleteEmployee from "../Manager/DltEmployee";
 import DeleteSupplier from "../Manager/DltSupp";
 import DeleteStorage from "../Manager/DltStorage";
 import DeleteCompany from "../Manager/DltShipping";
+import { useLocation } from 'react-router-dom';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  
   return (
     <div
       role="tabpanel"
@@ -34,7 +35,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3, }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -55,10 +56,10 @@ function a11yProps(index) {
   };
 }
 
-const AdminPanel = () => {
+const AdminPanel = (props) => {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-
+  const {state}=useLocation();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -80,21 +81,20 @@ const AdminPanel = () => {
           // scrollButtons="auto"
           aria-label="full width tabs example"
         >
-          <Tab label="Add Product" {...a11yProps(0)} />
-          <Tab label="Update Product" {...a11yProps(1)} />
-          <Tab label="Delete Product" {...a11yProps(2)} />
-          <Tab label="Add Employee" {...a11yProps(3)} />
-          <Tab label="Update Employee" {...a11yProps(4)} />
-          <Tab label="Delete Employee" {...a11yProps(5)} />
-          <Tab label="Add Shipping Company" {...a11yProps(6)} />
-          <Tab label="Update Shipping Company" {...a11yProps(7)} />
-          <Tab label="Detele Shipping Company" {...a11yProps(8)} />
-          <Tab label="Add Storage" {...a11yProps(9)} />
-          <Tab label="Update Storage" {...a11yProps(10)} />
-          <Tab label="Delete Storage" {...a11yProps(11)} />
-          <Tab label="Add Supplier" {...a11yProps(12)} />
-          <Tab label="Update Supplier" {...a11yProps(13)} />
-          <Tab label="Delete Supplier" {...a11yProps(14)} />
+          <Tab disabled={state.auth!='employee'} label="Add Product" {...a11yProps(0)} />
+          <Tab disabled={state.auth != 'employee'} label="Update Product" {...a11yProps(1)} />
+          <Tab disabled={state.auth != 'employee'} label="Delete Product" {...a11yProps(2)} />
+          <Tab disabled={state.auth != 'manager'} label="Add Employee" {...a11yProps(3)} />
+          <Tab disabled={state.auth != 'manager'} label="Update Employee" {...a11yProps(4)} />
+          <Tab disabled={state.auth != 'manager'} label="Delete Employee" {...a11yProps(5)} />
+          <Tab disabled={state.auth != 'manager'} label="Update Shipping Company" {...a11yProps(7)} />
+          <Tab disabled={state.auth != 'manager'} label="Detele Shipping Company" {...a11yProps(8)} />
+          <Tab disabled={state.auth != 'manager'}label="Add Storage" {...a11yProps(9)} />
+          <Tab disabled={state.auth != 'manager'}label="Update Storage" {...a11yProps(10)} />
+          <Tab disabled={state.auth != 'manager'}label="Delete Storage" {...a11yProps(11)} />
+          <Tab disabled={state.auth != 'manager'}label="Add Supplier" {...a11yProps(12)} />
+          <Tab disabled={state.auth != 'manager'}label="Update Supplier" {...a11yProps(13)} />
+          <Tab disabled={state.auth != 'manager'}label="Delete Supplier" {...a11yProps(14)} />
         </Tabs>
       </AppBar>
       <SwipeableViews
@@ -103,7 +103,7 @@ const AdminPanel = () => {
         onChangeIndex={handleChangeIndex}
       >
 
-        <TabPanel value={value} index={0} dir={theme.direction}>
+        <TabPanel disabled value={value} index={0} dir={theme.direction}>
           <AddProduct />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>

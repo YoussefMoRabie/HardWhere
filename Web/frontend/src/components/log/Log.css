@@ -85,10 +85,12 @@ Button.btn2 {
 .formlogin input[type="checkbox"] + label {
   font-size: 13px;
 }
-#emailSignedBeforeMess {
+#emailSignedBeforeMess,
+#phoneDupMess {
   color: red;
   display: none;
 }
-#emailSignedBeforeMess.active {
+#emailSignedBeforeMess.active,
+#phoneDupMess.active {
   display: block;
 }

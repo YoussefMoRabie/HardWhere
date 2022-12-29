@@ -22,9 +22,11 @@ const DeleteProduct = () => {
   getallPro();
   const handleProductChange = (e, v) => {
     setSelected(v);
+    
   }
 
   const handleSubmit = async () => {
+    console.log(selected);
     const res = await fetch(
       `http://localhost:1444/api/v1/deleteproduct`,
       {
@@ -54,22 +56,17 @@ const DeleteProduct = () => {
     }
     setPro(products.filter(p => p.pid !== selected.pid));
     }
-  return ( <div className="DeleteP">
+  return ( <div style={{minHeight:'800px'}} className="DeleteP">
     <h3><span>Delete Product</span></h3>
     <Autocomplete
       disablePortal
       id="combo-box-demo"
       clearText='true'
-      value={selected?selected.product_name:''}
+      value={selected}
+      getOptionLabel={(op)=>op.product_name}
+      isOptionEqualToValue={(op,va)=>op.product_name==va.product_name}
       onChange={handleProductChange}
       options={products}
-      renderOption={(props, option) => {
-        return (
-          <li {...props} data-sid={option.pid} key={option.pid}>
-            {option.product_name}
-          </li>
-        );
-      }}
       sx={{ width: 300 }}
       renderInput={(params) => <TextField {...params} label="Product" />}
     />
