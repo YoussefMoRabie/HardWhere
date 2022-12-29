@@ -426,7 +426,7 @@ const addProduct = async (req, res) => {
   const sql = `insert into product (product_name,price,color,count,st_id,su_id,img_link)
    values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.selected_storage.stid},${req.body.su_id},"${req.body.img_link}");`;
   const sql2 = `update storages set currently_used = currently_used + ${req.body.count} where stid = ${req.body.selected_storage.stid}`;
-  
+ 
   try {
     if(req.body.selected_storage.currently_used + parseInt(req.body.count) > req.body.selected_storage.max_capacity)
     {
@@ -434,7 +434,8 @@ const addProduct = async (req, res) => {
     }
     await db.execute(sql);
     await db.execute(sql2);
-    res.json({ status: true, message: "product added" });
+    
+    res.json({ status: true, message: "product added"});
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
@@ -651,6 +652,73 @@ const getCustomer = async (req, res) => {
   }
 };
 //---------------------------------------------------Categories---------------------------------------------------------------
+const addLaptop = async (req, res) => {
+  const sql = `insert into labtops values (${req.body.pid},'${req.body.processor}',${req.body.ram},'${req.body.gpu}',${req.body.screen});`;
+  
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "details added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  };
+};
+const addMobile = async (req, res) => {
+  const sql = `insert into mobiles values (${req.body.pid},'${req.body.processor}',${req.body.ram},${req.body.screen});`;
+  
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "details added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  };
+};
+const addHeadphone = async (req, res) => {
+  const sql = `insert into headphones values (${req.body.pid},${req.body.frequency});`;
+  
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "details added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  };
+};
+const addAccessory = async (req, res) => {
+  console.log('accessory')
+  const sql = `insert into accessories values (${req.body.pid},'${req.body.type}');`;
+  
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "details added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  };
+};
+const addScreen = async (req, res) => {
+  const sql = `insert into screens values (${req.body.pid},'${req.body.type}','${req.body.resolution}','${req.body.is_smart});`;
+  
+  try {
+    await db.execute(sql);
+    res.json({ status: true, message: "details added" });
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  };
+};
+const getLastInserted = async (req, res) => {
+  console.log('id')
+  const sql = `select LAST_INSERT_ID()`;
+  try {
+    const data = await db.execute(sql);
+    res.json({ status: true, data: data[0]});
+  } catch (error) {
+    console.log(error.sqlMessage);
+    res.json({ status: false, message: error.sqlMessage });
+  }
+};
 
 module.exports = {
   getCustomer,
@@ -698,4 +766,10 @@ module.exports = {
   updateStorage,
   updateUserData,
   addOrder_fluter,
+  addLaptop,
+  addMobile,
+  addAccessory,
+  addHeadphone,
+  addScreen,
+  getLastInserted,
 };
