@@ -16,7 +16,7 @@ import InputColor from 'react-input-color';
 import { flexbox } from '@mui/system';
 import useFetch from "../useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 
 const AddProduct = () => {
   const { state } = useLocation();
@@ -41,6 +41,7 @@ const AddProduct = () => {
   const [selected_storage, set_selected_storage] = React.useState(null);
   const [selected_supplier, set_selected_supplier] = React.useState(null);
   const categories = [{ label: 'Laptops' }, { label: 'Mobiles' }, { label: 'Headphones' }, { label: 'Screens' }, { label: 'Accessories' }]
+  const [pid, setPid] = React.useState(null);
 
   const handleCatChange = (e, v) => {
     setCat(v.label);
@@ -146,6 +147,22 @@ const AddProduct = () => {
   const isAc = () => {
     return category == 'Accessories'
   }
+
+  useEffect(() => {
+   
+    const getLast = async () => {
+        try {
+          const dataRes = await fetch(`http://localhost:1444/api/v1/getlastinserted`);
+          const { data } = await dataRes.json();
+          setPid(data[0]["LAST_INSERT_ID()"])
+          setTimeout(() => {}, 300);
+        } catch (error) {
+          console.log(error);
+        }
+    } 
+    getLast();
+  }, [Navigate]);
+
   const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
       method: "POST",
@@ -163,15 +180,96 @@ const AddProduct = () => {
       }),
     });
 
-    const { status } = await res.json();
-    if (status === true) {
+ 
+  const { status } = await res.json();
+  if (status === true) {
+    getLast()
+    console.log(pid)
+    //after adding the product we add its details to the according table
+  if (category == "Laptops")
+    {
+    const res2 = await fetch(`http://localhost:1444/api/v1/addlaptop`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pid:pid,
+        gpu:GPU,
+        ram:RAM,
+        processor:CPU,
+        screen:Screen,
+      }),
+    });
+  }
+  else if(category == "Mobiles")
+  {
+    const res2 = await fetch(`http://localhost:1444/api/v1/addmobile`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pid:pid,
+        ram:RAM,
+        processor:CPU,
+        screen:Screen,
+      }),
+    });
+  }
+
+  else if(category == "Screens")
+  {
+    const res2 = await fetch(`http://localhost:1444/api/v1/addscreen`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pid:pid,
+        type:ScreenType,
+        resolution:Reso,
+        is_smart:isSmart
+      }),
+    });
+  }
+
+  else if(category == "Headphones")
+  {
+    const res2 = await fetch(`http://localhost:1444/api/v1/addheadphone`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pid:pid,
+        frequency:Freq,      
+      }),
+    });
+  }
+
+  else if(category == "Accessories")
+  {
+    const res2 = await fetch(`http://localhost:1444/api/v1/addaccessory`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pid:pid,
+        type:AcType,
+      }),
+    });
+  }
+
       selected_storage.currently_used = parseInt(selected_storage.currently_used) + parseInt(count)
       setURLcolor('primary')
       setIdcolor('primary')
       setColor('#000000')
       setImg('')
       setPrice('')
-      setCount(1)
+      setCount('')
+      setCat('')
       setName('')
       set_selected_storage(null)
       set_selected_supplier(null)
@@ -180,7 +278,7 @@ const AddProduct = () => {
         document.querySelector(".successD").classList.remove("active");
       }, 3000);
       setTimeout(() => {
-        Navigate(0)
+        //Navigate(0)
       }, 3000);
     } else {
       document.querySelector(".FailD").classList.add("active");

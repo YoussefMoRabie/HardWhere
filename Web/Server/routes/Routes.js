@@ -46,6 +46,12 @@ const {
   updateSupplier,
   updateUserData,
   getCustomer,
+  addLaptop,
+  addMobile,
+  addAccessory,
+  addHeadphone,
+  addScreen,
+  getLastInserted,
 } = require("../controller/Controllers");
 
 //customer
@@ -70,6 +76,7 @@ router.route("/removeFromFavorite").get(removeFromFavorites);
 router.route("/getFavorite").get(getFavorites);
 router.route("/getCustomer").get(getCustomer);
 router.route("/addOrder_fluter").post(addOrder_fluter);
+
 //manager
 router.route("/addSupplier").post(addSupplier);
 router.route("/addShipping").post(addShipping);
@@ -102,7 +109,11 @@ router.route("/searchProduct/:search_text").get(searchProduct);
 //General user
 router.route("/updateUserData").patch(updateUserData);
 
-
-//helper apis
-
+//Categories
+router.route("/addLaptop").post(addLaptop);
+router.route("/addMobile").post(addMobile);
+router.route("/addScreen").post(addScreen);
+router.route("/addAccessory").post(addAccessory);
+router.route("/addHeadphone").post(addHeadphone);
+router.route("/getLastInserted").get(getLastInserted);
 module.exports = router;
