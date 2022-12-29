@@ -78,7 +78,7 @@ const WishList = () => {
           />
           <div style={{ display: 'flex', marginBottom:'10px',justifyContent: 'space-between' }}>
             <p style={{width:'100%', display: 'flex', justifyContent: 'space-between' }} className="slider-card-price">{product.price}$ </p>
-            <IconButton sx={[{ bottom: 10},]} data-pid={product.pid} onClick={handledeteleFav} aria-label="delete">
+            <IconButton sx={[{ bottom: 10},{'&:hover':{color:'red'}}]} data-pid={product.pid} onClick={handledeteleFav} aria-label="delete">
               <DeleteIcon />
             </IconButton>
           </div>

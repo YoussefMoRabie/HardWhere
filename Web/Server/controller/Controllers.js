@@ -423,17 +423,25 @@ const getAllSuppliers = async (req, res) => {
 //-----------------------------------------------------------------Employee-------------------------------------------------------------------------
 const addProduct = async (req, res) => {
   const sql = `insert into product (product_name,price,color,count,st_id,su_id,img_link)
-   values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.st_id},${req.body.su_id},"${req.body.img_link}");`;
+   values ("${req.body.product_name}",${req.body.price},"${req.body.color}",${req.body.count},${req.body.selected_storage.stid},${req.body.su_id},"${req.body.img_link}");`;
+  const sql2 = `update storages set currently_used = currently_used + ${req.body.count} where stid = ${req.body.selected_storage.stid}`;
+  
   try {
+    if(req.body.selected_storage.currently_used + parseInt(req.body.count) > req.body.selected_storage.max_capacity)
+    {
+      throw new Error("max capacity reached");
+    }
     await db.execute(sql);
     res.json({ status: true, message: "product added" });
   } catch (error) {
     console.log(error.sqlMessage);
     res.json({ status: false, message: error.sqlMessage });
-  }
+  };
 };
+
 const deleteProduct = async (req, res) => {
   const sql = `delete from product where pid = ${req.body.pid};`;
+  const sql2 = `update storages set currently_used = currently_used - ${req.body.count} where stid = ${req.body.st_id}`;
   try {
     await db.execute(sql);
     res.json({ status: true, message: "product deleted" });
@@ -679,6 +687,8 @@ const getStorageWithId = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
+//---------------------------------------------------Categories---------------------------------------------------------------
+
 module.exports = {
   getOrders,
   getCustomer,
@@ -725,7 +735,7 @@ module.exports = {
   updateEmployee,
   updateStorage,
   updateUserData,
+  addOrder_fluter,
   getProductWithId,
   getStorageWithId,
-  addOrder_fluter,
 };

@@ -24,7 +24,7 @@ function valuetext(value) {
 
 
   
-const ProductsPage = () => {
+const SearchResults = () => {
   const { state } = useLocation();
   console.log("user", state);
   const [filterby, setfilterby] = React.useState(null);
@@ -194,4 +194,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default SearchResults;

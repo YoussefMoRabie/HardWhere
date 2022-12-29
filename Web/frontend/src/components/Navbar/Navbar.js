@@ -71,7 +71,7 @@ const Navbar = (props) => {
   const navLinks = [
     {
       title: "Laptops",
-      path: "/laptops",
+      path: "/labtops",
     },
     {
       title: "Mobiles",
@@ -307,23 +307,62 @@ const Navbar = (props) => {
               </Link>
             </Grid>
             <div>
-              <Avatar
-                style={{
-                  display: "inline",
-                  padding: "5px",
-                  backgroundColor: "darkcyan",
-                }}
-              >
-                {state.f_name[0]}
-              </Avatar>
-              <span style={{ padding: "10px" }} id="userName">
-                {state.f_name} {state.l_name}
-              </span>
+              
+                <div style={{ display: 'flex', gap: '10px',alignItems:'center' }}>
+                <div>
+                <Link
+                  to="/updatecustomer"
+                  className="Link"
+                  state={state}
+                >
+                 
+                    <div>
+                      {
+                        <Avatar
+                          style={{
+                            display: "inline",
+                            padding: "5px",
+                            backgroundColor: "darkcyan",
+                          }}
+                        >
+                          {state.f_name[0]}
+                        </Avatar>
+                      }{" "}
+                      <span id="userName">
+                        {state.f_name} {state.l_name}
+                      </span>
+                    </div>
+                </Link>
+              </div>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<LogoutIcon />}
+                  onClick={(e) => {
+                    window.localStorage.clear();
+                    window.history.replaceState(null, null, "/");
+                    his("/Signin");
+                  }}
+                  sx={{
+                    color: "#251c57",
+                    fontWeight: "bold",
+                    minWidth: 90,
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  Log out
+                </Button>
+              </div>
             </div>
           </div>
+
         </div>
-      )}
-    </ThemeProvider>
+          
+        </div>
+  )
+}
+    </ThemeProvider >
   );
 };
 
