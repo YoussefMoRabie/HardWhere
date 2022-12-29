@@ -539,8 +539,8 @@ const getDepartments = async (req, res) => {
   }
 };
 const addNewEmployee = async (req, res) => {
-  const sql = `insert into users (f_name,l_name,address,email)
-   values("${req.body.f_name}","${req.body.l_name}",'${req.body.address}','${req.body.email}'); `;
+  const sql = `insert into users (f_name,l_name,address,email,password,phone,authority)
+   values("${req.body.f_name}","${req.body.l_name}",'${req.body.address}','${req.body.email}','${req.body.password}','${req.body.phone}','employee'); `;
   const sql2 = `select max(ssn) as empssn from users`;
 
   try {

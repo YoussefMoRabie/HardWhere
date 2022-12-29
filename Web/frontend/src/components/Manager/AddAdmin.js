@@ -16,6 +16,8 @@ import useFetch from "../useFetch";
 import { useState } from "react";
 const AddAdmin = () => {
   const [newadmin, setnewAdmin] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [phone, setphone] = React.useState("");
   const [err, seterr] = React.useState(false);
   const [errMsg, seterrMsg] = React.useState("");
   const [salary, setSalary] = React.useState(0);
@@ -31,6 +33,17 @@ const AddAdmin = () => {
   };
   const handleShiftChange = (e, val) => {
     setShift(val);
+  };
+  const handlePhoneChange = (value) => {
+    setphone(value);
+    // seterr(false);
+    // if (!validator.isMobilePhone(value)) {
+    //   seterr(true);
+    //   setAnyChange(0);
+    // } else {
+
+    //   setAnyChange(1);
+    // }
   };
   const handleDepartmentChange = (e, val) => {
     setDepartment(val);
@@ -66,20 +79,24 @@ const AddAdmin = () => {
         d_id: department.d_id,
         shift,
         salary,
+        phone,
         email: newadmin,
         address,
         l_name: lastName,
         f_name: firstName,
+        password,
       }),
     });
 
     const { status } = await res.json();
     if (status === true) {
       setFirstName("");
+      setphone("");
       setLastName("");
       setSalary("");
       setaddress("");
       setnewAdmin("");
+      setPassword("");
       setShift("");
       setDepartment("");
       document.querySelector(".addedSuccessfully").classList.add("active");
@@ -164,6 +181,18 @@ const AddAdmin = () => {
             {errMsg}
           </label>
         </div>
+        <TextField
+          sx={{ width: 300 }}
+          required
+          onChange={(e) => {
+            setPassword(e.target.value);
+            seterr(false);
+          }}
+          id="outlined-basic"
+          label="password"
+          value={password}
+          variant="outlined"
+        />
         <div
           style={{
             display: "flex",
@@ -171,6 +200,17 @@ const AddAdmin = () => {
             marginBottom: "20px",
           }}
         >
+          <br />
+          <ReactPhoneInput
+            value={phone}
+            defaultCountry={"eg"}
+            onChange={handlePhoneChange}
+            countryCodeEditable={false}
+            component={TextField}
+            label="Phone"
+          />
+
+          <br />
           <TextField
             sx={{ width: 300 }}
             required
