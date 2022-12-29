@@ -16,7 +16,7 @@ import InputColor from 'react-input-color';
 import { flexbox } from '@mui/system';
 import useFetch from "../useFetch";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 
 const AddProduct = () => {
   const { state } = useLocation();
@@ -28,6 +28,7 @@ const AddProduct = () => {
   const [price, setPrice] = React.useState('');
   const [count, setCount] = React.useState('');
   const [category, setCat] = React.useState('');
+  const [tempCat, setTCat] = React.useState('');
   const [CPU, setCPU] = React.useState('');
   const [GPU, setGPU] = React.useState('');
   const [RAM, setRAM] = React.useState('');
@@ -41,41 +42,48 @@ const AddProduct = () => {
   const [selected_storage, set_selected_storage] = React.useState(null);
   const [selected_supplier, set_selected_supplier] = React.useState(null);
   const categories = [{ label: 'Laptops' }, { label: 'Mobiles' }, { label: 'Headphones' }, { label: 'Screens' }, { label: 'Accessories' }]
+  const [pid, setPid] = React.useState(null);
 
   const handleCatChange = (e, v) => {
     setCat(v.label);
+    setTCat(v.label)
+   
   }
   const handleCPUChange = (e, v) => {
-    setCPU(v);
+    setCPU(e.target.value);
   }
   const handleGPUChange = (e, v) => {
-    setGPU(v);
+    setGPU(e.target.value);
   }
-  const handleRAMChange = (e, v) => {
-    setRAM(v);
+  const handleRAMChange = (event, v) => {
+    event.target.value < 1
+      ? (event.target.value = 1)
+      :  setRAM(event.target.value);
   }
   const handleFreqChange = (event, v) => {
     event.target.value < 1
       ? (event.target.value = 1)
-      : setFreq(v);
+      : setFreq(event.target.value);
 
   }
   const handleResoChange = (e, v) => {
-    setReso(v);
+    setReso(e.target.value);
   }
   const handleTypeChange = (e, v) => {
-    setScType(v);
+    
+    setScType(e.target.value);
   }
   const handleisSmartChange = (e, v) => {
-    setisSmart(v);
+    setisSmart(e.target.value);
   }
   const handleAcTypeChange = (e, v) => {
-    setAcType(v);
+    setAcType(e.target.value);
+
   }
   const handleScreenChange = (event, v) => {
     event.target.value < 1
       ? (event.target.value = 1)
-      : setScreen(v);
+      : setScreen(event.target.value);
   }
 
   const handleImgChange = (event) => {
@@ -146,6 +154,103 @@ const AddProduct = () => {
   const isAc = () => {
     return category == 'Accessories'
   }
+
+ 
+    const getLast = async (e) => {
+        try {
+          const dataRes = await fetch(`http://localhost:1444/api/v1/getlastinserted`);
+          const { data } = await dataRes.json();
+          setPid(data[0]["LAST_INSERT_ID()"])
+        } catch (error) {
+          console.log(error);
+        }
+    } 
+  useEffect(() => {
+    if (pid==0)
+    {
+      getLast();
+      return
+    }
+    
+    const PostReq = async () => {
+      //after adding the product we add its details to the according table
+      console.log(pid)
+      console.log(tempCat)
+      if (tempCat == "Laptops") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addlaptop`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            gpu: GPU,
+            ram: RAM,
+            processor: CPU,
+            screen: Screen,
+          }),
+        });
+      }
+      else if (tempCat == "Mobiles") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addmobile`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            ram: RAM,
+            processor: CPU,
+            screen: Screen,
+          }),
+        });
+      }
+
+      else if (tempCat == "Screens") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addscreen`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            type: ScreenType,
+            resolution: Reso,
+            is_smart: isSmart
+          }),
+        });
+      }
+
+      else if (tempCat == "Headphones") {
+        const res2 = await fetch(`http://localhost:1444/api/v1/addheadphone`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            frequency: Freq,
+          }),
+        });
+      }
+
+      else if (tempCat == "Accessories") {
+        console.log(pid)
+        console.log(AcType)
+        const res2 = await fetch(`http://localhost:1444/api/v1/addaccessory`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            pid: pid,
+            type: AcType,
+          }),
+        });
+      }
+    }
+    PostReq();
+},[pid,Navigate])
   const handleSubmit = async (e) => {
     const res = await fetch(`http://localhost:1444/api/v1/addproduct`, {
       method: "POST",
@@ -162,16 +267,21 @@ const AddProduct = () => {
         img_link:Img
       }),
     });
+   
+ 
+  const { status } = await res.json();
+  console.log(res)
+  if (status === true) {
+    getLast();
 
-    const { status } = await res.json();
-    if (status === true) {
       selected_storage.currently_used = parseInt(selected_storage.currently_used) + parseInt(count)
       setURLcolor('primary')
       setIdcolor('primary')
       setColor('#000000')
       setImg('')
       setPrice('')
-      setCount(1)
+      setCount('')
+      setCat('')
       setName('')
       set_selected_storage(null)
       set_selected_supplier(null)
@@ -179,15 +289,16 @@ const AddProduct = () => {
       setTimeout(() => {
         document.querySelector(".successD").classList.remove("active");
       }, 3000);
-      setTimeout(() => {
-        Navigate(0)
-      }, 3000);
+
     } else {
       document.querySelector(".FailD").classList.add("active");
       setTimeout(() => {
         document.querySelector(".FailD").classList.remove("active");
       }, 3000);
     }
+    setTimeout(() => {
+      Navigate(0)
+    }, 3000);
   };
 
 
@@ -230,12 +341,16 @@ const AddProduct = () => {
           />}
         {isLabMob() &&
           <TextField
-            required
-            fullWidth={false}
-            id="outlined-required"
+            required={true}
+            id="outlined-number"
+            label="RAM"
+            type="number"
             value={RAM}
             onChange={handleRAMChange}
-            label="RAM"
+            InputLabelProps={{
+              shrink: true,
+              min: 0,
+            }}
           />}
         {isLab() &&
           <TextField

@@ -49,6 +49,12 @@ const {
   getProductWithId,
   getStorageWithId,
   getOrders,
+  addLaptop,
+  addMobile,
+  addAccessory,
+  addHeadphone,
+  addScreen,
+  getLastInserted,
 } = require("../controller/Controllers");
 
 //customer
@@ -111,4 +117,11 @@ router.route("/updateUserData").patch(updateUserData);
 router.route("/getProductWithId").get(getProductWithId);
 router.route("/getStorageWithId").get(getStorageWithId);
 
+//Categories
+router.route("/addLaptop").post(addLaptop);
+router.route("/addMobile").post(addMobile);
+router.route("/addScreen").post(addScreen);
+router.route("/addAccessory").post(addAccessory);
+router.route("/addHeadphone").post(addHeadphone);
+router.route("/getLastInserted").get(getLastInserted);
 module.exports = router;
