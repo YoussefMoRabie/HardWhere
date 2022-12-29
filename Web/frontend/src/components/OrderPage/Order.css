@@ -1,0 +1,17 @@
+.ordCard{
+  width: 270px;
+}
+.orderDate{
+  margin: 8px 0;
+  width: fit-content;
+  textAlign: start;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #f3f3f3;
+}
+hr{
+  width: 1300px;
+  margin: 15px auto;
+  border: none;
+  border-top: dashed 2px #faaf00;
+}
