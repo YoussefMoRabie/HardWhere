@@ -17,7 +17,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const UpdateCustomer = () => {
+const UserPage = () => {
   const { state } = useLocation();
   const navigateTo = useNavigate();
   console.log(state);
@@ -40,10 +40,10 @@ const UpdateCustomer = () => {
     setPassword(state.password);
     if (shown) {
       setShown(false);
-      document.getElementById("showbtn").innerText = "Show My Data";
+      document.getElementById("showbtn").innerText = "Show My Info";
     } else {
       setShown(true);
-         document.getElementById("showbtn").innerText = "Hide My Data";
+      document.getElementById("showbtn").innerText = "Hide My Info";
     }
   };
 
@@ -119,6 +119,16 @@ const UpdateCustomer = () => {
         }}
         className="AddSupp"
       >
+        <Link to="/orders" state={state}>
+          <button
+            style={{ fontSize: "18px", marginBottom: "13px" }}
+            className="addP"
+            type="submit"
+          >
+            {" "}
+            My Orders
+          </button>
+        </Link>
         <button
           style={{ fontSize: "18px", marginBottom: "13px" }}
           className="addP"
@@ -127,7 +137,7 @@ const UpdateCustomer = () => {
           onClick={HandelShow}
         >
           {" "}
-          Show My Data
+          Show My Info
         </button>
         <br />
 
@@ -211,4 +221,4 @@ const UpdateCustomer = () => {
   );
 };
 
-export default UpdateCustomer;
+export default UserPage;

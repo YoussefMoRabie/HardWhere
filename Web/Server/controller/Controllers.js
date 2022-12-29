@@ -653,7 +653,7 @@ const getOrders = async (req, res) => {
     const orders = data1[0];
 
     for (const order of orders) {
-      const sql2 = ` select product_name,price,color,p.count,has_offer,new_price,su_id,st_id,start_date,end_date,p_value,img_link
+      const sql2 = ` select pid, product_name,price,color,p.count,has_offer,new_price,su_id,st_id,start_date,end_date,p_value,img_link
                 from contains co,product p where p.pid=co.p_id and o_id =${order.oid}`;
 
       const products = await db.execute(sql2);
