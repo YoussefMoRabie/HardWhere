@@ -650,27 +650,8 @@ const getCustomer = async (req, res) => {
     res.json({ status: false, message: error.sqlMessage });
   }
 };
-//---------------------------------------------------Helper Apis---------------------------------------------------------------
-const getProductWithId = async (req, res) => {
-  const sql = `select * from product where pid = ${req.params.pid} `;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
-const getStorageWithId = async (req, res) => {
-  const sql = `select * from storages where stid = ${req.params.stid}`;
-  try {
-    const data = await db.execute(sql);
-    res.json({ status: true, data: data[0] });
-  } catch (error) {
-    console.log(error.sqlMessage);
-    res.json({ status: false, message: error.sqlMessage });
-  }
-};
+//---------------------------------------------------Categories---------------------------------------------------------------
+
 module.exports = {
   getCustomer,
   updateSupplier,
@@ -716,7 +697,5 @@ module.exports = {
   updateEmployee,
   updateStorage,
   updateUserData,
-  getProductWithId,
-  getStorageWithId,
   addOrder_fluter,
 };
